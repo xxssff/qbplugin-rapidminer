@@ -1,0 +1,77 @@
+<project name="QS"  default="build">
+
+  <description>
+    Construcción de QS
+  </description>
+
+  <property name="yale.version" value="RM"/>
+  <property name="yale.home" location="d:/ws/"/>
+
+  <property name="src"           location="."/>
+  <property name="lib"           location="build/lib"/>
+  <property name="build"         location="build"/>
+  <property name="output"         location="SALIDA-JAR"/>
+
+
+  <path id="javadoc.classpath">
+	    <pathelement location="${java.home}/jre/lib/rt.jar"/>
+	    <pathelement location="${java.home}/../jre/lib/rt.jar"/>
+	    <pathelement location="${java.home}/lib/tools.jar"/>
+	    <pathelement location="${java.home}/../lib/tools.jar"/>
+	    <pathelement location="${java.home}/classes"/>
+	    <pathelement location="${lib}/yale.jar"/>
+  </path>
+	
+  <path id="classpath">
+    <path refid="javadoc.classpath"/>
+    <pathelement location="${build}"/>
+  </path>
+
+
+  <target name="init">
+    <tstamp/>
+    <mkdir dir="${build}"/>
+    <mkdir dir="${lib}"/>
+  </target>
+
+  <!-- ************ Build, Dist ***************** -->
+
+  <target name="build" depends="compile,copy-resources" description="Compile classes and copy resources to the build directory"/>
+
+  <target name="compile" depends="init" description="Compila todos los fuentes">
+    <echo message="Compilando con Java desde: ${java.home}"/>
+    <echo message="versión de Java: ${java.version}"/>
+    <javac debug="${compiler.debug}" destdir="${build}" deprecation="${compiler.deprecation}" compiler="${compiler.version}">
+      <classpath refid="classpath"/>
+      <src path="${src}"/>
+      <!-- includes all ... -->
+      <include name="**/*.java"/>
+      <!-- ...but Tests -->
+      <exclude name="**/test/*"/>
+    </javac>
+  </target>
+
+  <target name="copy-resources" depends="init">
+
+  </target>
+	
+ 
+  <target name="dist" depends="build,copy-resources" description="Generate the lib/yale.jar file">
+    <echo message="Construyendo QBTS.JAR en ${lib}"/>
+    <jar jarfile="${lib}/qbts.jar" >
+      <fileset dir="${build}">
+      	<include name="**/*.class" /> 
+    	<include name="**/operators.xml" /> 
+      	 </fileset>
+  	</jar>
+    <echo message="Copiando plugin a la carpeta ${output}."/>
+    <copy todir="${output}">
+  	  <fileset dir="${lib}"  includes="*.jar" />
+  	</copy>
+    <echo message="Copiando plugin a su ubicación en ${yale.home}/${yale.version}/lib/plugins"/>
+    <copy todir="${yale.home}/${yale.version}/lib/plugins">
+  	  <fileset dir="${lib}"  includes="*.jar" />
+  	</copy>
+  </target>
+
+</project>
