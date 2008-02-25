@@ -7,4 +7,4 @@ Add your content here.
 
 = Details =
 
-Comentarios
+[Comentarios]
