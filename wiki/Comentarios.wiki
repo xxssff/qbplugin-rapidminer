@@ -1,4 +1,3 @@
-
 La nueva versión de RM incluye medidas de similitud listas para aplicar, así como un learner para KNN que se aplica seleccionando una de las medidas existentes.
 
 Las limitaciones de utilizar este operador es de momento  que calcula sobre todos los atributos de cada ejemplo y faltarían las medidas de cadenas.
@@ -173,3 +172,5 @@ start /Dd:\yale-3.0\bin /WAIT  yale d:\yale-3.0\test\gunx\Exp_CEE.xml
 start /Dd:\yale-3.0\bin /WAIT  yale d:\yale-3.0\test\gunx\Exp_euclidean.xml
 }}}
 El tiempo que se gana con una ejecución en modo carácter frente a una en modo gráfico ronda entre el 5 y el 15% dependiendo del experimento.
+
+[Diferencias_241_30]
