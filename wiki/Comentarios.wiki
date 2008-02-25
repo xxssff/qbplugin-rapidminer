@@ -64,12 +64,9 @@ Se podría duplicar o sustituir a elección del usuario.
 
 
 Los test de RM sólo cubren los casos
-
-- Comprobar que en la lectura de un conjunto de ejemplos se han obtenido los correspondientes números de ejemplos, atributos y atributos especiales
-
-- Comprobar que los “learners” producen objetos del tipo correcto.
-
-- Comprobar un parámetro de un PerformanceEvaluator.
+ * Comprobar que en la lectura de un conjunto de ejemplos se han obtenido los correspondientes números de ejemplos, atributos y atributos especiales
+ * Comprobar que los “learners” producen objetos del tipo correcto.
+ * Comprobar un parámetro de un PerformanceEvaluator.
 
  
 
@@ -106,10 +103,10 @@ De todas forma la opción de acceder a la lista de cortes del modelo me proporci
 
 
 De todas formas todavía habría que comprobar como hacer la validación completa.
- #Se debería crear una carpeta XML con los experimentos
- #Para cada test
- #Cargar el fichero con el experimento y ejecutarlo
- #Comprobar los resultados
+ # Se debería crear una carpeta XML con los experimentos
+ # Para cada test
+ # Cargar el fichero con el experimento y ejecutarlo
+ # Comprobar los resultados
 
 Para lanzar un grupo de experimentos de forma desatendida se puede utilizar un fichero cmd con un contenido como el siguiente
 {{{
