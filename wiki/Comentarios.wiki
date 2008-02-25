@@ -2,6 +2,8 @@
 
 La primera opción de rediseñar el plugin para adecuarlo a las nuevas características de RapidMiner es utilizar el nuevo KNNLearner [UtilizarKNNLearner]
 
+Otra posibilidad sería que las similitudes que requieren información de la discretización  se enfoquen desde el lado de la transformación. Así una discretización podría implicar el convertir cada serie unidimensional en otra tridimensional donde además del valor discretizado se incluyesen los valores límite del segmento en que se ha incluido el valor original en el proceso de discretización.[LimitesDiscretización]
+
 Otra consideración es el caso de que se use el KNN en una validación cruzada. Como lo que se almacena es un puntero al conjunto de datos de entrada si se realzian modificaciones de los valores entonces se quedan modificados. Revisar la validación cruzada.
 
 La prueba es aplicar una discretización estándar RM en una validación cruzada en modo de depuración.
