@@ -1,5 +1,6 @@
+==Actualización a versión 4.0==
 
-
+La primera opción de rediseñar el plugin para adecuarlo a las nuevas características de RapidMiner es utilizar el nuevo KNNLearner [UtilizarKNNLearner]
 
 Otra consideración es el caso de que se use el KNN en una validación cruzada. Como lo que se almacena es un puntero al conjunto de datos de entrada si se realzian modificaciones de los valores entonces se quedan modificados. Revisar la validación cruzada.
 
