@@ -114,7 +114,7 @@ start /Dd:\yale-3.0\bin /WAIT  yale d:\yale-3.0\test\gunx\Exp_CEE.xml
 start /Dd:\yale-3.0\bin /WAIT  yale d:\yale-3.0\test\gunx\Exp_euclidean.xml
 }}}
 El tiempo que se gana con una ejecución en modo carácter frente a una en modo gráfico ronda entre el 5 y el 15% dependiendo del experimento.
----
+----
 ==Cambios anteriores==
 [Update_a_v32_v34]
 [Diferencias_241_30]
