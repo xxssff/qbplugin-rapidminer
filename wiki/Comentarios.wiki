@@ -85,6 +85,7 @@ Existe en el Helper un método para devolver un campo privado de un operador per
 
 Una forma de crear el objeto es
 
+{{{
 String nomClass="Miclase";
 
 try {
@@ -96,31 +97,20 @@ Class clase = Class.forName(nomClass);
       pepe = clase.cast( llamada que devuelve un Object);
 
 }…
-
+}}}
  
-
 Cada vez que quiera utilizar el objeto le puedo hacer un casting con clase.cast(pepe)
 
 
 De todas forma la opción de acceder a la lista de cortes del modelo me proporciona  una lista de bloques, por lo que para comprobar los valores de los límites tendría que comparar sólo un campo de cada bloque con los valores conocidos. Por tanto sería mejor crear una función en el test que genere de la lista un vector de valores que ya sería completamente comparables de forma automática.
 
 
-
-
-
-
-
 De todas formas todavía habría que comprobar como hacer la validación completa.
 
-Se debería crear una carpeta XML con los experimentos
-
-Para cada test
-
-Cargar el fichero con el experimento y ejecutarlo
-
-Comprobar los resultados
-
- 
+#Se debería crear una carpeta XML con los experimentos
+#Para cada test
+#Cargar el fichero con el experimento y ejecutarlo
+#Comprobar los resultados
 
 Para lanzar un grupo de experimentos de forma desatendida se puede utilizar un fichero cmd con un contenido como el siguiente
 {{{
@@ -128,5 +118,7 @@ start /Dd:\yale-3.0\bin /WAIT  yale d:\yale-3.0\test\gunx\Exp_CEE.xml
 start /Dd:\yale-3.0\bin /WAIT  yale d:\yale-3.0\test\gunx\Exp_euclidean.xml
 }}}
 El tiempo que se gana con una ejecución en modo carácter frente a una en modo gráfico ronda entre el 5 y el 15% dependiendo del experimento.
+---
+==Cambios anteriores==
 [Update_a_v32_v34]
 [Diferencias_241_30]
