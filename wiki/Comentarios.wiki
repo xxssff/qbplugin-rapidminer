@@ -1,0 +1,219 @@
+
+
+La nueva versión de RM incluye medidas de similitud listas para aplicar, así como un learner para KNN que se aplica seleccionando una de las medidas existentes.
+
+Las limitaciones de utilizar este operador es de momento  que calcula sobre todos los atributos de cada ejemplo y faltarían las medidas de cadenas.
+
+La primera parte nos obliga a introducir sólo una cadena.
+
+Realmente el KNN llama directamente a la clase que implementa la medida de distancia por lo que es ésta la responsable de decidir como calcular la medida. Las que se incluyen con RM calculan sobre cada atributo. Se podrían hacer nuevas medidas que se aplicasen sobre las series pero el procedimiento de hacer la localización de las series que se incluyen en cada conjunto de datos se debería hacer cada vez que se fuese a realizar una comparación. El cambio de la discretización se realizó en el apply pero en ese caso sólo se ejecuta una vez por discretización. Aquí habría que almacenar de alguna forma la detección de bloques. La solución está en que las medidas derivan de AbstractValueBasedSimilarityMeasure (que implementa ExampleBasedSimilarityMeasure).
+
+Cuando se realiza la instanciación de la clase de la medida se ejecuta un método init() definido en la interfaz al que se le envía el conjunto de ejemplos. Lo que hacen los operadores es almacenar los ids de los ejemplos del conjunto, imagino que para depués recuperar de cada ejemplo por su ID sin que tenga que enviarse el ejemplo completo.
+
+La idea entonces sería aplicar el init() para almacenar el conjunto de bloques de las series que se encuentran en el conjunto de datos. Esto además permitiría modificar las distancias existentes para que se pudiesen aplicar a ejemplos con series de una forma más o menos sencillas, no importaría el método de discretización aplicado.
+
+
+Lo único que no tiene buena pinta es que el método getValues del AbstractValueBasedSimilarityMeasure devuelve un vector de dobles (double[]) en lugar de algo más genérico. Así que la aplicación de una distancia a un conjunto de ejemplos con series debería hacerse por medio múltiples llamadas para obtener cada serie en un vector.
+
+Una consideración para mejorar el tiempo de ejecución sería que el init() almacenara los datos. Sería un inconveniente en la vertiente de espacio pero no en la de tiempo.
+
+
+
+La segunda es cuestión de implementación. Pero el mayor inconveniente sería la no disponibilidad de la información de discretización para poder implementar la distancia basada en kernel. Para ello habría que modificar el KNNLearner para que lo almacenara en el KNNModel.
+
+
+En lugar de tener que modificar el KNN se puede probar si los objetos mantienen el orden en que han sido genereados y qué hace el ModelApplier en el caso de que en la lista de objetos de entrada existan dos objetos del mismo tipo.
+
+La prueba sería hacer que la primera parte de la validación cruzada utilizase un CAIMDiscretizer (que modifique el exampleSet de entrada) y luego un KNNLearner. La segunda parte tendría dos ModelApplier consecutivos y un performanceEvaluator, el primer ModelApplier haría la Discretización y el segundo la identificación. Si esto funciona sólo habría que…
+
+Esto no sirve porque el problema deriva de que la identificación que hace el KNN requiere el esquema de discretización que se ha utilizado y ese hay que pasárselo a la función de distancia.
+
+ 
+
+La solución por tanto es modificar el KNNLearner y el KNNModel para que el primero coja un modelo de la entrada y lo almacene en el segundo, con eso ya en el applier del KNNmodel se podría acceder a toda la información.
+
+ 
+
+La verdad es que parece poco elegante.
+
+ 
+
+Otra opción sería que el applier del KNNModel pudiese comprobar si existe un modelo en la entrada y en ese caso lo aplique de forma inmediata. La modificación sería mínima y no demasiado fea, pero ¿cómo garantizo que el que se ejecuta en el ModelApplier el el modelo del KNN y no el otro? Porque si lo que se dice arriba es verdad entonces siempre me encontraría primero el DiscretizationModel. Para evitar esta situación se podría utilizar un IOSelector para hacer que el modelo del KNN se coloque al principio de la lista. De todas formas la modificación aunque sea mínima debe hacerse en el KNNLEarner y el Model ya que la implementación en el model generará otra clase diferente que tendrá que ser generada por el Learner. El learner será una herencia del existente al que se cambia la clase del modelo y el modelo sobreescribe el applier para hacer la nueva comprobación.
+
+Otra opción aunque muy similar a esta sería no cambiar el modelo del KNN sino hacer un operador que cogiese dos modelos y los guardase en otro modelo, como un Mixer. Ese modelo tendría una ejecución que llamaría al primero, cogería el resultado y se lo enviaría al segundo. De esta forma sólo hay que crear un modelo nuevo y un operador (que es en realidad un learner aunque no se defina como tal). Pero parece que estaría más claro haciendo la opción anterior de modificar el KNN en sus dos componentes.
+Esta opción no es realizable porque no se puede crear un nuevo modelo partiendo del modelo KNN puesto que no se puede acceder a los componentes que se incluyen en KNNModel. Tampoco en el caso del Learner porque todos los atributos están definidos como privados y por tanto no son visibles a las subclases.
+
+
+La opción por tanto es crear un nuevo KNNLearner y un KNNModel copiados y modificados.
+
+
+
+
+Otra consideración es el caso de que se use el KNN en una validación cruzada. Como lo que se almacena es un puntero al conjunto de datos de entrada si se realzian modificaciones de los valores entonces se quedan modificados. Revisar la validación cruzada.
+
+La prueba es aplicar una discretización estándar RM en una validación cruzada en modo de depuración.
+
+El utilizar el operador IOMultiplyOperator no es útil porque el método copy del AbstractExampleSet hace una llamada al método clone y por tanto utiliza los mismos punteros. Lo más limpio sería hacer un nuevo operador propio derivado del IOMultiplyOperator que cree una copia completa del objeto de entrada.
+
+En la idea de no tener que modificar las clases de RM se podría hacer que el nuevo operado se encargue directamente de coger un conjunto de datos y crear otro idéntico pero nuevo de forma que las modificaciones vayan al generado.
+
+Sería como un CopyExampleSet con entrada de un exampleSet y salida de otro.
+
+El motivo de no cambiar el IOMultiplyOperator es que implicaría modificar también el AbstractExampleSet para incluir otro método que hiciese la copia completa.
+
+Se podría duplicar o sustituir a elección del usuario.
+
+
+
+Los test de RM sólo cubren los casos
+
+- Comprobar que en la lectura de un conjunto de ejemplos se han obtenido los correspondientes números de ejemplos, atributos y atributos especiales
+
+- Comprobar que los “learners” producen objetos del tipo correcto.
+
+- Comprobar un parámetro de un PerformanceEvaluator.
+
+ 
+
+No hay ninguna comprobación de las salidas de los ejemplos. Se podría utilizar el PerformanceEvaluator para crear un ModelParameterEvaluator.
+
+Los datos que son visibles de un operador son el valor de sus parámetros pero el conjunto de cortes almacenado en un modelo no está accesible de forma externa (no es un parámetro). Por tanto para poder hacer una comprobación hay que volver a tirar de la reflexión. El problema ahora es que el resultado es un objeto complejo (o puede serlo en un futuro). Sería mejor dejar una parte principal que se encargue de crear el experimento desde un fichero y dejar la comprobación para un test particular que conozca no sólo el tipo del objeto que va a obtener sino tambien la comparación a realizar para ver si coincide.
+
+ 
+
+Existe en el Helper un método para devolver un campo privado de un operador pero ¿cómo hago un casting si la clase la tengo en una cadena? Ya que puede llegar un objeto complejo habrá que indicar además del nombre del campo el tipo que tiene.
+
+ 
+
+Una forma de crear el objeto es
+
+String nomClass="Miclase";
+
+try {
+
+Class clase = Class.forName(nomClass);
+
+      Object pepe = clase.newInstance();
+
+      pepe = clase.cast( llamada que devuelve un Object);
+
+}…
+
+ 
+
+Cada vez que quiera utilizar el objeto le puedo hacer un casting con clase.cast(pepe)
+
+
+De todas forma la opción de acceder a la lista de cortes del modelo me proporciona  una lista de bloques, por lo que para comprobar los valores de los límites tendría que comparar sólo un campo de cada bloque con los valores conocidos. Por tanto sería mejor crear una función en el test que genere de la lista un vector de valores que ya sería completamente comparables de forma automática.
+
+
+
+
+
+
+
+De todas formas todavía habría que comprobar como hacer la validación completa.
+
+Se debería crear una carpeta XML con los experimentos
+
+Para cada test
+
+Cargar el fichero con el experimento y ejecutarlo
+
+Comprobar los resultados
+
+ 
+
+ 
+
+ 
+
+
+
+
+
+
+
+Una vez realizada la actualización de la versión 3.4 se analiza el problema de la utilización monolítica del plugin. Se rediseña
+
+
+
+En la actualización del plugin hay varias cosas pendientes:
+
+   1. Buscar una versión en que el plugin funcione correctamente empezando por la 3.0 (La validación será con que ofrezca los resultados obtenidos en los diferentes experimentos de Metodología) La versión 2.4.1 se compara con la 3.0: Iguales resultados en Ameva-CAIM. Se comprueba el funcionamiento en la versión 3.1 con resultados correctos.
+   2. buscar la siguiente en que falle. En la 3.2 se produce un error de puntero nulo.
+   3. En la última que funciona correctamente diseñar los test
+   4. Comprobar los test y depurar en la versión que falle
+
+
+
+
+Depuración del error en 3.2
+
+Parece que el problema está en que no existe un atributo especial denominado "prediction" en el conjunto de datos que se está manipulando. La cuestión es porqué el conjunto de datos no tiene dicho atributo; ¿será por la copia de los atributos desde el conjunto de entrada? ¿o no vienen desde la entrada?
+La primera vez que entra en el método DiscretizationLearner.learn(eSet) el conjunto de datos eSet ya no tiene el atributo prediction, por tanto habrá que comprobar en 3.1 si el prediction se crea sólo cuando se hace un setPredictionLabel.
+
+Pruebo a utilizar createPredictedLabel con el conjunto de datos de entrada. El problema es que el modelo (a quien corresponde el método create...) no tiene asignada un atributo label que es donde se basa para crear la nueva. Por tanto hay que crear, posiblemente en el momento de crear el modelo, el atributo label que se podría coger del conjunto de datos de entrada al constructor.
+Esa es la opción que utilizo, asignar en la creación del modelo el atributo label del conjunto de aprendizaje para que antes de aplicar el modelo a un conjunto de test pueda, comprobando que no existe aún, crearle a dicho conjunto una etiqueta de predicción según la que tiene el modelo.
+
+Finalmente caigo en el problema de la depuración, los pasos son:
+    Crear el proyecto del plugin que debe tener enlazada el yale.jar
+    Indicar la carpeta con el código fuente del jar anterior.
+    Situar la clase principal del proyecto a ....YaleGUI
+    Colocar los puntos de ruptura deseados
+    Usar la opción Project/DEBUG y no run ....
+   
+Al intentar compilar las versiones 3.2  ¿y 3.4? se produce un error por imposibilidad de importar los paquetes de com.*.doclets.*. Se encuentra que hay que utilizar la librería tools.jar del jdk que se encuentra en la carpeta lib. Luego habrá que definir la dependencia entre los dos proyectos y hacer que las construcciones se realicen en la carpeta build, así como que el jar del plugin debe instalarse en el build de Yale. Hay que cambiar el camino del home de YALE.
+
+
+
+
+Para lanzar un grupo de experimentos de forma desatendida se puede utilizar un fichero cmd con un contenido como el siguiente
+start /Dd:\yale-3.0\bin /WAIT  yale d:\yale-3.0\test\gunx\Exp_CEE.xml
+start /Dd:\yale-3.0\bin /WAIT  yale d:\yale-3.0\test\gunx\Exp_euclidean.xml
+El tiempo que se gana con una ejecución en modo carácter frente a una en modo gráfico ronda entre el 5 y el 15% dependiendo del experimento.
+
+Lo primero que ha de hacerse es comprobar si alguno de los métodos de validación cruzada de la 3.0 (que tiene 3) coincide exactamente con los de la 2.4.1 . Para ello se debería verificar que las semillas aleatorias son la misma e incluir en los fuentes de los experimentos el volcado de los ficheros de ejemplos intermedios para que se vean los contenidos y poder compararlos.
+Se comprueba que el parámetro "Sampling_type" en un valor "shuffled sampling" proporciona los mismos elementos en la validación cruzada de la versión 3.0 que los que producía la versión 2.4.1.
+
+Este es el experimento utilizado en la versión 3.0 para la comprobación
+
+<operator name="RAIZ" class="Experiment">
+  <parameter key="resultfile"    value="D:\yale-3.0\test\gunx\EXP_AC.res"/>
+  <parameter key="logverbosity"    value="minimum"/>
+  <parameter key="logfile"    value="D:\yale-3.0\test\gunx\EXP_AC_debug.log"/>
+  <operator name="LeeConjuntoAprendizaje1" class="ExampleSource">
+    <parameter key="attributes"    value="D:\yale-3.0\Test\gunx\datos\gunx_Apren.att"/>
+  </operator>
+  <operator name="ValidacionCruzada1" class="XValidation">
+    <parameter key="sampling_type"    value="shuffled sampling"/>
+    <operator name="salida" class="ExampleSetWriter">
+      <parameter key="example_set_file"    value="D:\yale-3.0\Test\gunx\testcv\Uno_%a.xml"/>
+    </operator>
+    <operator name="CadenaOp1" class="OperatorChain">
+      <operator name="NewOperator" class="ExampleSetWriter">
+        <parameter key="example_set_file"    value="D:\yale-3.0\Test\gunx\testcv\DOS_%a.xml"/>
+      </operator>
+    </operator>
+  </operator>
+</operator>
+
+Los ficheros generados no son exactamente idénticos puesto que al no indicarse formato de atributos la versión 2.4.1 graba la etiqueta en el final de cada ejemplo mientras la 3.0 lo hace al principio.
+
+
+Para comparar los ficheros de log hay que eliminar primero la información de hora de ejecución por medio de reemplazar lo indicado por la expresión regular \d*\-\w*\-\d*\s\d*\:\d*\:\d*\: por una cadena vacía.
+
+Existe diferencia entre los niveles de log existentes entre las versiones 2.4.1 y 3.0
+
+             maximum
+             fatal
+             error  
+             exception
+             warning
+    status            init
+    operator         status
+    init                 io
+    task               minimum
+    minimum
+
+Además hay diferencia en la cantidad de información aunque los dos estén en minimum. Esto hay que comprobarlo puesto que puede que el plugin de la versión 3.0 tenga menos salida de objetos que en el caso de la 2.4.1
