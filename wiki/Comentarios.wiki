@@ -1,8 +1,19 @@
 ==Actualización a versión 4.0==
 
-La primera opción de rediseñar el plugin para adecuarlo a las nuevas características de RapidMiner es utilizar el nuevo KNNLearner [UtilizarKNNLearner]
+La primera opción de rediseñar el plugin para adecuarlo a las nuevas características de RapidMiner es utilizar el nuevo KNNLearner,
+La primera idea sería modificarlo creando una nueva clase, algo así como un KNNPreprocessLearner. [UtilizarKNNLearner]
 
 Otra posibilidad sería que las similitudes que requieren información de la discretización  se enfoquen desde el lado de la transformación. Así una discretización podría implicar el convertir cada serie unidimensional en otra tridimensional donde además del valor discretizado se incluyesen los valores límite del segmento en que se ha incluido el valor original en el proceso de discretización.LimitesDiscretizacion
+
+Pero si nos vamos a la raiz de la cuestión surge la pregunta ¿porqué no almacenar el modelo de discretización a un fichero y que la distancia lo lea? El problema es que no hay un operador de distancia sino que la distancia es un parámetro del Knnlearner. debido a ésto no se le puede pasar un parámetro (con el nombre del fichero) a la distancia a menos que se modifique la definición del KNNLearner. De todas formas el inconveniente se limita a tener que almacenar el modelo con un nombre fijo conocido a priori.
+
+
+
+
+
+
+
+==Comentarios Anteriores==
 
 Otra consideración es el caso de que se use el KNN en una validación cruzada. Como lo que se almacena es un puntero al conjunto de datos de entrada si se realzian modificaciones de los valores entonces se quedan modificados. Revisar la validación cruzada.
 
