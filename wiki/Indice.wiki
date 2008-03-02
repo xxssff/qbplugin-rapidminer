@@ -1,5 +1,3 @@
-# INDEX - START PAGE
-
 = Introduction =
 
 Add your content here.
