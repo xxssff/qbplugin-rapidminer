@@ -6,3 +6,4 @@
   se ejecuta 
   serialver -classpath ...\rapidminer.jar;...\qbts.jar qbts.distances.QSISimilarity
   indicando los caminos correctos a cada comprimido.
+  Si se quiere la versión windows se lanza sin indicar la clase y añadiendo el parámetro -show
