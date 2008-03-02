@@ -10,6 +10,6 @@ Estructura del plugin
 
 qbts.discretization
 ...
-yale.operator.learner.lazy Incluye código copiado de RM y ligeramente modificado. Incluye un nuevo KNNLearner y !SimiliarityUtil, ver [KNNLearnerSimilarity razonamiento]
+ * *yale.operator.learner.lazy* Incluye código copiado de RM y ligeramente modificado. Incluye un nuevo KNNLearner y !SimiliarityUtil, ver [KNNLearnerSimilarity razonamiento]
 
 [Comentarios] 
