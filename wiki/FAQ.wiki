@@ -1,0 +1,8 @@
+¿Generar el serialUID para una clase del plugin?
+
+  Hay que ejecutar la utilidad serialver (pertenece al SDK) indicándole en el classpath
+  el camino al jar (si es que está compilado) donde está la clase y aquellas que utilice.
+  La clase se identifica con su camino completo. Ejemplo, para QSISimilarity
+  se ejecuta 
+  serialver -classpath ...\rapidminer.jar;...\qbts.jar qbts.distances.QSISimilarity
+  indicando los caminos correctos a cada comprimido.
