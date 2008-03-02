@@ -1,4 +1,4 @@
-#summary One-sentence summary of this page.
+# INDEX - START PAGE
 
 = Introduction =
 
@@ -6,5 +6,10 @@ Add your content here.
 
 
 = Details =
+Estructura del plugin
 
-[Comentarios]
+qbts.discretization
+...
+* _*yale.operator.learner.lazy* Incluye código copiado de RM y ligeramente modificado. Incluye un nuevo KNNLearner y SimiliarityUtil, ver [KNNLearnerSimilarity razonamiento]
+
+[Comentarios] 
