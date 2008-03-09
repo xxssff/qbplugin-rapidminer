@@ -4,11 +4,6 @@ Add your content here.
 
 = Problema actual =
 
-El problema actual es que el modelo no se almacena correctamente, ni la matriz de dobles ni el otro atributo se almacenan.
-Se supone que el XStream debería almacenar las array multidimensionales. 
-En el caso del PreprocessingModel se almacenan correctamente un conjunto (set) y un hashmap (rangesmap). Si se almacenan estos objetos complejos ¿porqué no se almacena una sencilla double[][]?
-
-El siguiente paso es hacer un test que instancie un modelo y lo guarde, haciendo llamadas directas a XStream para ver que almacena.
 
 
 = Details =
