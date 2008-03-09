@@ -144,7 +144,7 @@ public Model learn(ExampleSet eSet) throws OperatorException {
 	{
 		ExampleTable table = new MemoryExampleTable(lAtt, iSet.getExampleTable().getDataReader());
 		eSet = table.createCompleteExampleSet(
-				iSet.getLabel(), null, null, iSet.getId());
+				iSet.getAttributes().getLabel(), null, null, iSet.getId());
 					}
 	else{ */
 	
@@ -152,8 +152,8 @@ public Model learn(ExampleSet eSet) throws OperatorException {
 		//eSet = (ExampleSet) iSet.clone();		
 		LinkedList lcortes = null; //stores the set of candidates limits
 		// Find the number of Classes
-		LinkedList letiquetas = new LinkedList(eSet.getLabel().getValues());
-		int numClasses = eSet.getLabel().getValues().size();
+		LinkedList letiquetas = new LinkedList(eSet.getAttributes().getLabel().getValues());
+		int numClasses = eSet.getAttributes().getLabel().getValues().size();
 		Iterator<Example> reader;
 		
 		LogService.logMessage(numClasses + " etiquetas", LogService.STATUS );

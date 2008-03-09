@@ -12,15 +12,20 @@
      description = "Create a new fresh copy of the input ExampleSet"
      group       = "QBTS"/>
  
- 
   <operator 
-     name        = "ZOLD_DiscretizationLearner"
+     name        = "KNNLearner"
+     class       = "yale.operator.learner.lazy.KNNLearner"
+     description = "Extended Learner with user Similarity Distances."
+     group       = "QBTS"/>
+     
+  <operator 
+     name        = "DiscretizationLearner"
      class       = "qbts.DiscretizationLearner"
      description = "Learn a Discretization scheme from the input ExampleSet. Output a DiscretizationModel and (optionally) the discretized ExampleSet."
      group       = "QBTS"/>
      
   <operator 
-     name        = "ZOLD_DiscretizationApplier"
+     name        = "DiscretizationApplier"
      class       = "qbts.DiscretizationApplier"
      description = "Discretize the input ExampleSet following the learned discretization scheme."
      group       = "QBTS"/>
