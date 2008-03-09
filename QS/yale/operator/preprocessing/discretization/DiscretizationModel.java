@@ -61,7 +61,7 @@ public class DiscretizationModel extends AbstractModel {
 
 	private List<AttributeBlock> lBlocks;
 	private double[][] ranges;
-	
+
 	//TODO: Add serialVersionUID field
 
 
@@ -72,10 +72,11 @@ public class DiscretizationModel extends AbstractModel {
 		super(eSet);
 		this.lBlocks=lBlocks;
 		this.ranges=ranges;
+
 	}
 	
 
-	public void apply(ExampleSet testSet) throws OperatorException {
+	public ExampleSet apply(ExampleSet testSet) throws OperatorException {
 		// change attribute type
 		for (int a = 0; a < lBlocks.size(); a++) {
 			AttributeBlock currBlock=lBlocks.get(a);
@@ -114,10 +115,10 @@ public class DiscretizationModel extends AbstractModel {
 				}
 			}
 		}
-
+		return(testSet);
 	}
 	
-	public void readData(ObjectInputStream in) throws IOException {
+/*	public void readData(ObjectInputStream in) throws IOException {
 		try{
 			lBlocks=(List<AttributeBlock>) in.readObject();
 			ranges=(double [][]) in.readObject();
@@ -130,7 +131,7 @@ public class DiscretizationModel extends AbstractModel {
 	public void writeData(ObjectOutputStream out) throws IOException {
 		out.writeObject(ranges);
         out.writeObject(lBlocks);
-	}
+	}*/
 
 	public String toString() {
 		String cad;

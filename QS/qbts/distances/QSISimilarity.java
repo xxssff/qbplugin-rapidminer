@@ -33,14 +33,14 @@ import com.rapidminer.operator.similarity.attributebased.AbstractRealValueBasedS
 
 
 /**
- * A similarity measure based on "Longest Common String". The DTW distance is mapped to a similarity measure using f(x)= 1 - (x / (1 + x)). 
+ * A similarity measure based on "Longest Common String".  
  * 
  * @author F.J. Cuberos
  * @version $Id: QSISimilarity.java,v 1.1 2007/09/14 Exp $
  */
 
 public class QSISimilarity extends AbstractRealValueBasedSimilarity {
-	private static final long serialVersionUID = 1382144431606583122L;
+	private static final long serialVersionUID = 3640959448681534457L;
 
 	
 	protected double pointDistance(int i, int j, double[] ts1, double[] ts2) {
@@ -140,7 +140,7 @@ public class QSISimilarity extends AbstractRealValueBasedSimilarity {
 	}
 
 	public void init(ExampleSet es) throws OperatorException {
-		Tools.onlyNominalAttributes(es, "LCS similarity");
+		Tools.onlyNominalAttributes(es, "QSI similarity");
 		super.init(es);
 	}
 
