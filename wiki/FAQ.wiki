@@ -6,7 +6,7 @@
   La clase se identifica con su camino completo. Ejemplo, para QSISimilarity
   se ejecuta 
 {{{
-  serialver -classpath ...\rapidminer.jar;...\qbts.jar qbts.distances.QSISimilarity
+  serialver -classpath D:\ws\RM\lib\rapidminer.jar;D:\ws\RM\lib\plugins\qbts.jar qbts.distances.QSISimilarity
 }}}
   indicando los caminos correctos a cada comprimido.
 
