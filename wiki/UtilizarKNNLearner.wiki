@@ -1,7 +1,7 @@
 =Utilización del KNNLearner=
 La nueva versión de RM incluye medidas de similitud listas para aplicar, así como un learner para KNN que se aplica seleccionando una de las medidas existentes.
 
-Las limitaciones de utilizar este operador es de momento  que calcula sobre todos los atributos de cada ejemplo y faltarían las medidas de cadenas.
+Las limitaciones de utilizar este operador son actualmente que calcula sobre todos los atributos de cada ejemplo y faltarían las medidas de cadenas.
 
 La primera parte nos obliga a introducir sólo una cadena.
 
