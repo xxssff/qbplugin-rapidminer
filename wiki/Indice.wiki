@@ -22,22 +22,28 @@ UserBasedPerformance
 
 package com.rapidminer.operator.performance;
 ...
+try {
 criterionClass = com.rapidminer.tools.Tools.classForName(className);
-					if (PerformanceCriterion.class.isAssignableFrom(criterionClass)) {
-						PerformanceCriterion c = null;
-						if ((parameter != null) && (parameter.trim().length() > 0)) {
-							java.lang.reflect.Constructor constructor = criterionClass.getConstructor(new Class[] { String.class });
-							c = (PerformanceCriterion) constructor.newInstance(new Object[] { parameter });
-						} else {
-							c = (PerformanceCriterion) criterionClass.newInstance();
-						}
-						if (!(c instanceof MeasuredPerformance)) {
-							logError("Only subclasses of MeasuredPerformance are supported as user based criteria. Skipping '"+className+"'...");
-						} else {
-							performanceCriteria.add(c);
-							if (userCriteria != null)
-								userCriteria.add(c);
-						}
+if (PerformanceCriterion.class.isAssignableFrom(criterionClass)) {
+	PerformanceCriterion c = null;
+	if ((parameter != null) && (parameter.trim().length() > 0)) {
+		java.lang.reflect.Constructor constructor = criterionClass.getConstructor(new Class[] { String.class });
+		c = (PerformanceCriterion) constructor.newInstance(new Object[] { parameter });
+	} else {
+		c = (PerformanceCriterion) criterionClass.newInstance();
+	}
+	if (!(c instanceof MeasuredPerformance)) {
+		logError("Only subclasses of MeasuredPerformance are supported as user based criteria. Skipping '"+className+"'...");
+	} else {
+		performanceCriteria.add(c);
+		if (userCriteria != null)
+			userCriteria.add(c);
+	}
+} else {
+	logError("Only subclasses of MeasuredPerformance are supported as user based criteria. Skipping '"+className+"'...");
+}
+
+
 }}}
 
 --------
