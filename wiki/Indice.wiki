@@ -15,6 +15,30 @@ qbts.discretization
 
 [Comentarios] 
 
+= IDEAS =
+¿Y si la modificación del KNNLearner y el !SimiliarityUtil se hace para añadir una !UserBasedSimilarity ? Así en lugar de hacer una modificación por similitud se hace una y se crean similitudes que se puedan referenciar para su instanciación. La idea sería añadir un nuevo parámetro en el KNNLearner para poder indicar el camino de la clase a usar. Esto se usa en algún otro operador.... Seguramente habría que añadir una nueva entradas en el !Mapper para colocar la opción de !UserBasedSimilarity. En ese caso se podría ampliar siguiendo el mecanismo usado en 
+{{{
+UserBasedPerformance
+
+package com.rapidminer.operator.performance;
+...
+criterionClass = com.rapidminer.tools.Tools.classForName(className);
+					if (PerformanceCriterion.class.isAssignableFrom(criterionClass)) {
+						PerformanceCriterion c = null;
+						if ((parameter != null) && (parameter.trim().length() > 0)) {
+							java.lang.reflect.Constructor constructor = criterionClass.getConstructor(new Class[] { String.class });
+							c = (PerformanceCriterion) constructor.newInstance(new Object[] { parameter });
+						} else {
+							c = (PerformanceCriterion) criterionClass.newInstance();
+						}
+						if (!(c instanceof MeasuredPerformance)) {
+							logError("Only subclasses of MeasuredPerformance are supported as user based criteria. Skipping '"+className+"'...");
+						} else {
+							performanceCriteria.add(c);
+							if (userCriteria != null)
+								userCriteria.add(c);
+						}
+}}}
 
 --------
 
