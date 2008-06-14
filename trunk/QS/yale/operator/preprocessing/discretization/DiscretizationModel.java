@@ -24,9 +24,6 @@
  */
 package yale.operator.preprocessing.discretization;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.Iterator;
 import java.util.List;
 
@@ -61,7 +58,7 @@ public class DiscretizationModel extends AbstractModel {
 
 	private List<AttributeBlock> lBlocks;
 	private double[][] ranges;
-
+	static final long serialVersionUID = -7791326331963220278L;
 	//TODO: Add serialVersionUID field
 
 

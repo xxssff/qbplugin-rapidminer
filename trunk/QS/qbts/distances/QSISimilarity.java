@@ -26,6 +26,8 @@ package qbts.distances;
 
 import java.util.ArrayList;
 
+import yale.operator.preprocessing.discretization.DiscretizationModel;
+
 import com.rapidminer.example.ExampleSet;
 import com.rapidminer.example.Tools;
 import com.rapidminer.operator.OperatorException;
@@ -42,6 +44,7 @@ import com.rapidminer.operator.similarity.attributebased.AbstractRealValueBasedS
 public class QSISimilarity extends AbstractRealValueBasedSimilarity {
 	private static final long serialVersionUID = 3640959448681534457L;
 
+	DiscretizationModel dm;
 	
 	protected double pointDistance(int i, int j, double[] ts1, double[] ts2) {
 		return ( ts1[i] == ts2[j] ? 1 : 0);
@@ -140,6 +143,8 @@ public class QSISimilarity extends AbstractRealValueBasedSimilarity {
 	}
 
 	public void init(ExampleSet es) throws OperatorException {
+		// hay que cargar el modelo de discretización. Lo que hay que hacer es deserializar el modelo 
+		//¿como ejecutar un operador si el experimento ya está lanzado?
 		Tools.onlyNominalAttributes(es, "QSI similarity");
 		super.init(es);
 	}
