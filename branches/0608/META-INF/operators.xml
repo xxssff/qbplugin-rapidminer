@@ -1,0 +1,57 @@
+<operators>
+
+  <operator 
+     name        = "ByExampleLearner"
+     class       = "qbts.ByExampleLearner"
+     description = "Learn a...."
+     group       = "QBTS"/>
+ 
+ <operator 
+     name        = "CopyExampleSet"
+     class       = "rm.utils.CopyExampleSet"
+     description = "Create a new fresh copy of the input ExampleSet"
+     group       = "QBTS"/>
+ 
+  <operator 
+     name        = "KNNLearner"
+     class       = "yale.operator.learner.lazy.KNNLearner"
+     description = "Extended Learner with user Similarity Distances."
+     group       = "QBTS"/>
+     
+  <operator 
+     name        = "DiscretizationLearner"
+     class       = "qbts.DiscretizationLearner"
+     description = "Learn a Discretization scheme from the input ExampleSet. Output a DiscretizationModel and (optionally) the discretized ExampleSet."
+     group       = "QBTS"/>
+     
+  <operator 
+     name        = "DiscretizationApplier"
+     class       = "qbts.DiscretizationApplier"
+     description = "Discretize the input ExampleSet following the learned discretization scheme."
+     group       = "QBTS"/>
+
+  <operator 
+     name        = "SimpleBinDiscretizationSeries"
+     class       = "yale.operator.preprocessing.discretization.SimpleBinDiscretization"
+     description = "Discretize the input ExampleSet  (including Series)."
+     group       = "QBTS"/>
+     
+  <operator 
+     name        = "FrequencyDiscretizationSeries"
+     class       = "yale.operator.preprocessing.discretization.FrequencyDiscretizer"
+     description = "Discretize the input ExampleSet  (including Series)."
+     group       = "QBTS"/>
+
+  <operator 
+     name        = "CAIMDiscretizer"
+     class       = "qbts.discretization.CAIMDiscretizer"
+     description = "Discretize the input ExampleSet  (including Series)."
+     group       = "QBTS"/>
+
+  <operator 
+     name        = "AmevaDiscretizer"
+     class       = "qbts.discretization.AmevaDiscretizer"
+     description = "Discretize the input ExampleSet  (including Series)."
+     group       = "QBTS"/>
+
+</operators>
