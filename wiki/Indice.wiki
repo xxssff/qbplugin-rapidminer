@@ -3,8 +3,9 @@
 Add your content here.
 
 = Problema actual =
-
-
+----
+ESTUDIAR:  El SimilarityUtil es capaz de usar una similitud que le venga en la lista de objetos. ¿se podría crear una similitud que tenga en cuenta la discretización? Si es así ¿habría que modificar el knnlearner?
+----
 
 = Details =
 Estructura del plugin
