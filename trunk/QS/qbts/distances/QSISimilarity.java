@@ -30,6 +30,7 @@ import yale.operator.preprocessing.discretization.DiscretizationModel;
 
 import com.rapidminer.example.ExampleSet;
 import com.rapidminer.example.Tools;
+import com.rapidminer.operator.ContainerModel;
 import com.rapidminer.operator.OperatorException;
 import com.rapidminer.operator.similarity.attributebased.AbstractRealValueBasedSimilarity;
 
@@ -44,7 +45,7 @@ import com.rapidminer.operator.similarity.attributebased.AbstractRealValueBasedS
 public class QSISimilarity extends AbstractRealValueBasedSimilarity {
 	private static final long serialVersionUID = 3640959448681534457L;
 
-	DiscretizationModel dm;
+	ContainerModel dm;
 	
 	protected double pointDistance(int i, int j, double[] ts1, double[] ts2) {
 		return ( ts1[i] == ts2[j] ? 1 : 0);
@@ -149,7 +150,9 @@ public class QSISimilarity extends AbstractRealValueBasedSimilarity {
 		super.init(es);
 	}
 	
-	public void setModel(DiscretizationModel model){
+	public void setModel(ContainerModel model){
+		//TODO: Tendrá que crear un Container con el último modelo que sea un PreprocessingModel
+		// Y eso dependiendo de la similitud. De momento sólo para para el kernel
 		dm=model;
 	}
 
