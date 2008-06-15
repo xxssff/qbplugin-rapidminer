@@ -148,6 +148,10 @@ public class QSISimilarity extends AbstractRealValueBasedSimilarity {
 		Tools.onlyNominalAttributes(es, "QSI similarity");
 		super.init(es);
 	}
+	
+	public void setModel(DiscretizationModel model){
+		dm=model;
+	}
 
 	public boolean isDistance() {
 		return false;
