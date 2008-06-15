@@ -4,11 +4,11 @@ Add your content here.
 
 = Problema actual =
 ----
-ESTUDIAR:  El SimilarityUtil es capaz de usar una similitud que le venga en la lista de objetos. ¿se podría crear una similitud que tenga en cuenta la discretización? Si es así ¿habría que modificar el knnlearner?
+ESTUDIAR:  El !SimilarityUtil es capaz de usar una similitud que le venga en la lista de objetos. ¿se podría crear una similitud que tenga en cuenta la discretización? Si es así ¿habría que modificar el knnlearner?
 
 LECCIONES:
   # Se puede crear un operador que se encargue de crear una similitud en la que almacene el modelo de discretización.
-  # Aunque en la lista del inputContainer (que es donde están los objetos que entran a un operador) sólo tenga un modelo éste vendrá  dentro de un ModelContainer. El apply() de un modelContainer realiza la aplicación secuencial de todos los modelos que incluya.
+  # Aunque en la lista del inputContainer (que es donde están los objetos que entran a un operador) sólo tenga un modelo éste vendrá  dentro de un !ModelContainer. El apply() de un modelContainer realiza la aplicación secuencial de todos los modelos que incluya.
 ----
 
 = Details =
