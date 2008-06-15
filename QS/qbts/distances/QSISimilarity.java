@@ -42,7 +42,7 @@ import com.rapidminer.operator.similarity.attributebased.AbstractRealValueBasedS
  * @version $Id: QSISimilarity.java,v 1.1 2007/09/14 Exp $
  */
 
-public class QSISimilarity extends AbstractRealValueBasedSimilarity {
+public class QSISimilarity extends AbstractExtendedRealValueBasedSimilarity {
 	private static final long serialVersionUID = 3640959448681534457L;
 
 	ContainerModel dm;
