@@ -43,7 +43,7 @@ public  class HelperOperatorConstructor {
 		Operator op=null;
 		try {
 			OperatorDescription oD = new OperatorDescription(getClass().getClassLoader(),name,className,
-					group,"Description",null,null);
+					group,"Description",null,null,null);
 			op = OperatorService.createOperator(oD);
 		} catch (OperatorCreationException e1) {
 			e1.printStackTrace();

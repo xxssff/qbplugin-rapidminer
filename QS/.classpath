@@ -3,6 +3,6 @@
 	<classpathentry excluding="lib" kind="src" path=""/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/RapidMiner4.1"/>
+	<classpathentry kind="lib" path="D:/rapidminer-4.1/lib/rapidminer.jar" sourcepath="D:/rapidminer-4.1/src"/>
 	<classpathentry kind="output" path="build"/>
 </classpath>

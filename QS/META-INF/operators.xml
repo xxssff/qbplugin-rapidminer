@@ -6,6 +6,12 @@
      description = "Learn a...."
      group       = "QBTS"/>
  
+  <operator 
+     name        = "SimilaritySetup"
+     class       = "qbts.distances.SimilaritySetup"
+     description = "Setup a Similarity."
+     group       = "QBTS"/>
+ 
  <operator 
      name        = "CopyExampleSet"
      class       = "rm.utils.CopyExampleSet"
