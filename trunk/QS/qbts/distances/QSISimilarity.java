@@ -51,98 +51,42 @@ public class QSISimilarity extends AbstractExtendedRealValueBasedSimilarity {
 		return ( ts1[i] == ts2[j] ? 1 : 0);
 	}
 
-	public double similarity(double[] e1, double[] e2) {
-		ArrayList<Double> l1 = new ArrayList<Double>();
-		ArrayList<Double> l2 = new ArrayList<Double>();
-		int i, j;
-		/** Filter NaNs */
-		for (i = 0; i < e1.length; i++) {
-			double value = e1[i];
-			if (!Double.isNaN(value)) {
-				l1.add(value);
-			}
-		}
-		for (i = 0; i < e2.length; i++) {
-			double value = e2[i];
-			if (!Double.isNaN(value)) {
-				l2.add(new Double(value));
-			}
-		}
-		/** Transform the examples to vectors */
-		double[] ts1 = new double[l1.size()];
-		double[] ts2 = new double[l2.size()];
-		for (i = 0; i < ts1.length; i++) {
-			ts1[i] = l1.get(i);
-		}
-		for (i = 0; i < ts2.length; i++) {
-			ts2[i] = l2.get(i);
-		}
-		/** Build a point-to-point coincidence matrix */
-		double[][] dP2P = new double[ts1.length][ts2.length];
-		for (i = 0; i < ts1.length; i++) {
-			for (j = 0; j < ts2.length; j++) {
-				dP2P[i][j] = pointDistance(i, j, ts1, ts2);
-			}
-		}
-		/** Check for some special cases due to ultra short time series */
-		if (ts1.length == 0 || ts2.length == 0) {
-			return Double.NaN;
-		}
-		if (ts1.length == 1 && ts2.length == 1) {
-			return dP2P[0][0];
-		}
-		/**
-		 * Build the optimal distance matrix using a dynamic programming approach
-		 */
-		double[][] D = new double[ts1.length][ts2.length];
-		D[0][0] = dP2P[0][0]; // Starting point
-		for (i = 1; i < ts1.length; i++) { // Fill the first column of our
-			// distance matrix with optimal
-			// values
-			if (dP2P[i][0]==1){
-				D[i][0]=1;
-			}
-			else{
-			D[i][0] = D[i - 1][0];
-			}
-		}
-		if (ts2.length == 1) { // TS2 is a point
-			return ( (D[ts1.length][0] )/ ts1.length);
-		}
-		for (j = 1; j < ts2.length; j++) { // Fill the first row of our
-			// distance matrix with optimal
-			// values
-			if (dP2P[0][j] == 1){
-				D[0][j]=1;
-			}
-			else{
-				D[0][j] = D[0][j - 1];	
-			}
-			
-		}
-		if (ts1.length == 1) { // TS1 is a point
-			return ( D[0][ts2.length] / ts2.length);
-		}
-
-		/**
-		 * Calculate the distance between the two time series through optimal alignment.
-		 */
-		for (i = 1; i < ts1.length; i++) { // Fill the rest
-			for (j = 1; j < ts2.length; j++) {
-				if (dP2P[i][j]==1){
-					D[i][j] = dP2P[i-1][j-1] + 1;
+	public double similarity(double[] pcVx, double[] pcVy) {
+		if ((pcVx == null) || (pcVy == null))
+			 return Double.NaN;
+		
+		int sizex = pcVx.length;
+		int sizey = pcVy.length;
+		
+		int valor;
+		double dvalor = 0;
+		int[][] D = new int[sizex + 1][sizey + 1];
+	
+		for (int i = 0; i < (sizex + 1); i++)
+			for (int j = 0; j < (sizey + 1); j++)
+				D[i][j] = 0;
+	
+		for (int i = 1; i <= sizex; i++)
+			for (int j = 1; j <= sizey; j++) {
+				if (pcVx[i - 1] == pcVy[j - 1]) {
+					D[i][j] = D[i - 1][j - 1] + 1;
+				} else if (D[i - 1][j] > D[i][j - 1]) {
+					D[i][j] = D[i - 1][j];
+				} else {
+					D[i][j] = D[i][j - 1];
 				}
-				else{
-					double[] steps = {
-							 D[i - 1][j], D[i][j - 1]};
-					double max = Math.max(steps[0],steps[1]);
-					D[i][j] = dP2P[i][j] + max;
-				};
 			}
-		}
-		return ( D[ts1.length][ts2.length] / Math.max(ts1.length ,ts2.length));
+	
+		valor = D[sizex][sizey];
+	
+		if (sizey > sizex)
+			dvalor = ((double) valor) / ((double) sizey);
+		else
+			dvalor = ((double) valor) / ((double) sizex);
+		return ((double) dvalor);
 	}
-
+	
+	
 	public void init(ExampleSet es) throws OperatorException {
 		// hay que cargar el modelo de discretización. Lo que hay que hacer es deserializar el modelo 
 		//¿como ejecutar un operador si el experimento ya está lanzado?
