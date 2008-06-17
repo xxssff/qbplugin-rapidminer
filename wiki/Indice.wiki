@@ -11,7 +11,7 @@ LECCIONES:
   # Se puede crear un operador que se encargue de crear una similitud en la que almacene el modelo de discretización.
   # Aunque en la lista del inputContainer (que es donde están los objetos que entran a un operador) sólo tenga un modelo éste vendrá  dentro de un !ModelContainer. El apply() de un modelContainer realiza la aplicación secuencial de todos los modelos que incluya.
 La cuestión es ver como afecta cuando además del modelo de discretización exista uno de aprendizaje en el !ModelContainer.
-  # Hay que crear una clase base de la que dependan todas las similitudes por lo que se pueda requerir; en el caso del kernel hay que almacenar los límites del modelo de discretización. La clase debe definirse al nivel de AbstractRealValueBasedSimilarity para 
+  # Hay que crear una clase base de la que dependan todas las similitudes por lo que se pueda requerir; en el caso del kernel hay que almacenar los límites del modelo de discretización. La clase debe definirse al nivel de AbstractRealValueBasedSimilarity para evitar la comprobación que se hace en el init de AbstractRealValueBasedSimilarity de que todos los atributos sean numéricos. En nuestro caso tienen que ser nominales.
 
 
 ----
@@ -36,7 +36,7 @@ public abstract class AbstractExtendedRealValueBasedSimilarity extends
 		AbstractValueBasedSimilarity{
 
 	private PreprocessingModel model;
-	
+//// SI NO HACE NADA SE ¿PUEDE QUITAR EL METODO COMPLETO? SE SUPONE QUE SE LLAMARA AL PADRE.
 	public void init(ExampleSet exampleSet) throws OperatorException {
              // Tools.onlyNumericalAttributes(exampleSet, "value based similarities");
 		super.init(exampleSet);
@@ -44,6 +44,13 @@ public abstract class AbstractExtendedRealValueBasedSimilarity extends
 }
 }}}
   * Se crea una Clase para cada similitud. Cada clase tendrá que comprobar los atributos que quiere con una llamada a Tools.only....
+{{{
+	public void init(ExampleSet es) throws OperatorException {
+		Tools.onlyNominalAttributes(es, "QSI similarity");
+		super.init(es);
+	}
+
+}}}
 
 ~~qbts.discretization~~
 
