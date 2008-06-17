@@ -19,7 +19,7 @@ import com.rapidminer.parameter.ParameterTypeList;
 import com.rapidminer.parameter.ParameterTypeStringCategory;
 import com.rapidminer.tools.ClassNameMapper;
 
-public class SimilaritySetup extends Operator {
+public class QBSimilaritySetup extends Operator {
 
 	/** The parameter name for &quot;similarity measure to apply&quot; */
 	public static final String PARAMETER_MEASURE = "measure";
@@ -32,13 +32,13 @@ public class SimilaritySetup extends Operator {
 
 
 	
-	public SimilaritySetup(OperatorDescription description) {
+	public QBSimilaritySetup(OperatorDescription description) {
 		super(description);
 	}
 
 	public IOObject[] apply() throws OperatorException {
-		// Tiene que tomar el DiscretizationModel, crear una Similitud y configurarle el Modelo
-		ContainerModel  model = (ContainerModel) getInput(AbstractModel.class); 
+		// TODO Cuando sea Kernel tiene que tomar el DiscretizationModel, crear una Similitud y configurarle el Modelo
+		// ContainerModel  model = (ContainerModel) getInput(AbstractModel.class); 
 		ExampleSet es = getInput(ExampleSet.class);
 		
 		String simClassName = (String) this.getParameter(PARAMETER_MEASURE);
@@ -46,12 +46,10 @@ public class SimilaritySetup extends Operator {
 		sim.init(es);
 
 		
+		return new IOObject[] {es, sim };
 		// TODO Cuando sea Kernel habrá que pasarle el Container para que lo procese.
-		// Pero entonces no puedo crearla como ExampleBasedSimilarityMeasure porque no puede tener métodos que las demás no tengan.
-		// Habrá que generar una clase (Abstracta) de la que deriven todas las similitudes mías.  
 		// simil.setModel(model);
-
-		return new IOObject[] {es, model, sim };
+		//return new IOObject[] {es, model, sim };
 
 	}
 	
@@ -72,7 +70,9 @@ public class SimilaritySetup extends Operator {
 	}
 
 	public Class[] getOutputClasses() {
-		return new Class[] {ExampleSet.class, ContainerModel.class , SimilarityMeasure.class };
+		// CUANDO SEA KERNEL INTERVALAR YA VEREMOS COMO SE PONE
+		// return new Class[] {ExampleSet.class, ContainerModel.class , SimilarityMeasure.class };
+		return new Class[] {ExampleSet.class,  SimilarityMeasure.class };
 	}
 
 
