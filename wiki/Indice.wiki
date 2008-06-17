@@ -22,6 +22,28 @@ Estructura del plugin
 El KnnLearner incluido en RM4.1 permite la aplicación de una similitud que esté en la cadena de objetos de entrada.
 
   * Se crea un operador cuya salida sea una similitud.
+  * Se crea una clase abstracta de la que deriven todas las similitudes
+{{{
+package qbts.distances;
+
+import com.rapidminer.example.ExampleSet;
+import com.rapidminer.example.Tools;
+import com.rapidminer.operator.OperatorException;
+import com.rapidminer.operator.preprocessing.PreprocessingModel;
+import com.rapidminer.operator.similarity.attributebased.AbstractValueBasedSimilarity;
+
+public abstract class AbstractExtendedRealValueBasedSimilarity extends
+		AbstractValueBasedSimilarity{
+
+	private PreprocessingModel model;
+	
+	public void init(ExampleSet exampleSet) throws OperatorException {
+             // Tools.onlyNumericalAttributes(exampleSet, "value based similarities");
+		super.init(exampleSet);
+	}
+}
+}}}
+  * Se crea una Clase para cada similitud. Cada clase tendrá que comprobar los atributos que quiere con una llamada a Tools.only....
 
 ~~qbts.discretization~~
 
