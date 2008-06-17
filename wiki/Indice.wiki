@@ -21,9 +21,11 @@ Estructura del plugin
 
 El KnnLearner incluido en RM4.1 permite la aplicación de una similitud que esté en la cadena de objetos de entrada.
 
+  * Se crea un operador cuya salida sea una similitud.
+
 ~~qbts.discretization~~
 
- *~~ *yale.operator.learner.lazy* Incluye código copiado de RM y ligeramente modificado. Incluye un nuevo KNNLearner y !SimiliarityUtil, ver [KNNLearnerSimilarity razonamiento]~~
+ * ~~yale.operator.learner.lazy Incluye código copiado de RM y ligeramente modificado. Incluye un nuevo KNNLearner y !SimiliarityUtil, ver [KNNLearnerSimilarity razonamiento]~~
 
 [Comentarios] 
 
