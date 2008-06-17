@@ -16,7 +16,7 @@ La cuestión es ver como afecta cuando además del modelo de discretización exi
 
 ----
 
-= Details =
+= Detalles =
 Estructura del plugin
 
 El KnnLearner incluido en RM4.1 permite la aplicación de una similitud que esté en la cadena de objetos de entrada.
