@@ -8,7 +8,7 @@
  
   <operator 
      name        = "SimilaritySetup"
-     class       = "qbts.distances.SimilaritySetup"
+     class       = "qbts.distances.QBSimilaritySetup"
      description = "Setup a Similarity."
      group       = "QBTS"/>
  
@@ -16,24 +16,6 @@
      name        = "CopyExampleSet"
      class       = "rm.utils.CopyExampleSet"
      description = "Create a new fresh copy of the input ExampleSet"
-     group       = "QBTS"/>
- 
-  <operator 
-     name        = "KNNLearner"
-     class       = "yale.operator.learner.lazy.KNNLearner"
-     description = "Extended Learner with user Similarity Distances."
-     group       = "QBTS"/>
-     
-  <operator 
-     name        = "DiscretizationLearner"
-     class       = "qbts.DiscretizationLearner"
-     description = "Learn a Discretization scheme from the input ExampleSet. Output a DiscretizationModel and (optionally) the discretized ExampleSet."
-     group       = "QBTS"/>
-     
-  <operator 
-     name        = "DiscretizationApplier"
-     class       = "qbts.DiscretizationApplier"
-     description = "Discretize the input ExampleSet following the learned discretization scheme."
      group       = "QBTS"/>
 
   <operator 
