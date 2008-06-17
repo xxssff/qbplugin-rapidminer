@@ -85,14 +85,13 @@ public class QSISimilarity extends AbstractExtendedRealValueBasedSimilarity {
 			dvalor = ((double) valor) / ((double) sizex);
 		return ((double) dvalor);
 	}
-	
+
 	
 	public void init(ExampleSet es) throws OperatorException {
-		// hay que cargar el modelo de discretización. Lo que hay que hacer es deserializar el modelo 
-		//¿como ejecutar un operador si el experimento ya está lanzado?
-		Tools.onlyNominalAttributes(es, "QSI similarity");
-		super.init(es);
-	}
+        Tools.onlyNominalAttributes(es, "QSI similarity");
+        super.init(es);
+	}	
+	
 	
 	public void setModel(ContainerModel model){
 		//TODO: Tendrá que crear un Container con el último modelo que sea un PreprocessingModel
