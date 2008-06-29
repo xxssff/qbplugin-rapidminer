@@ -22,30 +22,8 @@
  */
 package qbts.preprocessing.discretization;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
-import java.util.SortedSet;
-import java.util.TreeSet;
-
-import com.rapidminer.example.Attribute;
-import com.rapidminer.example.AttributeRole;
-import com.rapidminer.example.Attributes;
-import com.rapidminer.example.Example;
 import com.rapidminer.example.ExampleSet;
-import com.rapidminer.example.SimpleAttributes;
-import com.rapidminer.example.table.AttributeFactory;
-import com.rapidminer.example.table.NominalMapping;
-import com.rapidminer.example.table.PolynominalMapping;
-import com.rapidminer.example.table.ViewAttribute;
-import com.rapidminer.operator.OperatorException;
-import com.rapidminer.operator.preprocessing.PreprocessingModel;
 import com.rapidminer.operator.preprocessing.discretization.DiscretizationModel;
-import com.rapidminer.tools.Ontology;
-import com.rapidminer.tools.Tools;
-import com.rapidminer.tools.Tupel;
 
 /**
  * The generic discretization model.
@@ -55,7 +33,8 @@ import com.rapidminer.tools.Tupel;
  */
 
 public class DiscretizationModelSeries extends DiscretizationModel {
-
+    static final long serialVersionUID = -1792856176020803111L;
+    
 	protected DiscretizationModelSeries(ExampleSet exampleSet) {
 		this(exampleSet, true);
 	}
