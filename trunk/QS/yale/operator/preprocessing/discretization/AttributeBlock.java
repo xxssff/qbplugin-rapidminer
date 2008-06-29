@@ -38,6 +38,7 @@ import com.rapidminer.tools.Ontology;
  * @author F.J. Cuberos
  *
  */
+@Deprecated
 public class AttributeBlock {
 	private String[] atriNames;
 	private boolean isSeries;

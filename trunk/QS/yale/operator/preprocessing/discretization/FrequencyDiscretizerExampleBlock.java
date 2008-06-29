@@ -70,6 +70,7 @@ import com.rapidminer.example.Example;
  * @author Sebastian Land
  * @version $Id: FrequencyDiscretizerExample.java,v 1.3 2006/08/03 14:39:29 ingomierswa Exp $
  */
+@Deprecated
 public class FrequencyDiscretizerExampleBlock implements Comparable<FrequencyDiscretizerExampleBlock> {
 
 	private double attributeValue;
