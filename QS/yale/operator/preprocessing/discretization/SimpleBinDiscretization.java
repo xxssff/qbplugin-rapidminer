@@ -82,6 +82,7 @@ import com.rapidminer.parameter.UndefinedParameterError;
  * @version $Id: SimpleBinDiscretization.java,v 1.9 2006/04/05 08:57:27
  *          ingomierswa Exp $
  */
+@Deprecated
 public class SimpleBinDiscretization extends PreprocessingOperator {
 
 	

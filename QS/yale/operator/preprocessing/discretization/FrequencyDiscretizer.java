@@ -57,6 +57,7 @@ import com.rapidminer.tools.Ontology;
  * @version $Id: FrequencyDiscretizer.java,v 1.12 2006/04/14 11:42:27
  *          ingomierswa Exp $
  */
+@Deprecated
 public class FrequencyDiscretizer extends Operator {
 
 	/** The parameter name for &quot;If true, the number of bins is instead determined by the square root of the number of non-missing values.&quot; */

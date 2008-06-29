@@ -54,6 +54,7 @@ import com.rapidminer.tools.Ontology;
  * @author F.J. Cuberos
  *
  */
+@Deprecated
 public class DiscretizationModel extends AbstractModel {
 
 	private List<AttributeBlock> lBlocks;
