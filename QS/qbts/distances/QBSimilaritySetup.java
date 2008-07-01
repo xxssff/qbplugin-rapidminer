@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.rapidminer.example.ExampleSet;
 import com.rapidminer.operator.AbstractModel;
-import com.rapidminer.operator.ContainerModel;
+import com.rapidminer.operator.GroupedModel;
 import com.rapidminer.operator.IOObject;
 import com.rapidminer.operator.Operator;
 import com.rapidminer.operator.OperatorDescription;
