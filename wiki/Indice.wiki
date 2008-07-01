@@ -26,11 +26,11 @@ Una vez implementados se puede ver la posibilidad de incluir el código en el op
 
 ==Estructura del plugin==
 === qbts.distances ===
-  * Se definen aquí todas las distancias, que heredan de AbstractExtendedRealValueBasedSimilarity y el operador que genera la similitud denominado QBSimilaritySetup
+  * Se definen aquí todas las distancias, que heredan de !AbstractExtendedRealValueBasedSimilarity y el operador que genera la similitud denominado QBSimilaritySetup
 
 === qbts.preprocessing.discretization ===
   * Contiene los discretizadores de RM ampliados a la aplicación de series.
-  * También existe un DiscretizationModelSeries que es una herencia directa y casi vacía del DiscretizationModel de RM que se crea sólo por que los constructores de DiscretizationModel son privados y por tanto debe estar en el mismo paquete en que sea accedido.
+  * También existe un !DiscretizationModelSeries que es una herencia directa y casi vacía del !DiscretizationModel de RM que se crea sólo por que los constructores de !DiscretizationModel son privados y por tanto debe estar en el mismo paquete en que sea accedido.
 
 ~~qbts.discretization~~
 
