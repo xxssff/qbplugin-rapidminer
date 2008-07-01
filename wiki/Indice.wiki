@@ -23,9 +23,24 @@ La idea de ampliar la discretización a series se enfoca por medio de hacer nuev
 Estos operadores se limitan (caso unidimensional) a generar el mismo rango para todos los atributos.
 Una vez implementados se puede ver la posibilidad de incluir el código en el operador original.
 
-Estructura del plugin
 
-El KnnLearner incluido en RM4.1 permite la aplicación de una similitud que esté en la cadena de objetos de entrada.
+==Estructura del plugin==
+=== qbts.distances ===
+  * Se definen aquí todas las distancias, que heredan de AbstractExtendedRealValueBasedSimilarity y el operador que genera la similitud denominado QBSimilaritySetup
+
+=== qbts.preprocessing.discretization ===
+  * Contiene los discretizadores de RM ampliados a la aplicación de series.
+  * También existe un DiscretizationModelSeries que es una herencia directa y casi vacía del DiscretizationModel de RM que se crea sólo por que los constructores de DiscretizationModel son privados y por tanto debe estar en el mismo paquete en que sea accedido.
+
+~~qbts.discretization~~
+
+ * ~~yale.operator.learner.lazy Incluye código copiado de RM y ligeramente modificado. Incluye un nuevo KNNLearner y !SimiliarityUtil, ver [KNNLearnerSimilarity razonamiento]~~
+
+[Comentarios] 
+
+= IDEAS =
+  * ¿Y si la modificación del KNNLearner y el !SimiliarityUtil se hace para añadir una !UserBasedSimilarity ? No hace falta porque el KNNLearner puede usar la similitud que venga en la lista de objetos de entrada
+  * El KnnLearner incluido en RM4.1 permite la aplicación de una similitud que esté en la cadena de objetos de entrada.
 
   * Se crea un operador cuya salida sea una similitud.
   * Se crea una clase abstracta de la que deriven todas las similitudes
@@ -55,43 +70,6 @@ public abstract class AbstractExtendedRealValueBasedSimilarity extends
 		Tools.onlyNominalAttributes(es, "QSI similarity");
 		super.init(es);
 	}
-
-}}}
-
-~~qbts.discretization~~
-
- * ~~yale.operator.learner.lazy Incluye código copiado de RM y ligeramente modificado. Incluye un nuevo KNNLearner y !SimiliarityUtil, ver [KNNLearnerSimilarity razonamiento]~~
-
-[Comentarios] 
-
-= IDEAS =
-¿Y si la modificación del KNNLearner y el !SimiliarityUtil se hace para añadir una !UserBasedSimilarity ? Así en lugar de hacer una modificación por similitud se hace una y se crean similitudes que se puedan referenciar para su instanciación. La idea sería añadir un nuevo parámetro en el KNNLearner para poder indicar el camino de la clase a usar. Esto se usa en algún otro operador.... Seguramente habría que añadir una nueva entradas en el !Mapper para colocar la opción de !UserBasedSimilarity. En ese caso se podría ampliar siguiendo el mecanismo usado en 
-{{{
-UserBasedPerformance
-
-package com.rapidminer.operator.performance;
-...
-try {
-criterionClass = com.rapidminer.tools.Tools.classForName(className);
-if (PerformanceCriterion.class.isAssignableFrom(criterionClass)) {
-	PerformanceCriterion c = null;
-	if ((parameter != null) && (parameter.trim().length() > 0)) {
-		java.lang.reflect.Constructor constructor = criterionClass.getConstructor(new Class[] { String.class });
-		c = (PerformanceCriterion) constructor.newInstance(new Object[] { parameter });
-	} else {
-		c = (PerformanceCriterion) criterionClass.newInstance();
-	}
-	if (!(c instanceof MeasuredPerformance)) {
-		logError("Only subclasses of MeasuredPerformance are supported as user based criteria. Skipping '"+className+"'...");
-	} else {
-		performanceCriteria.add(c);
-		if (userCriteria != null)
-			userCriteria.add(c);
-	}
-} else {
-	logError("Only subclasses of MeasuredPerformance are supported as user based criteria. Skipping '"+className+"'...");
-}
-
 
 }}}
 
