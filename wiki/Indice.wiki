@@ -19,9 +19,9 @@ La cuesti贸n es ver como afecta cuando adem谩s del modelo de discretizaci贸n exi
 = Detalles =
 AmpliaciOn a series
 
-La idea de ampliar la discretizaci髇 a series se enfoca por medio de hacer nuevos operadores de discretizaci髇 olvidando la extensi髇 de RM con las listas de bloques.
+La idea de ampliar la discretizaci贸n a series se enfoca por medio de hacer nuevos operadores de discretizaci贸n olvidando la extensi贸n de RM con las listas de bloques.
 Estos operadores se limitan (caso unidimensional) a generar el mismo rango para todos los atributos.
-Una vez implementados se puede ver la posibilidad de incluir el c骴igo en el operador original.
+Una vez implementados se puede ver la posibilidad de incluir el c贸digo en el operador original.
 
 Estructura del plugin
 
