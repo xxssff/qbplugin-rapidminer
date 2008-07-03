@@ -5,6 +5,16 @@ La idea es utilizar todo lo que RapidMiner 4.1 incluye y reducir la programació
 
 = Problema actual =
 ----
+
+¿Y si pudiera usar el !AttributeSubsetPreprocessing para hacer las discretizaciones?
+Si hay varias series sólo tengo que hacer una entrada por cada grupo de atributos y ya está.
+ESTUDIAR:
+Hay que probar si los atributos son realmente sustituidos y en qué orden quedan.
+¿como hacer que el BinDiscretization (por ejemplo) actúe sobre todos? Realmente hay que crear un idéntico pero modificado, ¿que ventaja tiene entonces utilizar el AttributeSubsetPreprocessing?
+
+
+
+-----
 ESTUDIAR:  El !SimilarityUtil es capaz de usar una similitud que le venga en la lista de objetos. ¿se podría crear una similitud que tenga en cuenta la discretización? Si es así ¿habría que modificar el knnlearner?
 
 LECCIONES:
