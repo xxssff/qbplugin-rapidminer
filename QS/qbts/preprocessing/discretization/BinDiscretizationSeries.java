@@ -49,7 +49,8 @@ import com.rapidminer.tools.Ontology;
 public class BinDiscretizationSeries extends BinDiscretization {
 	/** Indicates if long range names should be used. */
 	public static final String PARAMETER_DISCRETIZE_SERIES = "discretize_series";
-
+	public static final String PARAMETER_DISCRETIZE_AS_SERIES = "discretize_as_series";
+	
 	public BinDiscretizationSeries(OperatorDescription description) {
 		super(description);
 	}
@@ -131,6 +132,9 @@ public class BinDiscretizationSeries extends BinDiscretization {
 		List<ParameterType> types = super.getParameterTypes();
 
 		ParameterType type = new ParameterTypeBoolean(PARAMETER_DISCRETIZE_SERIES , "Indicates if the attributes forming each series are discretized together.", false);
+		type.setExpert(false);
+		types.add(type);
+		type = new ParameterTypeBoolean(PARAMETER_DISCRETIZE_AS_SERIES , "Indicates if ALL the attributes forming are discretized together.", false);
 		type.setExpert(false);
 		types.add(type);
 		return types;
