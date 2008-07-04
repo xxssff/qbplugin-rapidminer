@@ -4,8 +4,8 @@
     Construcción de QS
   </description>
 
-  <property name="yale.version" value="RapidMiner-4.1"/>
-  <property name="yale.home" location="d:/"/>
+  <property name="yale.version" value="RM"/>
+  <property name="yale.home" location="d:/ws"/>
 
   <property name="src"           location="."/>
   <property name="lib"           location="build/lib"/>

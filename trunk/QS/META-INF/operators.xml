@@ -20,7 +20,7 @@
 
   <operator 
      name        = "SimpleBinDiscretizationSeries"
-     class       = "yale.operator.preprocessing.discretization.SimpleBinDiscretization"
+     class       = "qbts.preprocessing.discretization.BinDiscretizationSeries"
      description = "Discretize the input ExampleSet  (including Series)."
      group       = "QBTS"/>
      
