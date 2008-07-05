@@ -19,6 +19,13 @@
      group       = "QBTS"/>
 
   <operator 
+     name        = "BinDiscretizationExtended"
+     class       = "qbts.preprocessing.discretization.BinDiscretizationExtended"
+     description = "Discretize the input ExampleSet  (optionally all together )."
+     group       = "QBTS"/>
+
+
+  <operator 
      name        = "SimpleBinDiscretizationSeries"
      class       = "qbts.preprocessing.discretization.BinDiscretizationSeries"
      description = "Discretize the input ExampleSet  (including Series)."
