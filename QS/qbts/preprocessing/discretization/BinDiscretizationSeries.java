@@ -49,54 +49,63 @@ import com.rapidminer.tools.Ontology;
 public class BinDiscretizationSeries extends BinDiscretization {
 	/** Indicates if long range names should be used. */
 	public static final String PARAMETER_DISCRETIZE_SERIES = "discretize_series";
-	public static final String PARAMETER_DISCRETIZE_AS_SERIES = "discretize_as_series";
+	public static final String PARAMETER_DISCRETIZE_ATTS_AS_SERIES = "discretize_atts_as_series";
 	
 	public BinDiscretizationSeries(OperatorDescription description) {
 		super(description);
 	}
 
 	public Model createPreprocessingModel(ExampleSet exampleSet) throws OperatorException {
-		if (getParameterAsBoolean(PARAMETER_DISCRETIZE_SERIES)){
+		if (getParameterAsBoolean(PARAMETER_DISCRETIZE_SERIES) || getParameterAsBoolean(PARAMETER_DISCRETIZE_ATTS_AS_SERIES)){
 			DiscretizationModelSeries model = new DiscretizationModelSeries(exampleSet);
 			List<Attribute> lAtt=new ArrayList<Attribute>();
-			
+
 			exampleSet.recalculateAllAttributeStatistics();
 			HashMap<Attribute, double[]> ranges = new HashMap<Attribute, double[]>();
-
-			for (Attribute attribute : exampleSet.getAttributes()) {
-				if (attribute.isNumerical()) { // skip nominal and date attributes
-					switch(attribute.getBlockType()){
-					case Ontology.VALUE_SERIES_START:
-						if (lAtt.isEmpty())
-							lAtt.add(attribute);
-						else
-							throw new OperatorException("Series attributes not processed. ExampleSet definition error.");
+			if (getParameterAsBoolean(PARAMETER_DISCRETIZE_ATTS_AS_SERIES)){
+				for (Attribute attribute : exampleSet.getAttributes()) {
+					if (attribute.isNumerical()) { // skip nominal and date attributes
+						lAtt.add(attribute);
+					}
+				}
+				computeValues(exampleSet,lAtt,ranges);
+			}
+			else{
+				for (Attribute attribute : exampleSet.getAttributes()) {
+					if (attribute.isNumerical()) { // skip nominal and date attributes
+						switch(attribute.getBlockType()){
+						case Ontology.VALUE_SERIES_START:
+							if (lAtt.isEmpty())
+								lAtt.add(attribute);
+							else
+								throw new OperatorException("Series attributes not processed. ExampleSet definition error.");
+							break;
+						case Ontology.VALUE_SERIES_END:
+							if (lAtt.isEmpty())
+								throw new OperatorException("Bad series definition (END without START). ExampleSet definition error.");
+							else{
+								lAtt.add(attribute);
+								computeValues(exampleSet,lAtt,ranges);
+								lAtt.clear();
+							}
+							break;
+						case Ontology.VALUE_SERIES:
+							if (lAtt.isEmpty())
+								throw new OperatorException("Bad series definition (element without START). ExampleSet definition error.");							
+							else
+								lAtt.add(attribute);
+							break;
+						default:
+							if (lAtt.isEmpty()){
+								lAtt.add(attribute);
+								computeValues(exampleSet,lAtt,ranges);
+								lAtt.clear();
+							}							
+							else
+								throw new OperatorException("Bad series definition. ExampleSet definition error.");
 						break;
-					case Ontology.VALUE_SERIES_END:
-						if (lAtt.isEmpty())
-							throw new OperatorException("Bad series definition (END without START). ExampleSet definition error.");
-						else{
-							lAtt.add(attribute);
-							computeValues(exampleSet,lAtt,ranges);
-							lAtt.clear();
-						}
-						break;
-					case Ontology.VALUE_SERIES:
-						if (lAtt.isEmpty())
-							throw new OperatorException("Bad series definition (element without START). ExampleSet definition error.");							
-						else
-							lAtt.add(attribute);
-						break;
-					default:
-						if (lAtt.isEmpty()){
-							lAtt.add(attribute);
-							computeValues(exampleSet,lAtt,ranges);
-							lAtt.clear();
-						}							
-						else
-							throw new OperatorException("Bad series definition. ExampleSet definition error.");
-						break;
-					}					
+						}	
+					}
 				}
 			}
 			model.setRanges(ranges, "range", getParameterAsBoolean(PARAMETER_USE_LONG_RANGE_NAMES));
@@ -134,7 +143,7 @@ public class BinDiscretizationSeries extends BinDiscretization {
 		ParameterType type = new ParameterTypeBoolean(PARAMETER_DISCRETIZE_SERIES , "Indicates if the attributes forming each series are discretized together.", false);
 		type.setExpert(false);
 		types.add(type);
-		type = new ParameterTypeBoolean(PARAMETER_DISCRETIZE_AS_SERIES , "Indicates if ALL the attributes forming are discretized together.", false);
+		type = new ParameterTypeBoolean(PARAMETER_DISCRETIZE_ATTS_AS_SERIES , "Indicates if ALL the attributes forming are discretized together.", false);
 		type.setExpert(false);
 		types.add(type);
 		return types;
