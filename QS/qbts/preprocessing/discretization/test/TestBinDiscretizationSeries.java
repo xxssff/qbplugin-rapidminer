@@ -5,7 +5,7 @@ import static org.junit.Assert.*;
 
 public class TestBinDiscretizationSeries extends TestCase {
 
-	// Los test que hay que hacer son:
+	// Los srctest que hay que hacer son:
 	// Los triviales 
 			// Si el conjunto está vacío dar un error
 	// Los básicos

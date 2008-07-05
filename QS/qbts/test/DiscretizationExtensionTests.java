@@ -26,7 +26,7 @@ public class DiscretizationExtensionTests extends TestCase {
 
 
 	public IOContainer runSampleTest(String file) throws Exception {
-		File processFile = new File(ParameterService.getRapidMinerHome(), "test" + File.separator + file);
+		File processFile = new File(ParameterService.getRapidMinerHome(), "srctest" + File.separator + file);
 		if (!processFile.exists())
 			throw new Exception("File '" + processFile.getAbsolutePath() + "' does not exist!");
 		LogService.getGlobal().setVerbosityLevel(LogService.OFF);
@@ -41,7 +41,7 @@ public class DiscretizationExtensionTests extends TestCase {
 		// 1 attributo con 100 ejemplos con el operador estándard RM
 		// 5 atributos en 20 ejemplos con el nuevo operador activando el procesar_todos_los attributos juntos
 		try{
-		  IOContainer sal1 = runSampleTest(".."+File.separator+".."+File.separator+"test"+File.separator+"Discretization"+File.separator+"bin1.xml");
+		  IOContainer sal1 = runSampleTest(".."+File.separator+".."+File.separator+"srctest"+File.separator+"Discretization"+File.separator+"bin1.xml");
 		}
 		catch (Exception e){
 			e.printStackTrace();

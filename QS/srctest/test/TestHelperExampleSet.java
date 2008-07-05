@@ -1,11 +1,11 @@
-package test.test;
+package srctest.test;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 import junit.framework.TestCase;
-import test.HelperExampleSet;
+import srctest.HelperExampleSet;
 
 import com.rapidminer.example.Attribute;
 import com.rapidminer.example.Example;
