@@ -1,4 +1,4 @@
-package test;
+package srctest;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;

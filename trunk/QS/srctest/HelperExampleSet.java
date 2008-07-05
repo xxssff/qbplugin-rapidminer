@@ -1,4 +1,4 @@
-package test;
+package srctest;
 
 import java.util.Iterator;
 import java.util.List;

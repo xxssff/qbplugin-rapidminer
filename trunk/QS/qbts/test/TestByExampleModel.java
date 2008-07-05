@@ -5,8 +5,8 @@ import java.util.List;
 
 import junit.framework.TestCase;
 import qbts.ByExampleModel;
-import test.HelperExampleSet;
-import test.HelperOperatorConstructor;
+import srctest.HelperExampleSet;
+import srctest.HelperOperatorConstructor;
 
 import com.rapidminer.example.Attribute;
 import com.rapidminer.example.ExampleSet;
