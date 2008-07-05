@@ -62,7 +62,16 @@
       <fileset dir="${build}">
       	<include name="**/*.class" /> 
     	<include name="**/operators.xml" /> 
+
       	 </fileset>
+        <manifest>
+          <attribute name="Implementation-Title" value="Plugin Operator"/>
+          <attribute name="Implementation-Version" value="1.4.1"/>
+          <attribute name="Implementation-Vendor" value="F.J.Cuberos"/>
+          <attribute name="Specification-Vendor" value="F.J. Cuberos"/>
+       	<attribute name="RapidMiner-Type" value="RapidMiner_Plugin"/>
+        </manifest>
+
   	</jar>
     <echo message="Copiando plugin a la carpeta ${output}."/>
     <copy todir="${output}">
