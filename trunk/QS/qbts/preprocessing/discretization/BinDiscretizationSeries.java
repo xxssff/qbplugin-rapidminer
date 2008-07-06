@@ -46,6 +46,7 @@ import com.rapidminer.tools.Ontology;
  * @author Sebastian Land, Ingo Mierswa, F.J. Cuberos
  * @version $Id: BinDiscretizationSeries.java,v 1.0 2008/06/28 10:52:02 fjcuberos Exp $
  */
+@Deprecated
 public class BinDiscretizationSeries extends BinDiscretization {
 	/** Indicates if long range names should be used. */
 	public static final String PARAMETER_DISCRETIZE_SERIES = "discretize_series";
