@@ -107,12 +107,11 @@ public class FrequencyDiscretizationExtended extends FrequencyDiscretization {
 			int pos=(int) (examplesPerBin-1);
 			for (int i=0;i<numberOfBins-1;i++){
 				double value=(double) valores.get(pos);
-				if (i==0){
-					attributeRanges[0]=value;
-				}
 				do{
 					pos++;
 				}while(value==(double) valores.get(pos) );
+				
+				attributeRanges[i]=(value + (double) valores.get(pos))/2;
 				pos=(int) (pos + examplesPerBin-1);
 			}
 			attributeRanges[numberOfBins - 1] = Double.POSITIVE_INFINITY;
