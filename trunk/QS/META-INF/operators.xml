@@ -24,6 +24,12 @@
      description = "Discretize the input ExampleSet  (optionally all together )."
      group       = "QBTS"/>
 
+  <operator 
+     name        = "FrequencyDiscretizationExtended"
+     class       = "qbts.preprocessing.discretization.FrequencyDiscretizationExtended"
+     description = "Discretize the input ExampleSet  (optionally all together )."
+     group       = "QBTS"/>
+
 
   <operator 
      name        = "SimpleBinDiscretizationSeries"
