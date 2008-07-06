@@ -42,7 +42,7 @@ Una vez implementados se puede ver la posibilidad de incluir el código en el op
   * Se definen aquí todas las distancias, que heredan de !AbstractExtendedRealValueBasedSimilarity y el operador que genera la similitud denominado QBSimilaritySetup
 
 === qbts.preprocessing.discretization ===
-  * Contiene los discretizadores de RM ampliados a la aplicación de series.
+  * Contiene los discretizadores de RM ampliados a la aplicación de series. Finalmente se opta por añadir a los incluidos en RM4.1 un nuevo parámetro que indique que todos los atributos se discreticen juntos. La opción de añadir también el procesado de series (con deteccion de los atributos de principio y fin) se desecha por ser más compleja por tener que contemplar más situaciones por tener dos parámetros relacionados, es más intrusivo en el código de RM y además incluir la opción seleccionada.
   * También existe un !DiscretizationModelSeries que es una herencia directa y casi vacía del !DiscretizationModel de RM que se crea sólo por que los constructores de !DiscretizationModel son privados y por tanto debe estar en el mismo paquete en que sea accedido.
 
 ~~qbts.discretization~~
