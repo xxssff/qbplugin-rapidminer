@@ -3,6 +3,7 @@ package qbts.preprocessing.discretization.test;
 import java.io.File;
 import java.util.HashMap;
 import java.util.SortedSet;
+import java.util.TreeSet;
 
 import srctest.HelperOperatorConstructor;
 
@@ -52,44 +53,45 @@ public class DiscretizationExtensionTests extends TestCase {
 		// quiero comprobar que la discretización es la misma usando
 		// 1 attributo con 100 ejemplos con el operador estándard RM
 		// 5 atributos en 20 ejemplos con el nuevo operador activando el procesar_todos_los attributos juntos
-		// PROBADO MANUALMENTE EN RM 4.1
+		// Es correcto si  uno de ellos tiene sólo un rango y es igual a todos los del otro
+
 		RapidMiner.init();
 		IOContainer sal1;
 		try{
 		  sal1 = runSampleTest("Discretization"+File.separator+"bin1.xml");
 		//Obtengo los dos modelos obtenidos
-		  DiscretizationModel model1 = (DiscretizationModel) sal1.get(Model.class);
-		  DiscretizationModel model2 = (DiscretizationModel) sal1.get(Model.class);
-		// Es correcto si  uno de ellos tiene sólo un rango y es igual a todos los del otro
-		  HelperOperatorConstructor hOp=new HelperOperatorConstructor();
+		  DiscretizationModel model1 = (DiscretizationModel) sal1.remove(Model.class);
+		  DiscretizationModel model2 = (DiscretizationModel) sal1.remove(Model.class);
 		  // tengo que obtener los rangesmap que son privados
+		  HelperOperatorConstructor hOp=new HelperOperatorConstructor();
 		  HashMap<String, SortedSet<Tupel<Double, String>>> rango1 = 
 			  (HashMap<String, SortedSet<Tupel<Double, String>>>) 
 			  hOp.getPrivateFieldOperator("rangesMap","com.rapidminer.operator.preprocessing.discretization.DiscretizationModel",model1);
 		  HashMap<String, SortedSet<Tupel<Double, String>>> rango2 = 
 			  (HashMap<String, SortedSet<Tupel<Double, String>>>) 
 			  hOp.getPrivateFieldOperator("rangesMap","com.rapidminer.operator.preprocessing.discretization.DiscretizationModel",model2);
-			
-		  // Compruebo cual tiene sólo un elemento
-		  if (rango1.size()==1){
-			  assertEquals(rango2.size(),6);
-			  //TODO: ACABAR ESTO ACABAR ESTO ACABAR ESTO ACABAR ESTO ACABAR ESTO ACABAR ESTO ACABAR ESTO ACABAR ESTO
-			  //  ACABAR ESTO ACABAR ESTO ACABAR ESTO ACABAR ESTO ACABAR ESTO ACABAR ESTO ACABAR ESTO ACABAR ESTO ACABAR ESTO
-			  //   ACABAR ESTO ACABAR ESTO ACABAR ESTO ACABAR ESTO ACABAR ESTO ACABAR ESTO ACABAR ESTO ACABAR ESTO ACABAR ESTO 
-			  //  ACABAR ESTO ACABAR ESTO ACABAR ESTO ACABAR ESTO ACABAR ESTO ACABAR ESTO ACABAR ESTO ACABAR ESTO ACABAR ESTO
+		  
+		  String[] k1 = (String[])rango1.keySet().toArray(new String[rango1.size()]);
+		  String[] k2 = (String[])rango2.keySet().toArray(new String[rango2.size()]);
+		  
+		  // Compruebo cual tiene sólo un elemento y ese lo comparo con todos los del otro 
+		  // tienen que ser iguales
+		  if (k1.length==1){
+			  assertEquals(k2.length,5);
+			  for (int i =0; i< k2.length; i++)
+			      assertTrue(rango2.get(k1[0]).equals(rango1.get(k2[i])));
 		  }
-		 // else{
-			  
-		 // }
-			  
+		 else{ 
+			  assertEquals(k2.length,1);
+			  assertEquals(k1.length,5);
+			  for (int i =0; i< k1.length; i++)
+			      assertTrue(rango2.get(k2[0]).equals(rango1.get(k1[i])));
+		  }
 		}
 		catch (Exception e){
 			e.printStackTrace();
 			assertFalse(true);
-			
 		}
-		
-		
 	}
 	
 	
