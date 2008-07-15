@@ -6,7 +6,6 @@
           <parameter key="attributes"	value="D:\RMws\sample\data\iris.aml"/>
       </operator>
       <operator name="NormalizationExtended" class="NormalizationExtended">
-          <parameter key="difference"	value="true"/>
           <parameter key="disable_exampleset_output"	value="false"/>
       </operator>
       <operator name="ExampleSource (2)" class="ExampleSource">

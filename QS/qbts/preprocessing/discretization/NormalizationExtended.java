@@ -20,7 +20,7 @@ public class NormalizationExtended extends Operator {
 	/** The parameter name for &quot;Determines whether to perform a z-transformation (mean 0 and variance 1) or not to the values of the attributes for each example&quot; */
 	public static final String	PARAMETER_TYPIFICATION_SERIES= "typification";
 	/** The parameter name for &quot;Determines whether to perform a difference between the values of consecutive attributes or not; if set the last attribute is remove&quot; */
-	public static final String	PARAMETER_DIFFERENCE_SERIES= "normalization";
+	public static final String	PARAMETER_DIFFERENCE_SERIES= "difference";
 	
 	private static final Class[] INPUT_CLASSES = { ExampleSet.class };
 
@@ -39,6 +39,10 @@ public class NormalizationExtended extends Operator {
 		for (Attribute att: exampleSet.getAttributes()){
 			lAtt.add(att);
 		}
+		Boolean t = getParameterAsBoolean(PARAMETER_TYPIFICATION_SERIES);
+		Boolean n= getParameterAsBoolean(PARAMETER_NORMALIZATION_SERIES);
+		Boolean d= getParameterAsBoolean(PARAMETER_DIFFERENCE_SERIES);
+		
 		if (getParameterAsBoolean(PARAMETER_TYPIFICATION_SERIES) || 
 				getParameterAsBoolean(PARAMETER_NORMALIZATION_SERIES)||
 				getParameterAsBoolean(PARAMETER_DIFFERENCE_SERIES)){
@@ -55,7 +59,7 @@ public class NormalizationExtended extends Operator {
 						getParameterAsBoolean(PARAMETER_DIFFERENCE_SERIES));
 				i=0;
 				for (Attribute att: lAtt){
-					if (i<(val2.length-1))
+					if (i<(val2.length))
 						ex.setValue(att, val2[i++]);
 				}
 			}
@@ -275,19 +279,22 @@ public class NormalizationExtended extends Operator {
 	public Class<?>[] getOutputClasses() {
 		return OUTPUT_CLASSES;
 	}
-
 	
+	
+
 	public List<ParameterType> getParameterTypes() {
 		List<ParameterType> types = super.getParameterTypes();
+		
 		ParameterType type = new ParameterTypeBoolean(PARAMETER_NORMALIZATION_SERIES,
 				"Preprocess Series. [0,1] Normalization", false);
 		type.setExpert(false);
 		types.add(type);
-		type = new ParameterTypeBoolean("tipification","Preprocess Series. Typification.", true);
+		
+		type = new ParameterTypeBoolean(PARAMETER_TYPIFICATION_SERIES,"Preprocess Series. Typification.", true);
 		type.setExpert(false);
 		types.add(type);
 
-		type = new ParameterTypeBoolean("difference","Preprocess Series. Difference of adjacent values", false);
+		type = new ParameterTypeBoolean(PARAMETER_DIFFERENCE_SERIES,"Preprocess Series. Difference of adjacent values", false);
 		type.setExpert(false);
 		types.add(type);
 
@@ -295,6 +302,7 @@ public class NormalizationExtended extends Operator {
 				"Disable the output of a Discretized version of the input ExampleSet.", true);
 		type.setExpert(false);
 		types.add(type);
+		
 		return types;
 
 	}
