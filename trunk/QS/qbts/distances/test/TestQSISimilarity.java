@@ -82,4 +82,20 @@ public class TestQSISimilarity extends TestCase{
 		
 	}
 
+	public void testCadenas(){
+		QSISimilarity sim= new QSISimilarity();
+		double[] c001={
+				5, 	5, 	5, 	1, 	2, 	4, 	5, 	2, 	3, 	1, 	1, 	3, 	5, 	3, 	3, 	2, 	5, 	5, 	1, 	5, 	5, 	1, 	5, 	5, 	5, 	5, 	5, 	5, 	5, 	1
+		};
+		double[] c002={
+				2, 	5, 	3, 	5, 	3, 	5, 	3, 	5, 	3, 	3, 	4, 	3, 	2, 	3, 	3, 	3, 	2, 	4, 	4, 	4, 	5, 	4, 	2, 	3, 	5, 	4, 	2, 	1, 	2, 	4
+		};
+		
+		double res; 
+		res = 12.0 / 30.0;
+
+		assertEquals("Valoración incorrecta",res,sim.similarity(c002,c001));
+		assertEquals("Valoración incorrecta",res,sim.similarity(c001,c002));
+
+	}
 }
