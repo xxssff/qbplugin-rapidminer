@@ -99,17 +99,39 @@ public class FrequencyDiscretizationExtended extends FrequencyDiscretization {
 			// finding ranges
 			double examplesPerBin = valores.size() / (double) numberOfBins;
 			double[] attributeRanges = new double[numberOfBins];
-			// Para todos los rangos
+			double currentBinSpace = examplesPerBin;
+			double lastValue = Double.NaN;
+			int currentBin = 0;
+
+			for (double value : valores) {
+				// ** double value = example.getValue(currentAttribute);
+				if (!Double.isNaN(value)) {
+					// change bin if full and not last
+					if (currentBinSpace < 1 && currentBin < numberOfBins && value != lastValue) {
+						if (!Double.isNaN(lastValue)) {
+							attributeRanges[currentBin] = (lastValue + value) / 2;
+							currentBin++;
+							currentBinSpace += examplesPerBin;
+						}
+					}
+					currentBinSpace--;
+					lastValue = value;
+				}
+			}
+			
+			
+/*			// Para todos los rangos
 			int pos=(int) (examplesPerBin-1);
+			double value=(double) valores.get(0);
 			for (int i=0;i<numberOfBins-1;i++){
-				double value=(double) valores.get(pos);
 				do{
 					pos++;
 				}while(value==(double) valores.get(pos) );
 				
 				attributeRanges[i]=(value + (double) valores.get(pos))/2;
 				pos=(int) (pos + examplesPerBin-1);
-			}
+				value=(double) valores.get(pos);
+			}*/
 			attributeRanges[numberOfBins - 1] = Double.POSITIVE_INFINITY;
 			// Se asignan los cortes a los atributos 
 			for (Attribute currentAttribute : exampleSet.getAttributes()) {

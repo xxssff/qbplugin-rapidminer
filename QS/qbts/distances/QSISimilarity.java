@@ -92,12 +92,6 @@ public class QSISimilarity extends AbstractExtendedRealValueBasedSimilarity {
         super.init(es);
 	}	
 	
-	
-	public void setModel(GroupedModel model){
-		//TODO: Tendrá que crear un Container con el último modelo que sea un PreprocessingModel
-		// Y eso dependiendo de la similitud. De momento sólo para para el kernel
-		dm=model;
-	}
 
 	public boolean isDistance() {
 		return false;
