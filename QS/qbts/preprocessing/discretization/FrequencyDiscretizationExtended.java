@@ -119,56 +119,13 @@ public class FrequencyDiscretizationExtended extends FrequencyDiscretization {
 				}
 			}
 			
-			
-/*			// Para todos los rangos
-			int pos=(int) (examplesPerBin-1);
-			double value=(double) valores.get(0);
-			for (int i=0;i<numberOfBins-1;i++){
-				do{
-					pos++;
-				}while(value==(double) valores.get(pos) );
-				
-				attributeRanges[i]=(value + (double) valores.get(pos))/2;
-				pos=(int) (pos + examplesPerBin-1);
-				value=(double) valores.get(pos);
-			}*/
+
 			attributeRanges[numberOfBins - 1] = Double.POSITIVE_INFINITY;
 			// Se asignan los cortes a los atributos 
 			for (Attribute currentAttribute : exampleSet.getAttributes()) {
 				ranges.put(currentAttribute, attributeRanges);
 			}
-	/*		
-			for (Attribute currentAttribute : exampleSet.getAttributes()) {
-				double[] attributeRanges = new double[numberOfBins];
-				ExampleSet sortedSet = new SortedExampleSet(exampleSet, currentAttribute, SortedExampleSet.INCREASING);
 
-				
-				// finding ranges
-				double examplesPerBin = exampleSet.size() / (double) numberOfBins;
-				double currentBinSpace = examplesPerBin;
-				double lastValue = Double.NaN;
-				int currentBin = 0;
-
-				for (Example example : sortedSet) {
-					double value = example.getValue(currentAttribute);
-					if (!Double.isNaN(value)) {
-						// change bin if full and not last
-						if (currentBinSpace < 1 && currentBin < numberOfBins && value != lastValue) {
-							if (!Double.isNaN(lastValue)) {
-								attributeRanges[currentBin] = (lastValue + value) / 2;
-								currentBin++;
-								currentBinSpace += examplesPerBin;
-							}
-						}
-						currentBinSpace--;
-						lastValue = value;
-					}
-				}
-				attributeRanges[numberOfBins - 1] = Double.POSITIVE_INFINITY;
-				ranges.put(currentAttribute, attributeRanges);
-			}
-			*/
-			
 			DiscretizationModelSeries model = new DiscretizationModelSeries(exampleSet);
 			model.setRanges(ranges, "range", getParameterAsBoolean(PARAMETER_USE_LONG_RANGE_NAMES));
 			return model;

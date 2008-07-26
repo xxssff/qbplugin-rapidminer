@@ -22,6 +22,14 @@
  */
 package rm.utils;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.Writer;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -36,7 +44,7 @@ import com.rapidminer.operator.learner.PredictionModel;
 import com.rapidminer.operator.learner.clustering.IdUtils;
 import com.rapidminer.operator.similarity.SimilarityMeasure;
 import com.rapidminer.operator.similarity.attributebased.ExampleBasedSimilarityMeasure;
-import com.rapidminer.tools.WeightedObject;
+
 
 
 /**
@@ -86,6 +94,16 @@ public class KNNModel extends PredictionModel {
 	}
 
 	public ExampleSet performPrediction(ExampleSet testSet, Attribute predictedLabel) {
+/*		PrintWriter wrt =null;
+		try {
+			wrt =new PrintWriter( new FileOutputStream("D:\\RMws\\4.1\\Test\\Setup\\temp\\knn.data"), true);
+		} catch (FileNotFoundException e3) {
+			// TODO Bloque catch generado automáticamente
+			e3.printStackTrace();
+		}
+		*/
+			
+
 		for (Example e : testSet) {
 			
 			// determine neighbors
@@ -97,6 +115,12 @@ public class KNNModel extends PredictionModel {
 				double similarityValue = Double.NaN;
 				if (similarity instanceof ExampleBasedSimilarityMeasure) {
 					similarityValue = ((ExampleBasedSimilarityMeasure) similarity).similarity(e, trainingExample);
+	/*				  try {
+						wrt.println(id + ":"+ e.toString()+ " - " + trainingId + ":"+trainingExample.toString() + " = "+((Double) similarityValue).toString());
+					} catch (Exception e1) {
+						e1.printStackTrace();
+					}*/
+				
 				} else if ((id != null) && (trainingId != null))
 					if (similarity.isSimilarityDefined(id, trainingId))
 						similarityValue = similarity.similarity(id, trainingId);
@@ -191,6 +215,14 @@ public class KNNModel extends PredictionModel {
 					e.setPredictedLabel(majorityPrediction);
 			}
 		}
+           
+    /*       try {
+			wrt.close();
+		} catch (Exception e1) {
+			// TODO Bloque catch generado automáticamente
+			e1.printStackTrace();
+		}*/
+
 		return testSet;
 	}
 }
