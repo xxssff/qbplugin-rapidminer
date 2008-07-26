@@ -84,7 +84,7 @@ public class CAIMDiscretizer extends PreprocessingOperator {
 
 		DiscretizationModel model = new DiscretizationModel(exampleSet,lBlocks,getRanges(exampleSet,lBlocks));
 		return model;
-	}
+	} 
 
 
 	private double[][] getRanges(ExampleSet exampleSet, List<AttributeBlock> lBlocks) throws UndefinedParameterError {
