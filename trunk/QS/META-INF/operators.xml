@@ -41,6 +41,17 @@
      description = "KNNLearner versión 4.1"
      group       = "QBTS"/>
 
+  <operator 
+     name        = "CAIMDiscretizer"
+     class       = "qbts.discretization.CAIMDiscretizer"
+     description = "Discretize the input ExampleSet  (including Series)."
+     group       = "QBTS"/>
+
+
+
+
+
+
 
      
   <operator 
@@ -49,10 +60,6 @@
      description = "Learn a...."
      group       = "QBTS.ZOLD"/>
  
- 
-
-
-
   <operator 
      name        = "SimpleBinDiscretizationSeries"
      class       = "qbts.preprocessing.discretization.BinDiscretizationSeries"
@@ -65,11 +72,6 @@
      description = "Discretize the input ExampleSet  (including Series)."
      group       = "QBTS.ZOLD"/>
 
-  <operator 
-     name        = "CAIMDiscretizer"
-     class       = "qbts.discretization.CAIMDiscretizer"
-     description = "Discretize the input ExampleSet  (including Series)."
-     group       = "QBTS.ZOLD"/>
 
   <operator 
      name        = "AmevaDiscretizer"

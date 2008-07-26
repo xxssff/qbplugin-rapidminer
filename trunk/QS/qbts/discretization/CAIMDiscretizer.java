@@ -88,7 +88,6 @@ public class CAIMDiscretizer extends PreprocessingOperator {
 	public Model createPreprocessingModel(ExampleSet exampleSet)
 	throws OperatorException {
 
-
 		exampleSet.recalculateAllAttributeStatistics();
 		int numClasses = exampleSet.getAttributes().getLabel().getMapping().getValues().size();
 		HashMap<Attribute, double[]> ranges = new HashMap<Attribute, double[]>();
