@@ -36,12 +36,16 @@ package qbts.discretization;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+
+import qbts.preprocessing.discretization.DiscretizationModelSeries;
 
 import yale.operator.preprocessing.discretization.AttributeBlock;
 import yale.operator.preprocessing.discretization.DiscretizationModel;
 
+import com.rapidminer.example.Attribute;
 import com.rapidminer.example.Example;
 import com.rapidminer.example.ExampleSet;
 import com.rapidminer.operator.Model;
@@ -70,6 +74,10 @@ import com.rapidminer.tools.LogService;
  */
 public class CAIMDiscretizer extends PreprocessingOperator {
 
+	/** Indicates if long range names should be used. */
+	public static final String PARAMETER_USE_LONG_RANGE_NAMES = "use_long_range_names";
+	/** Indicates if attributes must be grouped for discretization. */
+	public static final String PARAMETER_ALL_ATTRIBUTES = "discretize_all_together";
 
 
 	public CAIMDiscretizer(OperatorDescription description) {
@@ -80,73 +88,70 @@ public class CAIMDiscretizer extends PreprocessingOperator {
 	public Model createPreprocessingModel(ExampleSet exampleSet)
 	throws OperatorException {
 
-		List<AttributeBlock> lBlocks= AttributeBlock.getBlockList(exampleSet,getParameterAsBoolean("discretize_series"));
 
-		DiscretizationModel model = new DiscretizationModel(exampleSet,lBlocks,getRanges(exampleSet,lBlocks));
+		exampleSet.recalculateAllAttributeStatistics();
+		int numClasses = exampleSet.getAttributes().getLabel().getMapping().getValues().size();
+		HashMap<Attribute, double[]> ranges = new HashMap<Attribute, double[]>();
+
+		List<CumDiscretizerBlock> lVal = new ArrayList<CumDiscretizerBlock>();
+		for (Attribute attribute : exampleSet.getAttributes()) {
+			if (attribute.isNumerical()) { // skip nominal and date attributes
+				for (Example example : exampleSet) {
+						double value = example.getValue(attribute);
+						if (!Double.isNaN(value)) {
+							lVal.add(new CumDiscretizerBlock(example.getValue(attribute),
+									(int) example.getLabel(),numClasses));
+					}
+				}
+				if (!getParameterAsBoolean(PARAMETER_ALL_ATTRIBUTES)){
+					Collections.sort(lVal);  //sort the values
+					//compute the acumulators
+					CumDiscretizerBlock.computeAcums(lVal);
+					//delete duplicated values updating the occurences and acumulators
+					CumDiscretizerBlock.joinValues(lVal);
+
+					//Apply CAIM method
+					List<Integer> cortes=compute_CAIM( lVal);
+					
+					double[] attributeRanges = new double[cortes.size()-1];
+					for (int i=1;i<cortes.size()-1;i++){
+						attributeRanges[i-1]=lVal.get(cortes.get(i)).getValue();
+						}
+					attributeRanges[cortes.size() - 2] = Double.POSITIVE_INFINITY;
+					ranges.put(attribute, attributeRanges);
+
+					lVal = new ArrayList<CumDiscretizerBlock>();
+				}
+			}
+		}
+
+		if (getParameterAsBoolean(PARAMETER_ALL_ATTRIBUTES)){
+			Collections.sort(lVal);  //sort the values
+			//compute the acumulators
+			CumDiscretizerBlock.computeAcums(lVal);
+			//delete duplicated values updating the occurences and acumulators
+			CumDiscretizerBlock.joinValues(lVal);
+
+			//Apply CAIM method
+			List<Integer> cortes=compute_CAIM( lVal);
+			
+			double[] attributeRanges = new double[cortes.size()-1];
+			for (int i=1;i<cortes.size()-1;i++){
+				attributeRanges[i-1]=lVal.get(cortes.get(i)).getValue();
+				}
+			attributeRanges[cortes.size() - 2] = Double.POSITIVE_INFINITY;
+			
+			for (Attribute currentAttribute : exampleSet.getAttributes()) {
+				ranges.put(currentAttribute, attributeRanges);
+			}
+		}
+
+		
+		DiscretizationModelSeries model = new DiscretizationModelSeries(exampleSet);
+		model.setRanges(ranges, "range", getParameterAsBoolean(PARAMETER_USE_LONG_RANGE_NAMES));
 		return model;
 	} 
 
-
-	private double[][] getRanges(ExampleSet exampleSet, List<AttributeBlock> lBlocks) throws UndefinedParameterError {
-
-		LogService.getGlobal().log("LLEGA A GETRANGES",LogService.MAXIMUM);
-		/* LogService.logMessage("LLEGA A GETRANGES2",LogService.MAXIMUM);*/
-		
-		exampleSet.recalculateAllAttributeStatistics();
-
-		double[][] ranges=new double[lBlocks.size()][];
-		int numClasses = exampleSet.getAttributes().getLabel().getMapping().getValues().size();
-	
-		for (int a = 0; a < lBlocks.size(); a++) {
-			AttributeBlock block =lBlocks.get(a); 
-
-			List<CumDiscretizerBlock> lVal = new ArrayList<CumDiscretizerBlock>();
-			
-			if (block.isNumerical()){
-				Iterator<Example> itEx = exampleSet.iterator();
-				while(itEx.hasNext()){
-					Example ex=itEx.next();
-					
-					// Compute  CAIM limits for (int atri=block.getStart();atri<=block.getEnd();atri++){
-					String[] names=block.getAtriNames();
-					for (int atri=0;atri<names.length;atri++){
-						//get all the possible values
-						lVal.add(new CumDiscretizerBlock(ex.getValue(exampleSet.getAttributes().get(names[atri])),
-								(int) ex.getLabel(),numClasses));
-					}
-				}
-				
-				Collections.sort(lVal);  //sort the values
-				//compute the acumulators
-				CumDiscretizerBlock.computeAcums(lVal);
-				//delete duplicated values updating the occurences and acumulators
-				CumDiscretizerBlock.joinValues(lVal);
-
-				//Apply CAIM method
-				List<Integer> cortes=compute_CAIM( lVal);
-				// update ranges matrix
-				ranges[a]=new double[cortes.size()];
-				ranges[a][0]=Double.MIN_VALUE;
-				for (int i=1;i<cortes.size()-1;i++){
-					ranges[a][i]=lVal.get(cortes.get(i)).getValue();
-					}
-				ranges[a][cortes.size()-1]=Double.MAX_VALUE;
-			}
-		}
-
-
-		String cad="";
-		for (int i=0;i<ranges.length;i++){
-			for (int j=0;j<ranges[0].length;j++){
-				cad+=" \t" + ranges[i][j];
-			}
-			cad+="\n";
-		}
-				
-		LogService.getGlobal().log("Discretization Ranges= " +cad, LogService.MAXIMUM);
-
-		return ranges;
-	}
 	
 	 private List<Integer> compute_CAIM( List<CumDiscretizerBlock> lCumB ) {
 		 List<Integer> cortes=new ArrayList<Integer>();
@@ -239,94 +244,14 @@ public class CAIMDiscretizer extends PreprocessingOperator {
 		return posMejor;
 	 }
 	
-	
-	/*
-	//**********************************************************************************************
-		//**********************************************************************************************
-	static final	 public void compute_CAIM_Ameva(List D, int metodo, int numClases,
-				int numCortes, int[][] acumulados) {
-			int[] mejor = new int[1];
-			mejor[0] = 0;
-			float tmpCriterion = 0;
-
-			int paso = (metodo == Ameva) ? 10 * numClases : 1;
-			float globalCriterion = 0;
-
-			do {
-				tmpCriterion = nextMaxCAIM(D, numCortes, numClases, acumulados,
-							mejor);
-
-				if ((tmpCriterion > globalCriterion) || (paso < numClases)) {
-					D.add(new Integer(mejor[0]));
-					globalCriterion = tmpCriterion;
-				} else if (tmpCriterion == globalCriterion)
-					tmpCriterion = -9999999;
-				paso++;
-			} while ((tmpCriterion >= globalCriterion) || (paso < numClases));
-		}
-
-
-
-	//**********************************************************************************************
-	//**********************************************************************************************
-	 //**
-	 * Computes the best CAIM value obtained adding a new component to the
-	 * limits list (D). Check all the not used values from the initial set.
-	 *//*
-	static final private float nextMaxCAIM(List D, int numCortes, int numClases,
-			int[][] acu, int[] amejor) {
-
-		float maxActual = -99999;
-
-		for (int co = 1; co < numCortes; co++) {
-			boolean vale = true;
-			for (int k = 0; k < D.size(); k++)
-				if (co == ((Integer) D.get(k)).intValue())
-					vale = false;
-			if (vale) {
-				//Add current limit to auxiliar list.
-				LinkedList Daux = new LinkedList(D);
-				Daux.add(new Integer(co));
-				Collections.sort(Daux);
-				float valorCAIM = 0;
-				for (int icorte = 1; icorte < Daux.size(); icorte++) {
-					float totalM = 0;
-					float MaxQ = 0;
-					for (int cla = 0; cla < numClases; cla++) {
-						// debo contar los elementos que ay en el intervalo
-						// actual
-						int qi = 0;
-						for (int k = ((Integer) Daux.get(icorte - 1))
-								.intValue(); k < ((Integer) Daux.get(icorte))
-								.intValue(); k++) {
-							qi += acu[cla][k];
-						}
-						if (qi > MaxQ)
-							MaxQ = qi;
-						totalM += qi;
-					}
-					valorCAIM += (Math.pow(MaxQ, 2) / totalM);
-				}
-				valorCAIM = valorCAIM / (Daux.size() - 1);
-				if (valorCAIM > maxActual) {
-					maxActual = valorCAIM;
-					amejor[0] = co;
-				}
-			}
-		}
-
-		return maxActual;
-	}
-	  */
 
 	public List<ParameterType> getParameterTypes() {
 		List<ParameterType> types = super.getParameterTypes();
-		ParameterType type = new ParameterTypeInt("number_of_bins", "Defines the number of bins which should be used for each attribute.", 2, Integer.MAX_VALUE, 2);
+		ParameterType type = new ParameterTypeBoolean(PARAMETER_ALL_ATTRIBUTES , "Indicates if ALL the attributes are discretized together.", false);
 		type.setExpert(false);
 		types.add(type);
-		type = new ParameterTypeBoolean("discretize_series", "Indicates if the attributes forming each series are discretized together.", false);
-		type.setExpert(false);
-		types.add(type);
+		types.add(new ParameterTypeBoolean(PARAMETER_USE_LONG_RANGE_NAMES, "Indicates if long range names including the limits should be used.", true));
 		return types;
 	}
+	
 }
