@@ -35,11 +35,11 @@ import com.rapidminer.operator.preprocessing.discretization.DiscretizationModel;
 public class DiscretizationModelSeries extends DiscretizationModel {
     static final long serialVersionUID = -1792856176020803111L;
     
-	protected DiscretizationModelSeries(ExampleSet exampleSet) {
+	public DiscretizationModelSeries(ExampleSet exampleSet) {
 		this(exampleSet, true);
 	}
 	
-	protected DiscretizationModelSeries(ExampleSet exampleSet, boolean removeUseless) {
+	public DiscretizationModelSeries(ExampleSet exampleSet, boolean removeUseless) {
 		super(exampleSet,removeUseless);
 	}
 

@@ -48,7 +48,7 @@ import com.rapidminer.tools.Ontology;
  * @version $Id: BinDiscretizationSeries.java,v 1.0 2008/06/28 10:52:02 fjcuberos Exp $
  */
 public class BinDiscretizationExtended extends BinDiscretization {
-	/** Indicates if long range names should be used. */
+	/** Indicates if attributes must be grouped for discretization. */
 	public static final String PARAMETER_ALL_ATTRIBUTES = "discretize_all_together";
 	
 	
