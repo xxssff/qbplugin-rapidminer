@@ -7,6 +7,7 @@ import java.util.TreeSet;
 
 import srctest.HelperOperatorConstructor;
 
+import junit.extensions.TestSetup;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -53,8 +54,8 @@ public class DiscretizationExtensionTests extends TestCase {
 		// 1 attributo con 100 ejemplos con el operador estándard RM
 		// 5 atributos en 20 ejemplos con el nuevo operador activando el procesar_todos_los attributos juntos
 		// Es correcto si  uno de ellos tiene sólo un rango y es igual a todos los del otro
-
 		RapidMiner.init();
+		
 		IOContainer sal1;
 		try{
 		  sal1 = runSampleTest("Discretization"+File.separator+"CAIM1.xml");
@@ -140,7 +141,7 @@ public class DiscretizationExtensionTests extends TestCase {
 		}
 	}
 	
-	public void testRERFreqDiscretization(){
+	public void testFreqDiscretization(){
 		// quiero comprobar que la discretización es la misma usando
 		// 1 attributo con 100 ejemplos con el operador estándard RM
 		// 5 atributos en 20 ejemplos con el nuevo operador activando el procesar_todos_los attributos juntos
@@ -186,15 +187,27 @@ public class DiscretizationExtensionTests extends TestCase {
 	}
 
 	
+	public static void oneTimeSetUp(){
+		RapidMiner.init();		
+	}
 	
-/*	public static Test suite() throws Exception{
-		//initializes Rapidminer first before any srctest is run 
 	
-		TestSuite suite = new TestSuite("Sample srctest");
-		suite.addTest(new DiscretizationExtensionTests("testBinDiscretization"));
-		
-		return suite;
-	}*/
+
+/*	NO FUNCIONA
+
+	public static Test suite() {
+		TestSuite suite = new TestSuite();
 	
+		suite.addTest(new DiscretizationExtensionTests("testCAIMDiscretization"));
+		suite.addTest(new DiscretizationExtensionTests(	"testBinDiscretization"));
+		suite.addTest(new DiscretizationExtensionTests(	"testFreqDiscretization"));
+		TestSetup wrapper = new TestSetup(suite) {
+			public void setUp() { oneTimeSetUp();
+			}
+		};
+		return wrapper;
+	}
+	
+*/	
 
 }

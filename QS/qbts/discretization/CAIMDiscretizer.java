@@ -48,6 +48,7 @@ import yale.operator.preprocessing.discretization.DiscretizationModel;
 import com.rapidminer.example.Attribute;
 import com.rapidminer.example.Example;
 import com.rapidminer.example.ExampleSet;
+import com.rapidminer.example.table.NumericalAttribute;
 import com.rapidminer.operator.Model;
 import com.rapidminer.operator.OperatorDescription;
 import com.rapidminer.operator.OperatorException;
@@ -57,6 +58,7 @@ import com.rapidminer.parameter.ParameterTypeBoolean;
 import com.rapidminer.parameter.ParameterTypeInt;
 import com.rapidminer.parameter.UndefinedParameterError;
 import com.rapidminer.tools.LogService;
+import com.rapidminer.tools.Ontology;
 
 /**
  * An example filter that discretizes all numeric attributes in the dataset into
@@ -88,8 +90,13 @@ public class CAIMDiscretizer extends PreprocessingOperator {
 	public Model createPreprocessingModel(ExampleSet exampleSet)
 	throws OperatorException {
 
+		Attribute labelAtt=exampleSet.getAttributes().getLabel();
+		if (!labelAtt.isNominal()){
+			throw new UnsupportedOperationException("The CAIM discretization method need a nominal label attribute!");			
+		}
+		int numClasses = labelAtt.getMapping().getValues().size();
+
 		exampleSet.recalculateAllAttributeStatistics();
-		int numClasses = exampleSet.getAttributes().getLabel().getMapping().getValues().size();
 		HashMap<Attribute, double[]> ranges = new HashMap<Attribute, double[]>();
 
 		List<CumDiscretizerBlock> lVal = new ArrayList<CumDiscretizerBlock>();

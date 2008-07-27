@@ -29,6 +29,10 @@
   <label
     name         = "label"
     sourcecol    = "6"
-    valuetype    = "real"/>
+    valuetype    = "nominal">
+	   <value>A</value>
+       <value>B</value>
+       <value>C</value>
+	</label>  
 
 </attributeset>
