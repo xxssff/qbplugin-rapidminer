@@ -2,10 +2,15 @@ package qbts.distances;
 
 import java.util.List;
 
+import qbts.preprocessing.discretization.DiscretizationModelSeries;
+
 import com.rapidminer.example.ExampleSet;
+import com.rapidminer.example.set.Condition;
 import com.rapidminer.operator.AbstractModel;
 import com.rapidminer.operator.GroupedModel;
 import com.rapidminer.operator.IOObject;
+import com.rapidminer.operator.InputDescription;
+import com.rapidminer.operator.Model;
 import com.rapidminer.operator.Operator;
 import com.rapidminer.operator.OperatorDescription;
 import com.rapidminer.operator.OperatorException;
@@ -17,6 +22,7 @@ import com.rapidminer.parameter.ParameterTypeDouble;
 import com.rapidminer.parameter.ParameterTypeInt;
 import com.rapidminer.parameter.ParameterTypeList;
 import com.rapidminer.parameter.ParameterTypeStringCategory;
+import com.rapidminer.parameter.UndefinedParameterError;
 import com.rapidminer.tools.ClassNameMapper;
 
 public class QBSimilaritySetup extends Operator {
@@ -25,6 +31,7 @@ public class QBSimilaritySetup extends Operator {
 	public static final String PARAMETER_MEASURE = "measure";
 	private static final String[] DEFAULT_SIM_MEASURES = {
 		    "qbts.distances.QSISimilarity",
+		    "qbts.distances.IntervalKernel",
 			"com.rapidminer.operator.similarity.attributebased.NominalDistance"
 	};
 
@@ -43,18 +50,16 @@ public class QBSimilaritySetup extends Operator {
 		
 		String simClassName = (String) this.getParameter(PARAMETER_MEASURE);
 		ExampleBasedSimilarityMeasure sim = (ExampleBasedSimilarityMeasure) SIM_CLASSES_MAP.getInstantiation(simClassName);
-		sim.init(es);
 
+		if (sim instanceof AbstractDiscretizedRealValueBasedSimilarity)
+			((AbstractDiscretizedRealValueBasedSimilarity) sim).init(es,(DiscretizationModelSeries)getInput(Model.class));
+		else
+			sim.init(es);
 		
-		return new IOObject[] {es, sim };
-		// TODO Cuando sea Kernel habrá que pasarle el Container para que lo procese.
-		// simil.setModel(model);
-		//return new IOObject[] {es, model, sim };
+		return new IOObject[] { sim };
 
 	}
 	
-// TODO: Incluir la lista de parámetros que serán el nombre de la similitud a crear. 
-	// Se puede seguir el mecanismo usado en SimilarityUtil
 	public List<ParameterType> getParameterTypes() {
 		List<ParameterType> types = super.getParameterTypes();
 		ParameterType result = new ParameterTypeStringCategory(PARAMETER_MEASURE, "similarity measure to apply", SIM_CLASSES_MAP.getShortClassNames(),
@@ -64,15 +69,21 @@ public class QBSimilaritySetup extends Operator {
 		return types;
 	}
 
-	
+	public InputDescription getInputDescription (Class cls ) {
+		if ((Model.class.isAssignableFrom( cls )) || ((ExampleSet.class.isAssignableFrom( cls )))) {
+//			consume default: true, create parameter: true
+			return new InputDescription( cls , true , true );
+		} else {
+			return super. getInputDescription ( cls );
+		}
+	}
+
 	public Class[] getInputClasses() {
-		return new Class[] {ExampleSet.class };
+		return new Class[] {ExampleSet.class , Model.class};
 	}
 
 	public Class[] getOutputClasses() {
-		// CUANDO SEA KERNEL INTERVALAR YA VEREMOS COMO SE PONE
-		// return new Class[] {ExampleSet.class, ContainerModel.class , SimilarityMeasure.class };
-		return new Class[] {ExampleSet.class,  SimilarityMeasure.class };
+		return new Class[] { SimilarityMeasure.class };
 	}
 
 

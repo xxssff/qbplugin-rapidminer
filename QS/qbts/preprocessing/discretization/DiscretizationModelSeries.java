@@ -22,8 +22,12 @@
  */
 package qbts.preprocessing.discretization;
 
+import java.util.HashMap;
+import java.util.SortedSet;
+
 import com.rapidminer.example.ExampleSet;
 import com.rapidminer.operator.preprocessing.discretization.DiscretizationModel;
+import com.rapidminer.tools.Tupel;
 
 /**
  * The generic discretization model.
@@ -34,6 +38,8 @@ import com.rapidminer.operator.preprocessing.discretization.DiscretizationModel;
 
 public class DiscretizationModelSeries extends DiscretizationModel {
     static final long serialVersionUID = -1792856176020803111L;
+
+    HashMap<String, SortedSet<Tupel<Double, String>>> rangesMap;
     
 	public DiscretizationModelSeries(ExampleSet exampleSet) {
 		this(exampleSet, true);
@@ -43,4 +49,9 @@ public class DiscretizationModelSeries extends DiscretizationModel {
 		super(exampleSet,removeUseless);
 	}
 
+
+	public HashMap<String, SortedSet<Tupel<Double, String>>> getRanges(){
+		return rangesMap;
+	}
+	
 }

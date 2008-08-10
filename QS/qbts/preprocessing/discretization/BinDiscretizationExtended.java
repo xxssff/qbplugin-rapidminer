@@ -85,8 +85,10 @@ public class BinDiscretizationExtended extends BinDiscretization {
 			for (Attribute attribute : exampleSet.getAttributes()) {
 				ranges.put(attribute, binRange);
 			}
-
+			//ranges.put(null,binRange);
+//			model.setOneSchemeForAll(true);
 			model.setRanges(ranges, "range", getParameterAsBoolean(PARAMETER_USE_LONG_RANGE_NAMES));
+			
 			return (model);
 		}
 		else{
