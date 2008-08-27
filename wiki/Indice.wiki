@@ -6,6 +6,22 @@ La idea es utilizar todo lo que RapidMiner 4.1 incluye y reducir la programació
 = Problema actual =
 ----
 
+El Kernel intervalar depende de los valores límite de los intervalos de discretización
+(tanto el menor como el mayor) pero en el caso de las discretizaciones los valores
+mínimos y máximo de los rangos menor y mayor respectivamente son almacenados como 
+-infinito y +infinito (o ni siquiera son almacenados).
+
+Para obtener esos valores requeriría accceder al ExampleSet original y obtenerlos de
+las estadísticas de los propios atributos. Pero se supone que el conjunto que llega aquí 
+ya está discretizado por lo que eso se ha perdido.
+
+Las soluciones pueden ser:
+   * Obligar a la entrada del conjunto original de nuevo.- De todas formas el acceso al conjunto de datos original no es suficiente puesto que si se han discretizado todos los atributos juntos habría que obtener los valores máximos y mínimos de todos, pero desde el modelo de discretización no se sabe como se hizo la discretización, por lo que habría que considerar la colocación de un parámetro para poder comunicarlo.
+   * Realizar un nuevo operador que realice la discretización y almacene los valores
+   
+---- 
+
+
 ¿Y si pudiera usar el !AttributeSubsetPreprocessing para hacer las discretizaciones?
 Si hay varias series sólo tengo que hacer una entrada por cada grupo de atributos y ya está.
 ESTUDIAR:
