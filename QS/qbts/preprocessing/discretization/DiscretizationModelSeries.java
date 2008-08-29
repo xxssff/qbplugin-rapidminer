@@ -40,6 +40,8 @@ public class DiscretizationModelSeries extends DiscretizationModel {
     static final long serialVersionUID = -1792856176020803111L;
 
     HashMap<String, SortedSet<Tupel<Double, String>>> rangesMap;
+    boolean limitsIncluded;
+    
     
 	public DiscretizationModelSeries(ExampleSet exampleSet) {
 		this(exampleSet, true);
@@ -52,6 +54,14 @@ public class DiscretizationModelSeries extends DiscretizationModel {
 
 	public HashMap<String, SortedSet<Tupel<Double, String>>> getRanges(){
 		return rangesMap;
+	}
+
+	public boolean isLimitsIncluded() {
+		return limitsIncluded;
+	}
+
+	public void setLimitsIncluded(boolean limitsIncluded) {
+		this.limitsIncluded = limitsIncluded;
 	}
 	
 }
