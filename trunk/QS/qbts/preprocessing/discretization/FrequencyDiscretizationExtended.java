@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Vector;
 
 import com.rapidminer.example.Attribute;
 import com.rapidminer.example.Example;
@@ -53,6 +54,7 @@ public class FrequencyDiscretizationExtended extends FrequencyDiscretization {
 	// FJ Modification	
 	/** Indicates if long range names should be used. */
 	public static final String PARAMETER_ALL_ATTRIBUTES = "discretize_all_together";
+	public static final String PARAMETER_INCLUDE_LIMITS = "discretize_all_together";
 	// FJ End
 	
 	public FrequencyDiscretizationExtended(OperatorDescription description) {
@@ -60,6 +62,7 @@ public class FrequencyDiscretizationExtended extends FrequencyDiscretization {
 	}
 
 	public Model createPreprocessingModel(ExampleSet exampleSet) throws OperatorException {
+		
 		if (getParameterAsBoolean(PARAMETER_ALL_ATTRIBUTES)){
 			HashMap<Attribute, double[]> ranges = new HashMap<Attribute, double[]>();
 			// Get and check parametervalues
@@ -120,18 +123,44 @@ public class FrequencyDiscretizationExtended extends FrequencyDiscretization {
 			}
 			
 
-			attributeRanges[numberOfBins - 1] = Double.POSITIVE_INFINITY;
+			
+			if (getParameterAsBoolean(PARAMETER_INCLUDE_LIMITS)){
+				
+				// Ampliar attributeRanges por el principio
+				double[] nattRanges=new double[attributeRanges.length+1];
+				// y grabar el valor mínimo
+				attributeRanges[0] = valores.get(0);
+				// y el valor máximo
+				attributeRanges[numberOfBins - 1] = valores.get(valores.size()-1);
+				for(int i=0;i<attributeRanges.length;i++)
+					nattRanges[i+1]=attributeRanges[i];
+				attributeRanges=nattRanges;
+			}
+			else
+				attributeRanges[numberOfBins - 1] = Double.POSITIVE_INFINITY;
+
 			// Se asignan los cortes a los atributos 
 			for (Attribute currentAttribute : exampleSet.getAttributes()) {
+				
+				
 				ranges.put(currentAttribute, attributeRanges);
 			}
 
+			
+			
 			DiscretizationModelSeries model = new DiscretizationModelSeries(exampleSet);
 			model.setRanges(ranges, "range", getParameterAsBoolean(PARAMETER_USE_LONG_RANGE_NAMES));
+			if (getParameterAsBoolean(PARAMETER_INCLUDE_LIMITS))
+				model.setLimitsIncluded(true);
 			return model;
 		}
 		else{
-			return ( super.createPreprocessingModel(exampleSet));
+			DiscretizationModelSeries model=(DiscretizationModelSeries) super.createPreprocessingModel(exampleSet);
+			// Pero cuando no hago el modelo tengo que modificar los rangos
+			ranges = model.getRanges();
+			HashMap<Attribute, double[]> ranges = new HashMap<Attribute, double[]>();
+			return ( model);
+			
 		}
 
 	}
@@ -141,6 +170,8 @@ public class FrequencyDiscretizationExtended extends FrequencyDiscretization {
 
 		// FJ Modification
 		types.add(new ParameterTypeBoolean(PARAMETER_ALL_ATTRIBUTES , "Indicates if ALL the attributes are discretized together.", false));
+		types.add(new ParameterTypeBoolean(PARAMETER_INCLUDE_LIMITS, "Indicates if extrem limitsmust be included in the model.", false));
+		
 		return types;
 	}
 }
