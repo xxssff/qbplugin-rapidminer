@@ -128,7 +128,7 @@ public class FrequencyDiscretizationExtended extends FrequencyDiscretization {
 			
 
 			
-			if (getParameterAsBoolean(PARAMETER_INCLUDE_LIMITS)){
+/*			if (getParameterAsBoolean(PARAMETER_INCLUDE_LIMITS)){
 				
 				// Ampliar attributeRanges por el principio
 				double[] nattRanges=new double[attributeRanges.length+1];
@@ -140,7 +140,8 @@ public class FrequencyDiscretizationExtended extends FrequencyDiscretization {
 					nattRanges[i+1]=attributeRanges[i];
 				attributeRanges=nattRanges;
 			}
-			else
+			else*/
+			
 				attributeRanges[numberOfBins - 1] = Double.POSITIVE_INFINITY;
 
 			// Se asignan los cortes a los atributos 
@@ -150,15 +151,38 @@ public class FrequencyDiscretizationExtended extends FrequencyDiscretization {
 			
 			DiscretizationModelSeries model = new DiscretizationModelSeries(exampleSet);
 			model.setRanges(ranges, "range", getParameterAsBoolean(PARAMETER_USE_LONG_RANGE_NAMES));
-			if (getParameterAsBoolean(PARAMETER_INCLUDE_LIMITS))
+			if (getParameterAsBoolean(PARAMETER_INCLUDE_LIMITS)){
 				model.setLimitsIncluded(true);
+				double[][] values = new double[exampleSet.getAttributes().size()][2];
+				int index = 0;
+				for (Attribute attribute : exampleSet.getAttributes()){
+					values[index][0] = valores.get(0);
+					values[index++][1] = valores.get(valores.size()-1);
+				}
+				model.setExtremLimits(values);
+			}
+				
 			return model;
 		}
 		else{
 			DiscretizationModelSeries model=(DiscretizationModelSeries) super.createPreprocessingModel(exampleSet);
+			
+			if (getParameterAsBoolean(PARAMETER_INCLUDE_LIMITS)){
+				model.setLimitsIncluded(true);
+				double[][] values = new double[exampleSet.getAttributes().size()][2];
+				int index = 0;
+				for (Attribute attribute : exampleSet.getAttributes()){
+					values[index][0] = exampleSet.getStatistics(attribute, Statistics.MINIMUM);
+					values[index++][1] =  exampleSet.getStatistics(attribute, Statistics.MAXIMUM);
+				}
+				model.setExtremLimits(values);
+			}
+
+			return model;
+			
 			// Pero cuando no hago el modelo tengo que modificar los rangos
 			
-			HashMap<Attribute, double[]> ranges = new HashMap<Attribute, double[]>();
+/*			HashMap<Attribute, double[]> ranges = new HashMap<Attribute, double[]>();
 
 			Iterator it = model.rangesMap.entrySet().iterator();
 			while (it.hasNext()) {
@@ -187,7 +211,7 @@ public class FrequencyDiscretizationExtended extends FrequencyDiscretization {
 			if (getParameterAsBoolean(PARAMETER_INCLUDE_LIMITS))
 				model2.setLimitsIncluded(true);
 			return model2;
-			
+*/			
 			
 		}
 
