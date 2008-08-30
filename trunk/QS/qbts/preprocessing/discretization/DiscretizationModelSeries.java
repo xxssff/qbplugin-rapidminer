@@ -56,7 +56,7 @@ public class DiscretizationModelSeries extends DiscretizationModel {
 	
 
 	public HashMap<String, SortedSet<Tupel<Double, String>>> getRanges(){
-		return rangesMap;
+		return this.rangesMap;
 	}
 
 	public boolean isLimitsIncluded() {
