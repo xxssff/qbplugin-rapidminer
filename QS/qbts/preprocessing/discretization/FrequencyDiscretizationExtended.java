@@ -161,7 +161,6 @@ public class FrequencyDiscretizationExtended extends FrequencyDiscretization {
 		else{
 			DiscretizationModelSeries model=(DiscretizationModelSeries) super.createPreprocessingModel(exampleSet);
 			// Pero cuando no hago el modelo tengo que modificar los rangos
-			// HashMap<String, SortedSet<Tupel<Double, String>>> 
 			
 			HashMap<Attribute, double[]> ranges = new HashMap<Attribute, double[]>();
 			Iterator it = model.rangesMap.entrySet().iterator();
@@ -182,9 +181,16 @@ public class FrequencyDiscretizationExtended extends FrequencyDiscretization {
 				Attribute att=exampleSet.getAttributes().get(attName);
 				newRanges[0]= exampleSet.getStatistics(att, Statistics.MINIMUM);
 				newRanges[newRanges.length-1]= exampleSet.getStatistics(att, Statistics.MAXIMUM);
-				
+			
+				ranges.put(att, newRanges);
 			}
-			return ( model);
+			
+			DiscretizationModelSeries model2 = new DiscretizationModelSeries(exampleSet);
+			model2.setRanges(ranges, "range", getParameterAsBoolean(PARAMETER_USE_LONG_RANGE_NAMES));
+			if (getParameterAsBoolean(PARAMETER_INCLUDE_LIMITS))
+				model2.setLimitsIncluded(true);
+			return model2;
+			
 			
 		}
 
