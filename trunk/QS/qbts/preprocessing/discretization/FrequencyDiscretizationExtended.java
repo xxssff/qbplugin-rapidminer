@@ -25,7 +25,10 @@ package qbts.preprocessing.discretization;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.SortedSet;
 import java.util.Vector;
 
 import com.rapidminer.example.Attribute;
@@ -39,6 +42,7 @@ import com.rapidminer.operator.UserError;
 import com.rapidminer.operator.preprocessing.discretization.FrequencyDiscretization;
 import com.rapidminer.parameter.ParameterType;
 import com.rapidminer.parameter.ParameterTypeBoolean;
+import com.rapidminer.tools.Tupel;
 
 /**
  * This operator discretizes all numeric attributes in the dataset into nominal attributes. This discretization is performed by equal frequency binning, i.e. the thresholds of all bins is selected in a way that all bins contain the same number of
@@ -157,8 +161,29 @@ public class FrequencyDiscretizationExtended extends FrequencyDiscretization {
 		else{
 			DiscretizationModelSeries model=(DiscretizationModelSeries) super.createPreprocessingModel(exampleSet);
 			// Pero cuando no hago el modelo tengo que modificar los rangos
-			ranges = model.getRanges();
+			// HashMap<String, SortedSet<Tupel<Double, String>>> 
+			
 			HashMap<Attribute, double[]> ranges = new HashMap<Attribute, double[]>();
+			Iterator it = model.rangesMap.entrySet().iterator();
+			while (it.hasNext()) {
+				Map.Entry entry = (Map.Entry) it.next();
+				String attName = (String) entry.getKey();
+				SortedSet<Tupel<Double, String>> rmap = (SortedSet<Tupel<Double, String>>) entry.getValue();
+				
+				double[] newRanges = new double[rmap.size()+1];
+				Iterator its = rmap.iterator();
+				int pos=1;
+				while (its.hasNext()){
+					//Map.Entry ent2 = (Map.Entry) its.next();
+					Tupel<Double, String> tup =  (Tupel<Double, String>) its.next();
+					newRanges[pos]=tup.getFirst();
+				}
+				// Añado 
+				Attribute att=exampleSet.getAttributes().get(attName);
+				newRanges[0]= exampleSet.getStatistics(att, Statistics.MINIMUM);
+				newRanges[newRanges.length-1]= exampleSet.getStatistics(att, Statistics.MAXIMUM);
+				
+			}
 			return ( model);
 			
 		}
