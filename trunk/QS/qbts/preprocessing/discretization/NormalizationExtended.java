@@ -39,9 +39,6 @@ public class NormalizationExtended extends Operator {
 		for (Attribute att: exampleSet.getAttributes()){
 			lAtt.add(att);
 		}
-		Boolean t = getParameterAsBoolean(PARAMETER_TYPIFICATION_SERIES);
-		Boolean n= getParameterAsBoolean(PARAMETER_NORMALIZATION_SERIES);
-		Boolean d= getParameterAsBoolean(PARAMETER_DIFFERENCE_SERIES);
 		
 		if (getParameterAsBoolean(PARAMETER_TYPIFICATION_SERIES) || 
 				getParameterAsBoolean(PARAMETER_NORMALIZATION_SERIES)||

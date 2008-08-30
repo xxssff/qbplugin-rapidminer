@@ -52,6 +52,8 @@ public class DiscretizationModelSeries extends DiscretizationModel {
 		super(exampleSet,removeUseless);
 	}
 
+	
+	
 
 	public HashMap<String, SortedSet<Tupel<Double, String>>> getRanges(){
 		return rangesMap;

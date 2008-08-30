@@ -48,9 +48,11 @@ import com.rapidminer.tools.Ontology;
  * @version $Id: BinDiscretizationSeries.java,v 1.0 2008/06/28 10:52:02 fjcuberos Exp $
  */
 public class BinDiscretizationExtended extends BinDiscretization {
-	/** Indicates if attributes must be grouped for discretization. */
-	public static final String PARAMETER_ALL_ATTRIBUTES = "discretize_all_together";
 	
+	// FJ Modification	
+	public static final String PARAMETER_ALL_ATTRIBUTES = "discretize_all_together";
+	public static final String PARAMETER_INCLUDE_LIMITS = "include_extrem_limits";
+	// FJ End	
 	
 	public BinDiscretizationExtended(OperatorDescription description) {
 		super(description);
@@ -85,13 +87,24 @@ public class BinDiscretizationExtended extends BinDiscretization {
 			for (Attribute attribute : exampleSet.getAttributes()) {
 				ranges.put(attribute, binRange);
 			}
-			//ranges.put(null,binRange);
-//			model.setOneSchemeForAll(true);
 			model.setRanges(ranges, "range", getParameterAsBoolean(PARAMETER_USE_LONG_RANGE_NAMES));
+			if (getParameterAsBoolean(PARAMETER_INCLUDE_LIMITS)){
+				model.setLimitsIncluded(true);
+				double[][] values = new double[exampleSet.getAttributes().size()][2];
+				int index = 0;
+				for (Attribute attribute : exampleSet.getAttributes()){
+					values[index][0] = min;
+					values[index++][1] = max;
+				}
+				model.setExtremLimits(values);
+			}
 			
 			return (model);
 		}
 		else{
+			if (getParameterAsBoolean(PARAMETER_INCLUDE_LIMITS)){
+				throw new OperatorException("Extrem limits can´t be included if attributes aren´t discretize altogether.");
+			}
 			return ( super.createPreprocessingModel(exampleSet));
 		}
 	}
@@ -100,9 +113,11 @@ public class BinDiscretizationExtended extends BinDiscretization {
 	public List<ParameterType> getParameterTypes() {
 		List<ParameterType> types = super.getParameterTypes();
 
-		ParameterType type = new ParameterTypeBoolean(PARAMETER_ALL_ATTRIBUTES , "Indicates if ALL the attributes are discretized together.", false);
-		type.setExpert(false);
-		types.add(type);
+		// FJ Modification
+		types.add(new ParameterTypeBoolean(PARAMETER_ALL_ATTRIBUTES , "Indicates if ALL the attributes are discretized together.", false));
+		types.add(new ParameterTypeBoolean(PARAMETER_INCLUDE_LIMITS, "Indicates if extrem limitsmust be included in the model.", false));
+//		FJ END
+		
 		return types;
 	}
 }
