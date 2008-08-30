@@ -145,12 +145,8 @@ public class FrequencyDiscretizationExtended extends FrequencyDiscretization {
 
 			// Se asignan los cortes a los atributos 
 			for (Attribute currentAttribute : exampleSet.getAttributes()) {
-				
-				
 				ranges.put(currentAttribute, attributeRanges);
 			}
-
-			
 			
 			DiscretizationModelSeries model = new DiscretizationModelSeries(exampleSet);
 			model.setRanges(ranges, "range", getParameterAsBoolean(PARAMETER_USE_LONG_RANGE_NAMES));
@@ -163,6 +159,7 @@ public class FrequencyDiscretizationExtended extends FrequencyDiscretization {
 			// Pero cuando no hago el modelo tengo que modificar los rangos
 			
 			HashMap<Attribute, double[]> ranges = new HashMap<Attribute, double[]>();
+
 			Iterator it = model.rangesMap.entrySet().iterator();
 			while (it.hasNext()) {
 				Map.Entry entry = (Map.Entry) it.next();
