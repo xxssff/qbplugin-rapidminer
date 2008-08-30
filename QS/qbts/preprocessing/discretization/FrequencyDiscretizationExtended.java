@@ -25,11 +25,7 @@ package qbts.preprocessing.discretization;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.SortedSet;
-import java.util.Vector;
 
 import com.rapidminer.example.Attribute;
 import com.rapidminer.example.Example;
@@ -39,10 +35,10 @@ import com.rapidminer.operator.Model;
 import com.rapidminer.operator.OperatorDescription;
 import com.rapidminer.operator.OperatorException;
 import com.rapidminer.operator.UserError;
+import com.rapidminer.operator.preprocessing.discretization.DiscretizationModel;
 import com.rapidminer.operator.preprocessing.discretization.FrequencyDiscretization;
 import com.rapidminer.parameter.ParameterType;
 import com.rapidminer.parameter.ParameterTypeBoolean;
-import com.rapidminer.tools.Tupel;
 
 /**
  * This operator discretizes all numeric attributes in the dataset into nominal attributes. This discretization is performed by equal frequency binning, i.e. the thresholds of all bins is selected in a way that all bins contain the same number of
@@ -56,9 +52,8 @@ public class FrequencyDiscretizationExtended extends FrequencyDiscretization {
 
 	
 	// FJ Modification	
-	/** Indicates if long range names should be used. */
 	public static final String PARAMETER_ALL_ATTRIBUTES = "discretize_all_together";
-	public static final String PARAMETER_INCLUDE_LIMITS = "discretize_all_together";
+	public static final String PARAMETER_INCLUDE_LIMITS = "include_extrem_limits";
 	// FJ End
 	
 	public FrequencyDiscretizationExtended(OperatorDescription description) {
@@ -88,7 +83,7 @@ public class FrequencyDiscretizationExtended extends FrequencyDiscretization {
 				for (Attribute currentAttribute : exampleSet.getAttributes()) {
 						numberOfBins = numberOfBins + exampleSet.size() - (int) exampleSet.getStatistics(currentAttribute, Statistics.UNKNOWN);
 				}
-				numberOfBins = (int) Math.ceil(Math.sqrt(numberOfBins));
+				numberOfBins = (int) Math.round(Math.sqrt(numberOfBins));
 			}
 			
 			List<Double> valores = new ArrayList<Double>();
@@ -165,8 +160,14 @@ public class FrequencyDiscretizationExtended extends FrequencyDiscretization {
 			return model;
 		}
 		else{
-			DiscretizationModelSeries model=(DiscretizationModelSeries) super.createPreprocessingModel(exampleSet);
-			
+			if (getParameterAsBoolean(PARAMETER_INCLUDE_LIMITS)){
+				throw new OperatorException("Extrem limits can´t be included if attributes aren´t discretize altogether.");
+			}
+			DiscretizationModel model=(DiscretizationModel) super.createPreprocessingModel(exampleSet);
+/*
+			// Esto no puede hacerse porque createPreprocessingModel de FrequencyDiscretization
+			// devuelve un model y no puedo crear un DiscretizationModelSeries desde él porque
+			// todos los valores que tiene son privados y tendría que usar reflexión para ello.
 			if (getParameterAsBoolean(PARAMETER_INCLUDE_LIMITS)){
 				model.setLimitsIncluded(true);
 				double[][] values = new double[exampleSet.getAttributes().size()][2];
@@ -178,10 +179,9 @@ public class FrequencyDiscretizationExtended extends FrequencyDiscretization {
 				model.setExtremLimits(values);
 			}
 
-			return model;
+*/			return model;
 			
 			// Pero cuando no hago el modelo tengo que modificar los rangos
-			
 /*			HashMap<Attribute, double[]> ranges = new HashMap<Attribute, double[]>();
 
 			Iterator it = model.rangesMap.entrySet().iterator();
