@@ -26,8 +26,8 @@ public class IntervalKernel extends AbstractDiscretizedRealValueBasedSimilarity 
  * Si me llegan los vectores de valores 
  * 
 	¿Como relaciono elemento con atributo?
-		La única forma es por posición. P
-		ero el almacenaje de ranges en el DM es por un tupla Atributo,cortes 
+		La única forma es por posición. 
+		Pero el almacenaje de ranges en el DM es por un tupla Atributo,cortes 
 		por tanto habrá que almacenar una nueva tupla posición_atributo, cortes
 		HashMap<Integer, SortedSet<Tupel<Double, String>>>
 		Aunque como voy a perder toda referencia a los atributos puedo hacer una array
