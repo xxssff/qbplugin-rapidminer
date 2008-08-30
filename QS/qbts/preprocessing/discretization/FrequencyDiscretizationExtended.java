@@ -148,12 +148,16 @@ public class FrequencyDiscretizationExtended extends FrequencyDiscretization {
 			model.setRanges(ranges, "range", getParameterAsBoolean(PARAMETER_USE_LONG_RANGE_NAMES));
 			if (getParameterAsBoolean(PARAMETER_INCLUDE_LIMITS)){
 				model.setLimitsIncluded(true);
-				double[][] values = new double[exampleSet.getAttributes().size()][2];
+/*			CASO GENERAL
+ * 				double[][] values = new double[exampleSet.getAttributes().size()][2];
 				int index = 0;
 				for (Attribute attribute : exampleSet.getAttributes()){
 					values[index][0] = valores.get(0);
 					values[index++][1] = valores.get(valores.size()-1);
-				}
+				}*/
+				double[][] values = new double[1][2];
+				values[0][0] = valores.get(0);
+				values[0][1] = valores.get(valores.size()-1);
 				model.setExtremLimits(values);
 			}
 				
