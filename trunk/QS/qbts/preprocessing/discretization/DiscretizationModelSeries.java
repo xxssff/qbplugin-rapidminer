@@ -25,6 +25,8 @@ package qbts.preprocessing.discretization;
 import java.util.HashMap;
 import java.util.SortedSet;
 
+import srctest.HelperOperatorConstructor;
+
 import com.rapidminer.example.ExampleSet;
 import com.rapidminer.operator.preprocessing.discretization.DiscretizationModel;
 import com.rapidminer.tools.Tupel;
@@ -39,7 +41,7 @@ import com.rapidminer.tools.Tupel;
 public class DiscretizationModelSeries extends DiscretizationModel {
     static final long serialVersionUID = -1792856176020803111L;
 
-    HashMap<String, SortedSet<Tupel<Double, String>>> rangesMap;
+    HashMap<String, SortedSet<Tupel<Double, String>>> rangos;
     private boolean limitsIncluded = false;
     private double[][] extremLimits;
     
@@ -52,11 +54,27 @@ public class DiscretizationModelSeries extends DiscretizationModel {
 		super(exampleSet,removeUseless);
 	}
 
+
+	// AMPLIACION PARA INTEGRAR DISCRETIZATIONMODELSERIES CON DISCRETIZATIONMODEL
+	// Ver FrequencyDiscretizationExtended
+	/*
+	public DiscretizationModelSeries(ExampleSet exampleSet,DiscretizationModel dm) {
+		this(exampleSet, true);
+		// setranges
+		HelperOperatorConstructor hOp=new HelperOperatorConstructor();
+		
+		this.rangos = 
+			  (HashMap<String, SortedSet<Tupel<Double, String>>>) 
+			  hOp.getPrivateFieldOperator("rangesMap","com.rapidminer.operator.preprocessing.discretization.DiscretizationModel",dm);
+		setRanges(this.rangos);
+	}	
+	*/
+	
 	
 	
 
 	public HashMap<String, SortedSet<Tupel<Double, String>>> getRanges(){
-		return this.rangesMap;
+		return this.rangos;
 	}
 
 	public boolean isLimitsIncluded() {

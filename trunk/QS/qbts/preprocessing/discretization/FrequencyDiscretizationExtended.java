@@ -168,10 +168,13 @@ public class FrequencyDiscretizationExtended extends FrequencyDiscretization {
 				throw new OperatorException("Extrem limits can´t be included if attributes aren´t discretize altogether.");
 			}
 			DiscretizationModel model=(DiscretizationModel) super.createPreprocessingModel(exampleSet);
+
+			// AMPLIACION PARA INTEGRAR DISCRETIZATIONMODELSERIES CON DISCRETIZATIONMODEL
+			// Ver DiscretizationModelSeries 
 /*
-			// Esto no puede hacerse porque createPreprocessingModel de FrequencyDiscretization
-			// devuelve un model y no puedo crear un DiscretizationModelSeries desde él porque
-			// todos los valores que tiene son privados y tendría que usar reflexión para ello.
+			DiscretizationModel m = (DiscretizationModel) super.createPreprocessingModel(exampleSet);
+			DiscretizationModelSeries model=new DiscretizationModelSeries(exampleSet,m);
+
 			if (getParameterAsBoolean(PARAMETER_INCLUDE_LIMITS)){
 				model.setLimitsIncluded(true);
 				double[][] values = new double[exampleSet.getAttributes().size()][2];
@@ -182,43 +185,9 @@ public class FrequencyDiscretizationExtended extends FrequencyDiscretization {
 				}
 				model.setExtremLimits(values);
 			}
-
-*/			return model;
-			
-			// Pero cuando no hago el modelo tengo que modificar los rangos
-/*			HashMap<Attribute, double[]> ranges = new HashMap<Attribute, double[]>();
-
-			Iterator it = model.rangesMap.entrySet().iterator();
-			while (it.hasNext()) {
-				Map.Entry entry = (Map.Entry) it.next();
-				String attName = (String) entry.getKey();
-				SortedSet<Tupel<Double, String>> rmap = (SortedSet<Tupel<Double, String>>) entry.getValue();
-				
-				double[] newRanges = new double[rmap.size()+1];
-				Iterator its = rmap.iterator();
-				int pos=1;
-				while (its.hasNext()){
-					//Map.Entry ent2 = (Map.Entry) its.next();
-					Tupel<Double, String> tup =  (Tupel<Double, String>) its.next();
-					newRanges[pos]=tup.getFirst();
-				}
-				// Añado 
-				Attribute att=exampleSet.getAttributes().get(attName);
-				newRanges[0]= exampleSet.getStatistics(att, Statistics.MINIMUM);
-				newRanges[newRanges.length-1]= exampleSet.getStatistics(att, Statistics.MAXIMUM);
-			
-				ranges.put(att, newRanges);
-			}
-			
-			DiscretizationModelSeries model2 = new DiscretizationModelSeries(exampleSet);
-			model2.setRanges(ranges, "range", getParameterAsBoolean(PARAMETER_USE_LONG_RANGE_NAMES));
-			if (getParameterAsBoolean(PARAMETER_INCLUDE_LIMITS))
-				model2.setLimitsIncluded(true);
-			return model2;
-*/			
-			
+	*/
+			return model;
 		}
-
 	}
 
 	public List<ParameterType> getParameterTypes() {
