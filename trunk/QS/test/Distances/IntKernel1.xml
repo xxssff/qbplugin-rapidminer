@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="windows-1252"?>
+<process version="4.2">
+
+  <operator name="Root" class="Process" expanded="yes">
+      <parameter key="logfile"	value="%{experiment path}\Logs\IntKernel1.log"/>
+      <parameter key="logverbosity"	value="io"/>
+      <operator name="ExampleSource" class="ExampleSource">
+          <parameter key="attributes"	value="%{experiment path}\..\Samples\5at20s.aml"/>
+      </operator>
+      <operator name="SimpleValidation" class="SimpleValidation" expanded="yes">
+          <parameter key="sampling_type"	value="linear sampling"/>
+          <parameter key="split_ratio"	value="0.5"/>
+          <operator name="Cadena1Learning" class="OperatorChain" expanded="yes">
+              <operator name="GrabaLearning" class="ExampleSetWriter">
+                  <parameter key="attribute_description_file"	value="%{experiment path}\temp\5at20_1_%{a}.aml"/>
+                  <parameter key="example_set_file"	value="%{experiment path}\temp\5at20_1_%{a}.data"/>
+              </operator>
+              <operator name="IOConsumer" class="IOConsumer">
+                  <parameter key="io_object"	value="ExampleSet"/>
+              </operator>
+          </operator>
+          <operator name="Cadena2 Test" class="OperatorChain" expanded="yes">
+              <operator name="Graba Test" class="ExampleSetWriter">
+                  <parameter key="attribute_description_file"	value="%{experiment path}\temp\5at20_2_%{a}.aml"/>
+                  <parameter key="example_set_file"	value="%{experiment path}\temp\5at20_2_%{a}.data"/>
+              </operator>
+              <operator name="IOConsumer (2)" class="IOConsumer">
+                  <parameter key="io_object"	value="ExampleSet"/>
+              </operator>
+              <operator name="DiscretizaLearning" class="OperatorChain" expanded="no">
+                  <operator name="LeeLearning (2)" class="ExampleSource">
+                      <parameter key="attributes"	value="%{experiment path}\temp\5at20_1_%{a}.aml"/>
+                  </operator>
+                  <operator name="FrequencyDiscretizationExtended" class="FrequencyDiscretizationExtended">
+                      <parameter key="discretize_all_together"	value="true"/>
+                      <parameter key="include_extrem_limits"	value="true"/>
+                      <parameter key="number_of_bins"	value="4"/>
+                      <parameter key="return_preprocessing_model"	value="true"/>
+                      <parameter key="use_long_range_names"	value="false"/>
+                  </operator>
+                  <operator name="ModelApplier" class="ModelApplier" activated="no">
+                      <list key="application_parameters">
+                      </list>
+                      <parameter key="keep_model"	value="true"/>
+                  </operator>
+                  <operator name="Graba LearnDiscretizado" class="ExampleSetWriter">
+                      <parameter key="attribute_description_file"	value="%{experiment path}\temp\5at20_1_discre_%{a}.aml"/>
+                      <parameter key="example_set_file"	value="%{experiment path}\temp\5at20_1_discre_%{a}.data"/>
+                  </operator>
+                  <operator name="IOConsumer (3)" class="IOConsumer">
+                      <parameter key="io_object"	value="ExampleSet"/>
+                  </operator>
+              </operator>
+              <operator name="DiscretizaTest" class="OperatorChain" expanded="no">
+                  <operator name="LeeTest" class="ExampleSource">
+                      <parameter key="attributes"	value="%{experiment path}\temp\5at20_2_%{a}.aml"/>
+                  </operator>
+                  <operator name="ModelApplier (3)" class="ModelApplier">
+                      <list key="application_parameters">
+                      </list>
+                      <parameter key="keep_model"	value="true"/>
+                  </operator>
+                  <operator name="Graba TestDiscre" class="ExampleSetWriter">
+                      <parameter key="attribute_description_file"	value="%{experiment path}\temp\5at20_2_discre_%{a}.aml"/>
+                      <parameter key="example_set_file"	value="%{experiment path}\temp\5at20_2_discre_%{a}.data"/>
+                  </operator>
+                  <operator name="IOConsumer (4)" class="IOConsumer">
+                      <parameter key="io_object"	value="ExampleSet"/>
+                  </operator>
+              </operator>
+              <operator name="LeeLearning" class="ExampleSource">
+                  <parameter key="attributes"	value="%{experiment path}\temp\5at20_1_%{a}.aml"/>
+              </operator>
+              <operator name="SimilaritySetup" class="SimilaritySetup">
+                  <parameter key="keep_example_set"	value="false"/>
+                  <parameter key="keep_model"	value="false"/>
+                  <parameter key="measure"	value="IntervalKernel"/>
+              </operator>
+              <operator name="OperatorChain (2)" class="OperatorChain" expanded="yes">
+                  <operator name="LeeLearningDiscre" class="ExampleSource">
+                      <parameter key="attributes"	value="%{experiment path}\temp\5at20_1_discre_%{a}.aml"/>
+                  </operator>
+                  <operator name="4.1NearestNeighbor" class="4.1NearestNeighbor">
+                      <parameter key="measure"	value="NominalDistance"/>
+                  </operator>
+                  <operator name="LeeTestDiscre" class="ExampleSource">
+                      <parameter key="attributes"	value="%{experiment path}\temp\5at20_2_discre_%{a}.aml"/>
+                  </operator>
+                  <operator name="ModelApplier (2)" class="ModelApplier">
+                      <list key="application_parameters">
+                      </list>
+                  </operator>
+                  <operator name="ExampleSetWriter" class="ExampleSetWriter">
+                      <parameter key="attribute_description_file"	value="%{experiment path}\temp\5at20_1_predict_%{a}.aml"/>
+                      <parameter key="example_set_file"	value="%{experiment path}\temp\5at20_1_predict_%{a}.data"/>
+                  </operator>
+                  <operator name="ClassificationPerformance" class="ClassificationPerformance">
+                      <parameter key="accuracy"	value="true"/>
+                      <list key="class_weights">
+                      </list>
+                      <parameter key="main_criterion"	value="accuracy"/>
+                  </operator>
+                  <operator name="ProcessLog" class="ProcessLog">
+                      <parameter key="filename"	value="%{experiment path}\Logs\IntKernel1_RESULTADOS.log"/>
+                      <list key="log">
+                        <parameter key="Batch"	value="operator.ClassificationPerformance.value.applycount"/>
+                        <parameter key="accuracy"	value="operator.ClassificationPerformance.value.accuracy"/>
+                        <parameter key="time"	value="operator.ClassificationPerformance.value.time"/>
+                      </list>
+                  </operator>
+              </operator>
+          </operator>
+      </operator>
+  </operator>
+
+</process>
