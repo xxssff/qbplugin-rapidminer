@@ -7,6 +7,8 @@
           <parameter key="attributes"	value="..\Samples\1at100s.aml"/>
       </operator>
       <operator name="CAIMDiscretizer" class="CAIMDiscretizer">
+          <parameter key="discretize_all_together"	value="true"/>
+          <parameter key="include_extrem_limits"	value="true"/>
           <parameter key="return_preprocessing_model"	value="true"/>
           <parameter key="use_long_range_names"	value="false"/>
       </operator>
@@ -18,6 +20,7 @@
       </operator>
       <operator name="CAIMDiscretizer (2)" class="CAIMDiscretizer">
           <parameter key="discretize_all_together"	value="true"/>
+          <parameter key="include_extrem_limits"	value="true"/>
           <parameter key="return_preprocessing_model"	value="true"/>
           <parameter key="use_long_range_names"	value="false"/>
       </operator>

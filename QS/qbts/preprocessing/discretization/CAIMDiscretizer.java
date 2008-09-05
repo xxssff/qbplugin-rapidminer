@@ -1,4 +1,4 @@
-package qbts.discretization;
+package qbts.preprocessing.discretization;
 
 /*
  *  YALE - Yet Another Learning Environment
@@ -40,7 +40,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
-import qbts.preprocessing.discretization.DiscretizationModelSeries;
+import qbts.discretization.CumDiscretizerBlock;
 
 import yale.operator.preprocessing.discretization.AttributeBlock;
 import yale.operator.preprocessing.discretization.DiscretizationModel;
@@ -80,7 +80,9 @@ public class CAIMDiscretizer extends PreprocessingOperator {
 	public static final String PARAMETER_USE_LONG_RANGE_NAMES = "use_long_range_names";
 	/** Indicates if attributes must be grouped for discretization. */
 	public static final String PARAMETER_ALL_ATTRIBUTES = "discretize_all_together";
-
+//	 FJ Begin
+	public static final String PARAMETER_INCLUDE_LIMITS = "include_extrem_limits";
+	// FJ End
 
 	public CAIMDiscretizer(OperatorDescription description) {
 		super(description);
@@ -155,6 +157,24 @@ public class CAIMDiscretizer extends PreprocessingOperator {
 		
 		DiscretizationModelSeries model = new DiscretizationModelSeries(exampleSet);
 		model.setRanges(ranges, "range", getParameterAsBoolean(PARAMETER_USE_LONG_RANGE_NAMES));
+		
+		if (getParameterAsBoolean(PARAMETER_INCLUDE_LIMITS)){
+			model.setLimitsIncluded(true);
+			/*			CASO GENERAL
+			 * 				double[][] values = new double[exampleSet.getAttributes().size()][2];
+							int index = 0;
+							for (Attribute attribute : exampleSet.getAttributes()){
+								values[index][0] = valores.get(0);
+								values[index++][1] = valores.get(valores.size()-1);
+							}*/
+
+			double[][] values = new double[1][2];
+			values[0][0] = lVal.get(0).getValue();
+			values[0][1] = lVal.get(lVal.size()-1).getValue();
+			model.setExtremLimits(values);
+		}
+
+		
 		return model;
 	} 
 
@@ -257,6 +277,7 @@ public class CAIMDiscretizer extends PreprocessingOperator {
 		type.setExpert(false);
 		types.add(type);
 		types.add(new ParameterTypeBoolean(PARAMETER_USE_LONG_RANGE_NAMES, "Indicates if long range names including the limits should be used.", true));
+		types.add(new ParameterTypeBoolean(PARAMETER_INCLUDE_LIMITS, "Indicates if extrem limits must be included in the model.", false));
 		return types;
 	}
 	
