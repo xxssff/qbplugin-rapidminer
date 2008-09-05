@@ -2,6 +2,7 @@ package qbts.distances;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
 
@@ -50,13 +51,19 @@ public class IntervalKernel extends AbstractDiscretizedRealValueBasedSimilarity 
 	}
 	
 	public void init(ExampleSet es, DiscretizationModelSeries dm)throws OperatorException {
-		//TODO Procesar el modelo y almacenarlo
+		
+		if (dm.getExtremLimits()==null)
+			throw new OperatorException("Error. The distance IntervalKernel needs extrem limits of discretization.");
+		
 		super.init(es);
 		
 		// Almacenar el esquema de discretización.
 		// Como sólo se aplica a series sólo hay uno y no uno por atributo.
-		Attribute firstAtt = (Attribute) (es.getAttributes().iterator().next());
-		SortedSet<Tupel<Double, String>> cortes = dm.getRanges().get( firstAtt.getName());
+		
+		//Attribute firstAtt = (Attribute) (es.getAttributes().iterator().next());
+		//SortedSet<Tupel<Double, String>> cortes = dm.getRanges().get( firstAtt.getName());
+		
+		SortedSet<Tupel<Double, String>> cortes = (SortedSet<Tupel<Double, String>>)((Map.Entry)dm.getRanges().entrySet().iterator().next()).getValue();
 		
 		discre= new double[cortes.size()+1];
 		int p=0;
@@ -68,7 +75,6 @@ public class IntervalKernel extends AbstractDiscretizedRealValueBasedSimilarity 
 			discre[p++]=tu.getFirst();
 		}
 		discre[--p] = dm.getExtremLimits()[0][1];
-		
 	}
 
 
