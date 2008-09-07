@@ -25,7 +25,7 @@ public class TestNormalizationExtended extends TestCase {
 	 * que el del ByExampleModel no ha cambiado.
 	 */
 	
-	public void testClonacion(){
+/*	public void testClonacion(){
 		ExampleSet eSet = creaEj1();
 		ByExampleLearner bEM=new ByExampleLearner(eSet.getAttributes().getLabel(),
 				eSet,"dis",1.0,"sel",2.0);
@@ -58,6 +58,6 @@ public class TestNormalizationExtended extends TestCase {
 		
 		return  HelperExampleSet.createExampleSet(lAtt, "eti",valores);
 	}
-	
+	*/
 	
 }
