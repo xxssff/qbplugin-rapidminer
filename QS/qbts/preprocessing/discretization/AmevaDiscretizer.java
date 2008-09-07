@@ -7,9 +7,9 @@ import java.util.List;
 
 import com.rapidminer.operator.OperatorDescription;
 
-public class NewAmevaDiscretizer extends AbstractCAIMAmevaDiscretizer {
+public class AmevaDiscretizer extends AbstractCAIMAmevaDiscretizer {
 
-	public NewAmevaDiscretizer(OperatorDescription description) {
+	public AmevaDiscretizer(OperatorDescription description) {
 		super(description);
 	}
 	
