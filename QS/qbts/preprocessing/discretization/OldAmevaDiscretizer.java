@@ -65,7 +65,7 @@ import com.rapidminer.parameter.ParameterTypeBoolean;
  * @version $Id: SimpleBinDiscretization.java,v 1.9 2006/04/05 08:57:27
  *          ingomierswa Exp $
  */
-public class AmevaDiscretizer extends PreprocessingOperator {
+public class OldAmevaDiscretizer extends PreprocessingOperator {
 
 	/** Indicates if long range names should be used. */
 	public static final String PARAMETER_USE_LONG_RANGE_NAMES = "use_long_range_names";
@@ -76,7 +76,7 @@ public class AmevaDiscretizer extends PreprocessingOperator {
 	// FJ End
 
 
-	public AmevaDiscretizer(OperatorDescription description) {
+	public OldAmevaDiscretizer(OperatorDescription description) {
 		super(description);
 	}
 
