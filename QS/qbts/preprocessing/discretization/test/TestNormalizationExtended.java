@@ -14,6 +14,8 @@ import com.rapidminer.operator.IOContainer;
 import com.rapidminer.operator.IOObject;
 import com.rapidminer.operator.Operator;
 
+import deprecated.ByExampleLearner;
+
 import junit.framework.TestCase;
 import static org.junit.Assert.*;
 
@@ -28,7 +30,7 @@ public class TestNormalizationExtended extends TestCase {
 	
 	public void testClonacion(){
 		ExampleSet eSet = creaEj1();
-		ByExampleModel bEM=new ByExampleModel(eSet.getAttributes().getLabel(),
+		ByExampleLearner bEM=new ByExampleLearner(eSet.getAttributes().getLabel(),
 				eSet,"dis",1.0,"sel",2.0);
 		HelperOperatorConstructor hOp=new HelperOperatorConstructor();
 
