@@ -23,7 +23,7 @@
  *  USA.
  */
 
-package yale.operator.preprocessing.discretization;
+package deprecated.yale;
 
 import java.util.ArrayList;
 import java.util.List;
