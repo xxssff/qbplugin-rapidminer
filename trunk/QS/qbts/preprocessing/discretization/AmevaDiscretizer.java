@@ -11,6 +11,7 @@ public class AmevaDiscretizer extends AbstractCAIMAmevaDiscretizer {
 
 	public AmevaDiscretizer(OperatorDescription description) {
 		super(description);
+		method = "Ameva";
 	}
 	
 	@Override
