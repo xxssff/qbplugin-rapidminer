@@ -1,4 +1,4 @@
-package qbts.preprocessing.discretization;
+package qbts.preprocessing.discretization.rm;
 
 import java.util.ArrayList;
 import java.util.List;

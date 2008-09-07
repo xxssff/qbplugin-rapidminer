@@ -1,4 +1,4 @@
-package qbts.preprocessing.discretization.test;
+package qbts.preprocessing.discretization.rm.test;
 
 import java.io.File;
 import java.util.HashMap;
