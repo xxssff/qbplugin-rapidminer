@@ -1,4 +1,4 @@
-package qbts.preprocessing.discretization.test;
+package qbts.preprocessing.discretization.rm.test;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;

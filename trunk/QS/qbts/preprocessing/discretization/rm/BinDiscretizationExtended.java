@@ -20,11 +20,13 @@
  *  You should have received a copy of the GNU Affero General Public License
  *  along with this program.  If not, see http://www.gnu.org/licenses/.
  */
-package qbts.preprocessing.discretization;
+package qbts.preprocessing.discretization.rm;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import qbts.preprocessing.discretization.DiscretizationModelSeries;
 
 import com.rapidminer.example.Attribute;
 import com.rapidminer.example.ExampleSet;
