@@ -1,4 +1,4 @@
-package deprecated.discretization.test;
+package qbts.preprocessing.discretization;
 
 
 import java.lang.reflect.Method;
@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import junit.framework.TestCase;
-import qbts.preprocessing.discretization.CumDiscretizerBlock;
 import srctest.HelperOperatorConstructor;
 
 import com.rapidminer.operator.Operator;
