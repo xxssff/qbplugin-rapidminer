@@ -1,8 +1,9 @@
-package deprecated;
+package zz.deprecated;
 
 import java.util.List;
 
-import deprecated.yale.DiscretizationModel;
+import zz.deprecated.yale.DiscretizationModel;
+
 
 import com.rapidminer.example.ExampleSet;
 import com.rapidminer.operator.IOObject;

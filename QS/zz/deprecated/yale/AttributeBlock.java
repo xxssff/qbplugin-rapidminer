@@ -23,7 +23,7 @@
  *  USA.
  */
 
-package deprecated.yale;
+package zz.deprecated.yale;
 
 import java.util.ArrayList;
 import java.util.List;
