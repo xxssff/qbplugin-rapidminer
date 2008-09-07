@@ -24,6 +24,8 @@ public abstract class AbstractCAIMAmevaDiscretizer extends PreprocessingOperator
 	public static final String PARAMETER_INCLUDE_LIMITS = "include_extrem_limits";
 	// FJ End
 	
+	protected String method ="";
+	
 	public AbstractCAIMAmevaDiscretizer(OperatorDescription description) {
 		super(description);
 	}
@@ -34,7 +36,7 @@ public abstract class AbstractCAIMAmevaDiscretizer extends PreprocessingOperator
 
 		Attribute labelAtt=exampleSet.getAttributes().getLabel();
 		if (!labelAtt.isNominal()){
-			throw new UnsupportedOperationException("The CAIM discretization method need a nominal label attribute!");			
+			throw new UnsupportedOperationException("The "+ method + " discretization method need a nominal label attribute!");			
 		}
 		int numClasses = labelAtt.getMapping().getValues().size();
 
