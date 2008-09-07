@@ -39,10 +39,15 @@
   <operator 
      name        = "CAIMDiscretizer"
      class       = "qbts.preprocessing.discretization.CAIMDiscretizer"
-     description = "Discretize the input ExampleSet  (including Series)."
+     description = "Discretize the input ExampleSet."
      group       = "QBTS"/>
 
 
+  <operator 
+     name        = "AmevaDiscretizer"
+     class       = "qbts.preprocessing.discretization.AmevaDiscretizer"
+     description = "Discretize the input ExampleSet."
+     group       = "QBTS"/>
 
 
 

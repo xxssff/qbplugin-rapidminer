@@ -40,14 +40,12 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
-
 import yale.operator.preprocessing.discretization.AttributeBlock;
 import yale.operator.preprocessing.discretization.DiscretizationModel;
 
 import com.rapidminer.example.Attribute;
 import com.rapidminer.example.Example;
 import com.rapidminer.example.ExampleSet;
-import com.rapidminer.example.table.NumericalAttribute;
 import com.rapidminer.operator.Model;
 import com.rapidminer.operator.OperatorDescription;
 import com.rapidminer.operator.OperatorException;
@@ -56,8 +54,7 @@ import com.rapidminer.parameter.ParameterType;
 import com.rapidminer.parameter.ParameterTypeBoolean;
 import com.rapidminer.parameter.ParameterTypeInt;
 import com.rapidminer.parameter.UndefinedParameterError;
-import com.rapidminer.tools.LogService;
-import com.rapidminer.tools.Ontology;
+
 
 /**
  * An example filter that discretizes all numeric attributes in the dataset into
@@ -73,7 +70,7 @@ import com.rapidminer.tools.Ontology;
  * @version $Id: SimpleBinDiscretization.java,v 1.9 2006/04/05 08:57:27
  *          ingomierswa Exp $
  */
-public class CAIMDiscretizer extends PreprocessingOperator {
+public class AmevaDiscretizer extends PreprocessingOperator {
 
 	/** Indicates if long range names should be used. */
 	public static final String PARAMETER_USE_LONG_RANGE_NAMES = "use_long_range_names";
@@ -83,7 +80,8 @@ public class CAIMDiscretizer extends PreprocessingOperator {
 	public static final String PARAMETER_INCLUDE_LIMITS = "include_extrem_limits";
 	// FJ End
 
-	public CAIMDiscretizer(OperatorDescription description) {
+
+	public AmevaDiscretizer(OperatorDescription description) {
 		super(description);
 	}
 
@@ -93,7 +91,7 @@ public class CAIMDiscretizer extends PreprocessingOperator {
 
 		Attribute labelAtt=exampleSet.getAttributes().getLabel();
 		if (!labelAtt.isNominal()){
-			throw new UnsupportedOperationException("The CAIM discretization method need a nominal label attribute!");			
+			throw new UnsupportedOperationException("The Ameva discretization method need a nominal label attribute!");			
 		}
 		int numClasses = labelAtt.getMapping().getValues().size();
 
@@ -176,40 +174,39 @@ public class CAIMDiscretizer extends PreprocessingOperator {
 		
 		return model;
 	} 
-
 	
 	 private List<Integer> compute_CAIM( List<CumDiscretizerBlock> lCumB ) {
 		 List<Integer> cortes=new ArrayList<Integer>();
 		 cortes.add(Integer.valueOf(0));
 		 cortes.add(Integer.valueOf(lCumB.size()-1));
 		 
-		int numClases=lCumB.get(0).getAcum().length;
-
 		double tmpCriterion = Double.MIN_VALUE;
 		int paso = 1;
 		double globalCriterion = Double.MIN_VALUE;
 		int bestPos;
 		
 		do {
-			bestPos = nextMaxCAIM(cortes, lCumB);
+			bestPos = nextMaxAmeva(cortes, lCumB);
 			tmpCriterion=lCumB.get(bestPos).getMethodValue();
 					
-			if ((tmpCriterion > globalCriterion) || (paso < numClases)) {
+			if (tmpCriterion > globalCriterion)  {
 				cortes.add(Integer.valueOf(bestPos));
 				globalCriterion = tmpCriterion;
 			} else if (tmpCriterion == globalCriterion)
 				tmpCriterion = Double.MIN_VALUE;
 			paso++;
-		} while ((tmpCriterion >= globalCriterion) || (paso < numClases));
+		} while (tmpCriterion >= globalCriterion) ;
 		return cortes;
 	}
 	
+	 
+
 
 	/**
-	 * Computes the best CAIM value obtained adding a new component to the
+	 * Computes the best Ameva value obtained adding a new component to the
 	 * limits list (D). Check all the not used values from the initial set.
 	 */
-	private int nextMaxCAIM(List<Integer> D, List<CumDiscretizerBlock> lCumB) {
+	private int nextMaxAmeva(List<Integer> D, List<CumDiscretizerBlock> lCumB) {
 
 		int numClases=lCumB.get(0).getAcum().length;
 		
@@ -229,37 +226,40 @@ public class CAIMDiscretizer extends PreprocessingOperator {
 				// ordenar D
 				Collections.sort(D);
 				// calcular la matriz
-				double[][] matriz=new double[numClases][D.size()-1];
-				/**TODO: La matriz puede ser un vector puesto que no se relacionan valores 
-				 *       de columnas diferentes.
-				 */ 
+				int numCor=D.size()-1;
+				double[][] matriz=new double[numClases+1][numCor+1];
 				
-				double valorCAIM=0;
-				for (int r=0;r<(D.size()-1); r++ ){
-					double total=0;
-					double maxQ=0;
+				
+				for (int r=0;r<numCor; r++ ){
 					for (int c=0;c<numClases;c++){
 						if (r==0){
 						    matriz[c][r]=lCumB.get(D.get(1)).getAcum()[c];
-							if (matriz[c][r]>maxQ)
-						    maxQ=matriz[c][r];
 						}
 						else
 						{
 							matriz[c][r]=lCumB.get(D.get(r+1)).getAcum()[c]-lCumB.get(D.get(r)).getAcum()[c];
-							if (matriz[c][r]>maxQ)
-								maxQ=matriz[c][r];
 						}
-						total+=matriz[c][r];
+						matriz[numClases][numCor]+=matriz[c][r];
+						matriz[numClases][r]+=matriz[c][r];
+						matriz[c][numCor]+=matriz[c][r];
 					}
-					valorCAIM += (Math.pow(maxQ, 2) / total);
 				}
+				
+				double valorAmeva=0;
+				for (int icorte = 0; icorte < numCor; icorte++)
+					for (int cla = 0; cla < numClases; cla++) {
+						valorAmeva += Math.pow(matriz[cla][icorte], 2)
+								/ (matriz[cla][numCor] * matriz[numClases][icorte]);
+					}
+
 				//compute the value and store in actual element
-				valorCAIM=valorCAIM/(D.size()-1);
-				b.setMethodValue(valorCAIM);
-				if (valorCAIM>maximo){
+				valorAmeva = valorAmeva - 1;
+				valorAmeva = valorAmeva * matriz[numClases][numCor] / ((numClases-1) * (numCor));
+	
+				b.setMethodValue(valorAmeva);
+				if (valorAmeva>maximo){
 					posMejor=actual;
-					maximo=valorCAIM;
+					maximo=valorAmeva;
 				}
 				//Borro el último insertado en  la lista
 				D.remove(Integer.valueOf(actual));
@@ -279,5 +279,4 @@ public class CAIMDiscretizer extends PreprocessingOperator {
 		types.add(new ParameterTypeBoolean(PARAMETER_INCLUDE_LIMITS, "Indicates if extrem limits must be included in the model.", false));
 		return types;
 	}
-	
 }

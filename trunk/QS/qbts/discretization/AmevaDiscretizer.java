@@ -39,6 +39,8 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
+import qbts.preprocessing.discretization.CumDiscretizerBlock;
+
 import yale.operator.preprocessing.discretization.AttributeBlock;
 import yale.operator.preprocessing.discretization.DiscretizationModel;
 
