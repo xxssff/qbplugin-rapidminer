@@ -2,7 +2,7 @@ package deprecated;
 
 import java.util.ArrayList;
 
-import yale.operator.preprocessing.discretization.DiscretizationModel;
+import deprecated.yale.DiscretizationModel;
 
 import com.rapidminer.example.Attribute;
 import com.rapidminer.example.Example;
