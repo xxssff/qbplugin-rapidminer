@@ -4,7 +4,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
-import qbts.ByExampleModel;
+import junit.framework.TestCase;
 import srctest.HelperExampleSet;
 import srctest.HelperOperatorConstructor;
 
@@ -15,9 +15,6 @@ import com.rapidminer.operator.IOObject;
 import com.rapidminer.operator.Operator;
 
 import deprecated.ByExampleLearner;
-
-import junit.framework.TestCase;
-import static org.junit.Assert.*;
 
 public class TestNormalizationExtended extends TestCase {
 
