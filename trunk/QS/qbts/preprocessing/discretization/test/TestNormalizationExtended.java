@@ -7,6 +7,7 @@ import java.util.List;
 import junit.framework.TestCase;
 import srctest.HelperExampleSet;
 import srctest.HelperOperatorConstructor;
+import zz.deprecated.ByExampleLearner;
 
 import com.rapidminer.example.Attribute;
 import com.rapidminer.example.ExampleSet;
@@ -14,7 +15,6 @@ import com.rapidminer.operator.IOContainer;
 import com.rapidminer.operator.IOObject;
 import com.rapidminer.operator.Operator;
 
-import deprecated.ByExampleLearner;
 
 public class TestNormalizationExtended extends TestCase {
 
