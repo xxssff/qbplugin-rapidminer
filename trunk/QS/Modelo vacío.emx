@@ -257,7 +257,7 @@
       <type xmi:type="uml:Class" href="mmi:///#jbintype%5Ename=edu.udo.cs.yale.Experiment%5Bproject%5Eid=QS%5D$uml.Class"/>
     </ownedAttribute>
     <ownedAttribute xmi:id="_9lqRgeQNEdurX9DnQGYShA" name="discretizationMethods" end="_pL5tpeQOEdurX9DnQGYShA">
-      <type xmi:type="uml:Class" href="mmi:///#jsrctype%5Ename=DiscretizationMethods%5Bjcu%5Ename=DiscretizationMethods.java%5Bjpack%5Ename=qbts%5Bjsrcroot%5Esrcfolder=%5Bproject%5Eid=QS%5D%5D%5D%5D$uml.Class"/>
+      <type xmi:type="uml:Class" href="mmi:///#jsrctype%5Ename=DiscretizationMethods%5Bjcu%5Ename=DiscretizationMethods.java%5Bjpack%5Ename=deprecated.qbts%5Bjsrcroot%5Esrcfolder=%5Bproject%5Eid=QS%5D%5D%5D%5D$uml.Class"/>
     </ownedAttribute>
     <ownedAttribute xmi:id="_6hSsIeQOEdurX9DnQGYShA" name="discretizationModel" end="__ZxeAuQOEdurX9DnQGYShA">
       <type xmi:type="uml:Class" href="mmi:///#jsrctype%5Ename=DiscretizationModel%5Bjcu%5Ename=DiscretizationModel.java%5Bjpack%5Ename=qbts%5Bjsrcroot%5Esrcfolder=%5Bproject%5Eid=QS%5D%5D%5D%5D$uml.Class"/>
@@ -291,10 +291,10 @@
     <operation href="mmi:///#jmethod%5Ename=getBlockValues%5Esign=(QList;IQExample;)%255bD%5Bjsrctype%5Ename=DiscretizationLearner%5Bjcu%5Ename=DiscretizationLearner.java%5Bjpack%5Ename=qbts%5Bjsrcroot%5Esrcfolder=%5Bproject%5Eid=QS%5D%5D%5D%5D%5D$uml.Operation"/>
   </packagedElement>
   <packagedElement xmi:type="uml:SendOperationEvent" xmi:id="_sULGIOQOEdurX9DnQGYShA" name="Eventodeoperacióndeenvío6">
-    <operation href="mmi:///#jmethod%5Ename=Preprocess_Series%5Esign=(%255bDZZZZ)%255bD%5Bjsrctype%5Ename=DiscretizationMethods%5Bjcu%5Ename=DiscretizationMethods.java%5Bjpack%5Ename=qbts%5Bjsrcroot%5Esrcfolder=%5Bproject%5Eid=QS%5D%5D%5D%5D%5D$uml.Operation"/>
+    <operation href="mmi:///#jmethod%5Ename=Preprocess_Series%5Esign=(%255bDZZZZ)%255bD%5Bjsrctype%5Ename=DiscretizationMethods%5Bjcu%5Ename=DiscretizationMethods.java%5Bjpack%5Ename=deprecated.qbts%5Bjsrcroot%5Esrcfolder=%5Bproject%5Eid=QS%5D%5D%5D%5D%5D$uml.Operation"/>
   </packagedElement>
   <packagedElement xmi:type="uml:ReceiveOperationEvent" xmi:id="_sULGIeQOEdurX9DnQGYShA" name="Eventodeoperaciónderecepción6">
-    <operation href="mmi:///#jmethod%5Ename=Preprocess_Series%5Esign=(%255bDZZZZ)%255bD%5Bjsrctype%5Ename=DiscretizationMethods%5Bjcu%5Ename=DiscretizationMethods.java%5Bjpack%5Ename=qbts%5Bjsrcroot%5Esrcfolder=%5Bproject%5Eid=QS%5D%5D%5D%5D%5D$uml.Operation"/>
+    <operation href="mmi:///#jmethod%5Ename=Preprocess_Series%5Esign=(%255bDZZZZ)%255bD%5Bjsrctype%5Ename=DiscretizationMethods%5Bjcu%5Ename=DiscretizationMethods.java%5Bjpack%5Ename=deprecated.qbts%5Bjsrcroot%5Esrcfolder=%5Bproject%5Eid=QS%5D%5D%5D%5D%5D$uml.Operation"/>
   </packagedElement>
   <packagedElement xmi:type="uml:SendOperationEvent" xmi:id="_CodAgOQPEdurX9DnQGYShA" name="Eventodeoperacióndeenvío7">
     <operation href="mmi:///#jmethod%5Ename=DiscretizationModel%5Esign=(QExampleSet;QList;%255b%255bDIIIDIZZZZ)V%5Bjsrctype%5Ename=DiscretizationModel%5Bjcu%5Ename=DiscretizationModel.java%5Bjpack%5Ename=qbts%5Bjsrcroot%5Esrcfolder=%5Bproject%5Eid=QS%5D%5D%5D%5D%5D$uml.Operation"/>
