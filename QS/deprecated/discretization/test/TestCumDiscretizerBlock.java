@@ -1,4 +1,4 @@
-package qbts.discretization.test;
+package deprecated.discretization.test;
 
 import java.util.ArrayList;
 import java.util.Iterator;

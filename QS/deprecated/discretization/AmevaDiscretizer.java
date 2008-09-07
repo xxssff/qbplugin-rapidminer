@@ -1,4 +1,4 @@
-package qbts.discretization;
+package deprecated.discretization;
 
 /*
  *  YALE - Yet Another Learning Environment
