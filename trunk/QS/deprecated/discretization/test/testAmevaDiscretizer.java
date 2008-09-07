@@ -64,8 +64,8 @@ public class testAmevaDiscretizer extends TestCase {
 		Object[] args={ cortes,lBCum};
 
 		HelperOperatorConstructor hOp=new HelperOperatorConstructor();
-		Operator op=hOp.createOperatorInstance("OPE1", "qbts.discretization.AmevaDiscretizer", "QBTS");
-		Method metodo = hOp.findPrivateMethod("qbts.discretization.AmevaDiscretizer", "nextMaxAmeva");
+		Operator op=hOp.createOperatorInstance("OPE1", "qbts.preprocessing.discretization.AmevaDiscretizer", "QBTS");
+		Method metodo = hOp.findPrivateMethod("qbts.preprocessing.discretization.AmevaDiscretizer", "nextMaxAmeva");
 		Object ret= hOp.invokePrivateMethodOperator(op, metodo,  args);
 		
 		//Object ret=hOp.invokePrivateMethodOperator("nextMaxCAIM", "qbts.discretization.CAIMDiscretizer", "OPE1", 

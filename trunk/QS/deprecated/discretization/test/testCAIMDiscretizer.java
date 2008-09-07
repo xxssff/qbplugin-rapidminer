@@ -64,8 +64,8 @@ public class testCAIMDiscretizer extends TestCase {
 		Object[] args={ cortes,lBCum};
 
 		HelperOperatorConstructor hOp=new HelperOperatorConstructor();
-		Operator op=hOp.createOperatorInstance("OPE1", "qbts.discretization.CAIMDiscretizer", "QBTS");
-		Method metodo = hOp.findPrivateMethod("qbts.discretization.CAIMDiscretizer", "nextMaxCAIM");
+		Operator op=hOp.createOperatorInstance("OPE1", "qbts.preprocessing.discretization.CAIMDiscretizer", "QBTS");
+		Method metodo = hOp.findPrivateMethod("qbts.preprocessing.discretization.CAIMDiscretizer", "nextMaxCAIM");
 		Object ret= hOp.invokePrivateMethodOperator(op, metodo,  args);
 		
 		//Object ret=hOp.invokePrivateMethodOperator("nextMaxCAIM", "qbts.discretization.CAIMDiscretizer", "OPE1", 
