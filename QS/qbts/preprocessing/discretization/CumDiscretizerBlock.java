@@ -1,4 +1,4 @@
-package qbts.discretization;
+package qbts.preprocessing.discretization;
 
 /*
  *  YALE - Yet Another Learning Environment

@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import junit.framework.TestCase;
-import qbts.discretization.CumDiscretizerBlock;
+import qbts.preprocessing.discretization.CumDiscretizerBlock;
 import srctest.HelperOperatorConstructor;
 
 import com.rapidminer.operator.Operator;

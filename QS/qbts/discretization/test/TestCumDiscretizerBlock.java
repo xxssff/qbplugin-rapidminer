@@ -5,7 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import junit.framework.TestCase;
-import qbts.discretization.CumDiscretizerBlock;
+import qbts.preprocessing.discretization.CumDiscretizerBlock;
 
 public class TestCumDiscretizerBlock extends TestCase{
 	
