@@ -24,15 +24,10 @@
  */
 package qbts.distances;
 
-import java.util.ArrayList;
-
-import yale.operator.preprocessing.discretization.DiscretizationModel;
-
 import com.rapidminer.example.ExampleSet;
 import com.rapidminer.example.Tools;
 import com.rapidminer.operator.GroupedModel;
 import com.rapidminer.operator.OperatorException;
-import com.rapidminer.operator.similarity.attributebased.AbstractRealValueBasedSimilarity;
 
 
 /**

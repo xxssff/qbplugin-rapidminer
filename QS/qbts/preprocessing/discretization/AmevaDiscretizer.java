@@ -40,9 +40,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
-import yale.operator.preprocessing.discretization.AttributeBlock;
-import yale.operator.preprocessing.discretization.DiscretizationModel;
-
 import com.rapidminer.example.Attribute;
 import com.rapidminer.example.Example;
 import com.rapidminer.example.ExampleSet;
@@ -52,8 +49,6 @@ import com.rapidminer.operator.OperatorException;
 import com.rapidminer.operator.preprocessing.PreprocessingOperator;
 import com.rapidminer.parameter.ParameterType;
 import com.rapidminer.parameter.ParameterTypeBoolean;
-import com.rapidminer.parameter.ParameterTypeInt;
-import com.rapidminer.parameter.UndefinedParameterError;
 
 
 /**
