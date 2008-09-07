@@ -1,9 +1,11 @@
-package qbts.preprocessing.discretization;
+package qbts.preprocessing.discretization.test;
 
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+
+import qbts.preprocessing.discretization.CumDiscretizerBlock;
 
 import junit.framework.TestCase;
 import srctest.HelperOperatorConstructor;
@@ -11,7 +13,7 @@ import srctest.HelperOperatorConstructor;
 import com.rapidminer.operator.Operator;
 
 
-public class testAmevaDiscretizer extends TestCase {
+public class testCAIMDiscretizer extends TestCase {
 
 	
 	public void testNextMaxCAIM(){
@@ -63,8 +65,8 @@ public class testAmevaDiscretizer extends TestCase {
 		Object[] args={ cortes,lBCum};
 
 		HelperOperatorConstructor hOp=new HelperOperatorConstructor();
-		Operator op=hOp.createOperatorInstance("OPE1", "qbts.preprocessing.discretization.AmevaDiscretizer", "QBTS");
-		Method metodo = hOp.findPrivateMethod("qbts.preprocessing.discretization.AmevaDiscretizer", "nextMaxAmeva");
+		Operator op=hOp.createOperatorInstance("OPE1", "qbts.preprocessing.discretization.CAIMDiscretizer", "QBTS");
+		Method metodo = hOp.findPrivateMethod("qbts.preprocessing.discretization.CAIMDiscretizer", "nextMaxCAIM");
 		Object ret= hOp.invokePrivateMethodOperator(op, metodo,  args);
 		
 		//Object ret=hOp.invokePrivateMethodOperator("nextMaxCAIM", "qbts.discretization.CAIMDiscretizer", "OPE1", 
