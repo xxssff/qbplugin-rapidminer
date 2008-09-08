@@ -1,19 +1,19 @@
 <operators>
   <operator 
      name        = "BinDiscretizationExtended"
-     class       = "qbts.preprocessing.discretization.BinDiscretizationExtended"
+     class       = "qbts.preprocessing.discretization.rm.BinDiscretizationExtended"
      description = "Discretize the input ExampleSet  (optionally all together )."
      group       = "QBTS"/>
 
   <operator 
      name        = "FrequencyDiscretizationExtended"
-     class       = "qbts.preprocessing.discretization.FrequencyDiscretizationExtended"
+     class       = "qbts.preprocessing.discretization.rm.FrequencyDiscretizationExtended"
      description = "Discretize the input ExampleSet  (optionally all together )."
      group       = "QBTS"/>
 
   <operator 
      name        = "NormalizationExtended"
-     class       = "qbts.preprocessing.discretization.NormalizationExtended"
+     class       = "qbts.preprocessing.discretization.rm.NormalizationExtended"
      description = "Normalize every example from the input ExampleSet."
      group       = "QBTS"/>
 
