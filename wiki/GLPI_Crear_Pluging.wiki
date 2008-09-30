@@ -228,15 +228,16 @@ If no GLPI attempt to load successively as the default language, English and Fre
 
 You can add JavaScript to your own needs as well as css files using the following definitions:
 {{{$PLUGIN_HOOKS['add_javascript']['PLUGIN_NAME']="FILENAME.js";}}
-$PLUGIN_HOOKS['add_css']['PLUGIN_NAME']="FILENAME.css";
-}}}
+$PLUGIN_HOOKS['add_css']['PLUGIN_NAME']="FILENAME.css";}}}
 
 
 ==== Planning ====
 
 Two functions can be defined and used to populate the planning that will be displayed and how the items will be displayed: 
   - To populate the schedule: 
-{{{$PLUGIN_HOOKS['planning_populate']'PLUGIN_NAME']="plugin_planning_populate_PLUGIN_NAME";}}}
+{{{
+$PLUGIN_HOOKS['planning_populate']'PLUGIN_NAME']="plugin_planning_populate_PLUGIN_NAME";
+}}}
 The function sets and fills a table whose elements can be sorted according to their keys. 
 For example:
 {{{
@@ -261,7 +262,9 @@ function plugin_planning_populate_example($parm){
 }}}
 
  - To set the display in the planning:
-{{{$PLUGIN_HOOKS['display_planning']['example']="plugin_display_planning_PLUGIN_NAME";}}}
+{{{
+$PLUGIN_HOOKS['display_planning']['example']="plugin_display_planning_PLUGIN_NAME";
+}}}
 {{{
 // Display the planning item
 function plugin_display_planning_PLUGIN_NAME($parm){
@@ -291,7 +294,7 @@ function plugin_display_planning_PLUGIN_NAME($parm){
 You can add a scheduled task by plugin. 
 To do this simply define:
 {{{$PLUGIN_HOOKS['cron']['PLUGIN_NAME'] = DAY_TIMESTAMP;}}}
-This directive will launch function cron_plugin_PLUGIN_NAME ((())) on a regular basis in the background (here all day). 
+This directive will launch function {{{cron_plugin_PLUGIN_NAME ((()))}}} on a regular basis in the background (here all day). 
 
 ==== Redirecting ==== 
 
