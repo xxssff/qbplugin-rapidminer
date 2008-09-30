@@ -19,8 +19,8 @@ A plugin never modify tables GLPI. It merely add tables in the database, to mana
 
 1 - Names of tables 
 
-  * Your table names must respect this type glpi_plugin_ <plugin_name> _XXXX 
-  * If you use dropdown, please use the table: glpi_dropdown_plugin_ <plugin_name> _XXXX 
+  * Your table names must respect this type glpi_plugin_<plugin_name>_XXXX 
+  * If you use dropdown, please use the table: glpi_dropdown_plugin_<plugin_name>_XXXX 
 
 2 - Although adhere architecture creation plugins: 
 
@@ -28,20 +28,20 @@ A plugin never modify tables GLPI. It merely add tables in the database, to mana
     * The dictionaries will read fr_FR.php / en_GB.php 
   * A directory "docs": 
     * Readme.txt, Readme.txt, Roadmap.txt, Changelog.txt 
-  * A directory Inc. "contains classes and functions 
-    * The file names will be tagged: plugin_ <plugin_name> example. Functions_db.php 
-    * The classes will be created tagguées class plugin_ <plugin_name> 
-    * The functions will be tagguées: function plugin_ <plugin_name> _showform 
-  * A directory "front": the forms 
-    * The file names will be tagged: plugin_ <plugin_name> example. Form.php 
+  * A directory "inc": contains classes and functions 
+    * The file names will be tagged:  example plugin_<plugin_name>.functions_db.php 
+    * The classes will be created: class plugin_<plugin_name> 
+    * The functions will be tagged: function plugin_<plugin_name>_showform 
+  * A directory "front": contains the forms 
+    * The file names will be tagged: example plugin_<plugin_name>.form.php 
   * A directory "pics": contains images 
   * At the root: 
     * At least one index.php and setup.php 
 
-  * If your plugin must create files, they must be created in the files under GLPI files_plugins / nom_de_votre_plugin.
+  * If your plugin must create files, they must be created in the files under GLPI files_plugins/plugin_name.
 
-This ve avoid rights management writing to each release of your plugin. 
-The rights when installing or updating GLPI apply. 
+This avoid management writing rights  for each release of your plugin. 
+The rights when installing or updating GLPI will apply. 
 All this in order not to interfere with the core GLPI. 
 
  
@@ -67,15 +67,15 @@ This file must contain at least 2 functions:
 (((plugin_version_PLUGIN_NAME()}}}: defines the name and version of the plugin
 
 The function plugin_init_PLUGIN_NAME will identify all behaviors plugin which may be of different type: 
-  - Integration of visual plugin in GLPI 
-  - Hooks / actions performed on specific event 
-  - Location 
-  - Management of dropdown 
-  - Using the search engine 
-  - Interactions range planning, redirect, cron, ... 
+  * Integration of visual plugin in GLPI 
+  * Hooks / actions performed on specific event 
+  * Location 
+  * Management of dropdown 
+  * Using the search engine 
+  * Interactions range planning, redirect, cron, ... 
 
 
-Visual integration === === 
+=== Visual integration === 
 
 The existence of the plugin is done by defining first plugin_version_PLUGIN_NAME function like this:
 {{{
@@ -85,24 +85,24 @@ function plugin_version_PLUGIN_NAME(){
 }
 }}}
 
-In the civil plugin_init_PLUGIN_NAME guidelines may be added to activate certain features of the plugin.
+With in the function plugin_init_PLUGIN_NAME may be added instructions to activate certain features of the plugin.
 
-- {{{$PLUGIN_HOOKS['helpdesk_menu_entry']['PLUGIN_NAME'] = true;}}} : ndicates whether the plug should be displayed in the list of plugins menu interface helpdesk.
+- {{{$PLUGIN_HOOKS['helpdesk_menu_entry']['PLUGIN_NAME'] = true;}}} : indicates whether the plugin should be displayed in the list of plugins menu interface helpdesk.
 
-- {{{$PLUGIN_HOOKS['menu_entry']['PLUGIN_NAME'] = true;}}} : indicates whether the plug should be displayed in the list of plugins menu interface central.
+- {{{$PLUGIN_HOOKS['menu_entry']['PLUGIN_NAME'] = true;}}} : indicates whether the plug should be displayed in the main menu interface list of plugins.
 
-- {{{$PLUGIN_HOOKS['submenu_entry']['PLUGIN_NAME'][ACTION] = LINK;}}} : Specify if necessary sub-menus to the central interface.
-{{{ACTION}}}defines the element displayed in the submenu. Actions are defined by default in GLPI (add, search, template, and showall summary). 
-For these actions icons standard will be used. But you can also choose to display a text or a personal icon (see example plugin). 
+- {{{$PLUGIN_HOOKS['submenu_entry']['PLUGIN_NAME'][ACTION] = LINK;}}} : Specify if necessary sub-menus to the main interface.
+{{{ACTION}}} defines the element displayed in the submenu. Actions are defined by default in GLPI (add, search, template, and showall summary). 
+For these actions standard icons will be used. But you can also choose to display a text or a personal icon (see example plugin). 
 
 or:
 
 - {{{$PLUGIN_HOOKS['submenu_entry']['PLUGIN_NAME'][ACTION][OPTION] = LINK;}}} : Specify if necessary sub-menus to the central interface. 
 You can display a custom link according to the Options settings. This allows to change the link depending on the sub-section where you are.
 
-- {{{$PLUGIN_HOOKS['config_page']['PLUGIN_NAME'] = 'config.php';}}} :Page tree plugin appearing in Configuration / Plugins.
+- {{{$PLUGIN_HOOKS['config_page']['PLUGIN_NAME'] = 'config.php';}}} : Page tree plugin appearing in Configuration / Plugins.
 
-- 0.71 : {{{$PLUGIN_HOOKS['central_action']['PLUGIN_NAME'] = 'plugin_central_action_PLUGIN_NAME';}}} :Definition of a specific page for the instrument panel center. 
+- 0.71 : {{{$PLUGIN_HOOKS['central_action']['PLUGIN_NAME'] = 'plugin_central_action_PLUGIN_NAME';}}} : Definition of a specific page for the instrument panel center. 
 plugin_central_action_PLUGIN_NAME is a function without setting :
 {{{
 // Hook to be launch on central
@@ -115,7 +115,8 @@ function plugin_central_action_PLUGIN_NAME(){
 '''en 0.72 même système que les headings classiques avec comme type ''central'' '''  
 
 
-- {{{$PLUGIN_HOOKS['headings']['PLUGIN_NAME'] = 'plugin_get_headings_PLUGIN_NAME';}}} : Function defining tabs in entries of different types of GLPI. 
+- {{{$PLUGIN_HOOKS['headings']['PLUGIN_NAME'] = 'plugin_get_headings_PLUGIN_NAME';}}} :  
+Function defining tabs in entries of different types of GLPI. 
 0.72: 2 types can be used: central and prefs for display on the homepage of the central and user preferences. 
 This function, which is defined in the setup.php, then takes the following form:
 {{{
@@ -186,7 +187,7 @@ A plugin can be grafted on each action carried out in GLPI to carry out their ow
   $PLUGIN_HOOKS['item_purge']['PLUGIN_NAME'] = 'plugin_item_purge_PLUGIN_NAME';
   $PLUGIN_HOOKS['item_restore']['PLUGIN_NAME'] = 'plugin_item_restore_PLUGIN_NAME';
   }}}
-  These functions use the following prototype ($ parm fields containing 2 'type' and 'ID' defining the type and ID of the element on which was directed action):
+  These functions use the following prototype ($parm fields containing 2 'type' and 'ID' defining the type and ID of the element on which was directed action):
   {{{
 // Hook done on add item case
 function plugin_item_add_PLUGIN_NAME($parm){
@@ -194,8 +195,10 @@ function plugin_item_add_PLUGIN_NAME($parm){
 	if (isset($parm["type"]))
 		switch ($parm["type"]){
 			case COMPUTER_TYPE :
-				if (!empty($_SESSION["MESSAGE_AFTER_REDIRECT"])) $_SESSION["MESSAGE_AFTER_REDIRECT"].="<br>";
-				$_SESSION["MESSAGE_AFTER_REDIRECT"].="Add Computer Hook ".$parm["ID"];
+				if (!empty($_SESSION["MESSAGE_AFTER_REDIRECT"]))
+                                   S_SESSION["MESSAGE_AFTER_REDIRECT"].="<br>";
+				$_SESSION["MESSAGE_AFTER_REDIRECT"].=
+                                     "Add Computer Hook ".$parm["ID"];
 				return true;
 				break;
 		}
@@ -206,7 +209,7 @@ function plugin_item_add_PLUGIN_NAME($parm){
 
 === Localization ===
 
-All of the plug texts to be displayed in GLPI should be outsourced to a file so that they can easily translate the interface (just need to translate a file). 
+All of the plugin texts to be displayed in GLPI should be outsourced to a file so that they can easily translate the interface (just need to translate a file). 
 The language files are in the local / 
 The Convention for the naming of a language is the same as GLPI and uses the standard i18n: 
   * En_US for France, 
@@ -219,10 +222,10 @@ Within the file, the labels are all stored in a table from which the following e
   $LANGMYPLUGIN["myplugin"][2] = "libellé 2";
 }}}
 
-The language file corresponding to the language of the user will dynamically. 
-If no GLPI attempt to load successively as the default language, English and French. 
+The language file corresponding to the language of the user will dynamically loaded. 
+If no exists, GLPI attempts to load successively the default language, English and French. 
 
-=== Interactions various === 
+=== Various interactions === 
 
 ==== Adding Javascript and CSS ==== 
 
@@ -236,7 +239,7 @@ $PLUGIN_HOOKS['add_css']['PLUGIN_NAME']="FILENAME.css";}}}
 Two functions can be defined and used to populate the planning that will be displayed and how the items will be displayed: 
   - To populate the schedule: 
 {{{
-$PLUGIN_HOOKS['planning_populate']'PLUGIN_NAME']="plugin_planning_populate_PLUGIN_NAME";
+$PLUGIN_HOOKS['planning_populate']['PLUGIN_NAME']="plugin_planning_populate_PLUGIN_NAME";
 }}}
 The function sets and fills a table whose elements can be sorted according to their keys. 
 For example:
@@ -376,7 +379,7 @@ class pluginExample extends CommonDBTM {
 
 	
 For more information on the functions you can override the documentation for this class is here:
-https: / / dev.indepnet.net / glpidoc / classCommonDBTM.html
+https://dev.indepnet.net/glpidoc/classCommonDBTM.html
 
 === Using the search engine ===
 
