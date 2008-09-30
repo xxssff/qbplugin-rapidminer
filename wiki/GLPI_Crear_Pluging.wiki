@@ -376,6 +376,7 @@ https: / / dev.indepnet.net / glpidoc / classCommonDBTM.html
 
 You must first define a new type (see above).
 You can define the elements displayed in your search engine by defining the function plugin_PLUGINNAME_getSearchOption:
+
 {{{
 function plugin_example_getSearchOption(){
 	global $LANGEXAMPLE;
@@ -518,6 +519,7 @@ It must return true if the element is displayed and false otherwise (in this cas
 An example:
 {{{
 // How to display specific update fields ?
+
 function plugin_example_MassiveActionsFieldsDisplay($type,$table,$field,$linkfield){
 	global $LINK_ID_TABLE;
 	if ($table==$LINK_ID_TABLE[$type]){
@@ -553,6 +555,7 @@ function plugin_example_MassiveActionsFieldsDisplay($type,$table,$field,$linkfie
 You can also define new actions massive changes in defining the following functions:
 {{{
 // Define actions : 
+
 function plugin_example_MassiveActions($type){
 	global $LANG;
 	switch ($type){
@@ -575,6 +578,7 @@ function plugin_example_MassiveActions($type){
 }
 
 // How to display specific actions ?
+
 function plugin_example_MassiveActionsDisplay($type,$action){
 	global $LANG;
 	switch ($type){
@@ -598,6 +602,7 @@ function plugin_example_MassiveActionsDisplay($type,$action){
 }
 
 // How to process specific actions ?
+
 function plugin_example_MassiveActionsProcess($data){
 	global $LANG;
 
@@ -644,6 +649,7 @@ $parm parameters being awarded $_GET from Pager (printPager function).
 
 {{{
 // Do special actions for dynamic report
+
 function plugin_example_dynamicReport($parm){
 	if ($parm["item_type"]==PLUGIN_EXAMPLE_TYPE){
 		// Do all what you want for export depending on $parm 
@@ -662,6 +668,7 @@ The search parameters are accessible via session variables.
 
 {{{
 // Add parameters to printPager in search system
+
 function plugin_example_addParamFordynamicReport($device_type){
 	if ($device_type==PLUGIN_EXAMPLE_TYPE){
 		// Return array data containing all params to add : may be single data or array data
