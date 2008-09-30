@@ -222,9 +222,9 @@ Within the file, the labels are all stored in a table from which the following e
 The language file corresponding to the language of the user will dynamically. 
 If no GLPI attempt to load successively as the default language, English and French. 
 
-Interactions various === === 
+=== Interactions various === 
 
-Adding ==== ==== Javascript and CSS 
+==== Adding Javascript and CSS ==== 
 
 You can add JavaScript to your own needs as well as css files using the following definitions:
 {{{$PLUGIN_HOOKS['add_javascript']['PLUGIN_NAME']="FILENAME.js";}}
@@ -356,9 +356,9 @@ The definition of the rights is needed to use the mass action system of the sear
 
 === Utiliser CommonDBTM ===
 
-Si vous définissez un nouveau type il vous faut également définir la classe associée à ce nouveau type.
-Elle doit hériter de la classe CommonDBTM qui permet de s'abstraire de tous les accès directs à la base de données.
-Sa définition minimale est du type :
+If you define a new type you must also define the class associated with this new type.
+It must inherit the class CommonDBTM that allows abstract of all direct access to the database.
+Its minimal definition is like:
 {{{
 class pluginExample extends CommonDBTM {
 	function pluginExample () {
@@ -368,13 +368,14 @@ class pluginExample extends CommonDBTM {
 };
 }}}
 
-Pour plus d'infos, sur les fonctions que vous pouvez surcharger, la documentation de cette classe se trouve ici :
-https://dev.indepnet.net/glpidoc/classCommonDBTM.html
+	
+For more information on the functions you can override the documentation for this class is here:
+https: / / dev.indepnet.net / glpidoc / classCommonDBTM.html
 
-=== Utilisation du moteur de recherche ===
+=== Using the search engine ===
 
-Vous devez tout d'abord définir un nouveau type (cf. plus haut).
-Vous pouvez alors définir les éléments affichables dans votre moteur de recherche en définissant la fonction plugin_PLUGINNAME_getSearchOption :
+You must first define a new type (see above).
+You can define the elements displayed in your search engine by defining the function plugin_PLUGINNAME_getSearchOption:
 {{{
 function plugin_example_getSearchOption(){
 	global $LANGEXAMPLE;
@@ -398,7 +399,8 @@ function plugin_example_getSearchOption(){
 }
 }}}
 
-Le moteur de recherche s'appelle alors simplement :
+	
+The search engine then called simply:
 {{{
 manageGetValuesInSearch(PLUGIN_EXAMPLE_TYPE);
 
@@ -407,7 +409,8 @@ searchForm(PLUGIN_EXAMPLE_TYPE,$_SERVER['PHP_SELF'],$_GET["field"],$_GET["contai
 showList(PLUGIN_EXAMPLE_TYPE,$_SERVER['PHP_SELF'],$_GET["field"],$_GET["contains"],$_GET["sort"],$_GET["order"],$_GET["start"],$_GET["deleted"],$_GET["link"],$_GET["distinct"],$_GET["link2"],$_GET["contains2"],$_GET["field2"],$_GET["type2"]);
 }}}
 
-Vous pouvez également définir des cas particuliers de recherche en définissant une ou plusieurs des fonctions suivantes si nécessaire :
+	
+You can also define specific cases of research by defining one or more of the following if necessary:
 
 {{{
 
@@ -501,16 +504,18 @@ function plugin_example_addOrderBy($type,$ID,$order,$key=0){
 
 }}}
 
-=== Définir des actions de modification massive ===
+	 	
+=== Defining actions modified mass ===
 
-Par défaut les actions de type : modifier / supprimer / purger / restaurer sont accessibles depuis les listes.
+By default type action: modify / delete / purge / restore are accessible from the lists.
 
-Pour ajouter des actions spécifiques il faut tout d'abord ajouter :
+To add specific actions we must first add:
 $PLUGIN_HOOKS['use_massive_action']['PLUGIN_NAME']=1;
 
-Dans le cas modifier : pour des champs ayant des modes de saisies particuliers vous pouvez les définir en définissant la fonction : plugin_PLUGINNAME_MassiveActionsFieldsDisplay($type,$table,$field,$linkfield). 
-Celle-ci doit retourner true si l'element est affiché et false sinon (dans ce cas le mode d'affichage par défaut sera appliqué).
-Un exemple :
+	
+In the case change: for fields with specific patterns of seizures you can define in defining the function: plugin_PLUGINNAME_MassiveActionsFieldsDisplay ($type, $table, $field, $linkfield).
+It must return true if the element is displayed and false otherwise (in this case the display default will be applied).
+An example:
 {{{
 // How to display specific update fields ?
 function plugin_example_MassiveActionsFieldsDisplay($type,$table,$field,$linkfield){
@@ -544,7 +549,8 @@ function plugin_example_MassiveActionsFieldsDisplay($type,$table,$field,$linkfie
 }
 }}}
 
-Vous pouvez également définir de nouvelles actions de modifications massives en définissant les fonctions suivantes :
+	
+You can also define new actions massive changes in defining the following functions:
 {{{
 // Define actions : 
 function plugin_example_MassiveActions($type){
@@ -631,10 +637,10 @@ function plugin_example_MassiveActionsProcess($data){
 }
 }}}
 
-=== Personnalisation de l'export dynamique ===
+=== Customizing the dynamic export ===
 
-Il est possible si l'export dynamic standard doit etre personnaliser de le faire en définissant la fonction plugin_PLUGINNAME_dynamicReport($parm). 
-$parm etant les paramètres passés en $_GET provenant du Pager (fonction printPager).
+It is possible if the dynamic export standard must be customized to do so by defining the function plugin_PLUGINNAME_dynamicReport ($parm).
+$parm parameters being awarded $_GET from Pager (printPager function).
 
 {{{
 // Do special actions for dynamic report
@@ -650,8 +656,9 @@ function plugin_example_dynamicReport($parm){
 }
 }}}
 
-On peux définir des données en plus à passer à la fonction d'export dynamique en définissant la fonction : plugin_PLUGINNAME_addParamFordynamicReport.
-Les paramètres de recherche sont accessibles via les variables de session.
+	
+We can define data in addition to taking the dynamic export function by defining the function: plugin_PLUGINNAME_addParamFordynamicReport.
+The search parameters are accessible via session variables.
 
 {{{
 // Add parameters to printPager in search system
