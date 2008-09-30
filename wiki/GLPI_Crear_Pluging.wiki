@@ -258,7 +258,7 @@ function plugin_planning_populate_example($parm){
 	return $parm;
 }
 }}}
-- To set the display in the planning: {{{$PLUGIN_HOOKS['display_planning']['example']="plugin_display_planning_PLUGIN_NAME";}}}
+ - To set the display in the planning: {{{$PLUGIN_HOOKS['display_planning']['example']="plugin_display_planning_PLUGIN_NAME";}}}
 {{{
 // Display the planning item
 function plugin_display_planning_PLUGIN_NAME($parm){
