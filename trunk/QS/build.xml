@@ -19,7 +19,7 @@
 	    <pathelement location="${java.home}/lib/tools.jar"/>
 	    <pathelement location="${java.home}/../lib/tools.jar"/>
 	    <pathelement location="${java.home}/classes"/>
-	    <pathelement location="${lib}/yale.jar"/>
+	  	<pathelement location="${yale.home}/${yale.version}/lib/rapidminer.jar"/>
   </path>
 	
   <path id="classpath">
