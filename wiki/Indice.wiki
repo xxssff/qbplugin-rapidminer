@@ -1,9 +1,15 @@
 = Introduction =
 
-Migración de las implementaciones realizadas en YALE 3.4 a RapidMiner 4.1
-La idea es utilizar todo lo que RapidMiner 4.1 incluye y reducir la programación propia al mínimo.
+Migración de la implementación a Rapidminer 4.4
+Se realiza el registro de las distancias/similitudes
+Migración de las implementaciones realizadas en YALE 3.4 a RapidMiner 4.2
 
-= Problema actual =
+
+= Problemas actuales =
+Revisar la ampliación de los discretizadores para el soporte de las series. Puede ser mejor eliminar el sistema de parámetros y pasarlo a la discretización de todos los atributos que formen una serie de forma conjunta. 
+
+Dependerá del mecanismo que se use para el Kernel Intervalar. Al definir las distancias como clases dentro del paquete tools.math ya no son operadores y por tanto no tienen acceso al conjunto de objetos que se están procesando. Por tanto la información de los límites deberá llegar desde otro lugar. Además la instanciación de la distancia se realiza por parte del operador que la use (p.ej. NearestNeighbors) por lo que no se le puede completar información de forma previa.
+
 ----
 
 El Kernel intervalar depende de los valores límite de los intervalos de discretización
@@ -46,6 +52,24 @@ La cuestión es ver como afecta cuando además del modelo de discretización exi
 ----
 
 = Detalles =
+Registro de distancias
+
+Para el registro de distancias definidas en un Plugin aparece en la versión 4.4 la invocación de un método InitPlugin en una clase especial del plugin que es llamada si existe y un método en DistancesMeasures que amplía las matrices con las similitudes disponibles.
+
+{{{
+package com.rapidminer;
+
+import com.rapidminer.tools.math.similarity.DistanceMeasures;
+import qbts.distances.*;
+
+public class PluginInit {
+  public static void initPlugin(){
+		DistanceMeasures.registerMeasure(DistanceMeasures.NOMINAL_MEASURES_TYPE, "QSISimilarity", QSISimilarity.class);	
+  }
+}
+}}}
+
+
 AmpliaciOn a series
 
 La idea de ampliar la discretización a series se enfoca por medio de hacer nuevos operadores de discretización olvidando la extensión de RM con las listas de bloques.
