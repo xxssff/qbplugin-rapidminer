@@ -24,7 +24,7 @@ ya está discretizado por lo que eso se ha perdido.
 Las soluciones pueden ser:
    * Obligar a la entrada del conjunto original de nuevo.- De todas formas el acceso al conjunto de datos original no es suficiente puesto que si se han discretizado todos los atributos juntos habría que obtener los valores máximos y mínimos de todos, pero desde el modelo de discretización no se sabe como se hizo la discretización, por lo que habría que considerar la colocación de un parámetro para poder comunicarlo.
    * Realizar un nuevo operador que realice la discretización y almacene los valores
-   * ...Pendiente...
+   * Utilizar obligatoriamente los límites del rango en los nombres de los valores nominales en que se discretizan los valores reales. Existen tres mecanismos para denominar las clases de una discreización: corto (rangea, rangeb), largo y con rango (que introduce los límites en el nombre
 ---- 
 
 
