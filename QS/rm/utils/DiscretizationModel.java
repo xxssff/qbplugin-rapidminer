@@ -47,7 +47,7 @@ import com.rapidminer.operator.OperatorException;
 import com.rapidminer.operator.preprocessing.PreprocessingModel;
 import com.rapidminer.tools.Ontology;
 import com.rapidminer.tools.Tools;
-import com.rapidminer.tools.Tupel;
+import com.rapidminer.tools.container.Tupel;
 
 /**
  * The generic discretization model.
