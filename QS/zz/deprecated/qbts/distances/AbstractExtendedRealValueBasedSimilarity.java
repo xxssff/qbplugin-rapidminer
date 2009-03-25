@@ -1,4 +1,4 @@
-package qbts.distances;
+package zz.deprecated.qbts.distances;
 
 import com.rapidminer.example.ExampleSet;
 import com.rapidminer.operator.OperatorException;

@@ -1,4 +1,6 @@
-package qbts.distances;
+package zz.deprecated.qbts.distances;
+
+import qbts.distances.QSISimilarity;
 
 import com.rapidminer.operator.IOObject;
 import com.rapidminer.operator.Operator;

@@ -52,10 +52,7 @@ import com.rapidminer.tools.math.similarity.SimilarityMeasure;;
 public class QSISimilarity extends SimilarityMeasure {
 	private static final long serialVersionUID = 3640959448681534457L;
 	
-	
-	
-	GroupedModel dm;
-	
+
 	/*
 	protected double pointDistance(int i, int j, double[] ts1, double[] ts2) {
 		return ( ts1[i] == ts2[j] ? 1 : 0);

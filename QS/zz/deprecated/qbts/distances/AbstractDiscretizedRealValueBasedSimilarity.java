@@ -1,4 +1,4 @@
-package qbts.distances;
+package zz.deprecated.qbts.distances;
 
 import qbts.preprocessing.discretization.DiscretizationModelSeries;
 
