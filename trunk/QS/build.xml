@@ -4,7 +4,7 @@
     Construcción de QS
   </description>
 
-  <property name="yale.version" value="RM"/>
+  <property name="yale.version" value="RM44"/>
   <property name="yale.home" location="d:/ws"/>
 
   <property name="src"           location="."/>
@@ -41,7 +41,7 @@
   <target name="compile" depends="init" description="Compila todos los fuentes">
     <echo message="Compilando con Java desde: ${java.home}"/>
     <echo message="versión de Java: ${java.version}"/>
-    <javac debug="${compiler.debug}" destdir="${build}" deprecation="${compiler.deprecation}" compiler="${compiler.version}">
+    <javac debug="${compiler.debug}" destdir="${build}" deprecation="${compiler.deprecation}" >
       <classpath refid="classpath"/>
       <src path="${src}"/>
       <!-- includes all ... -->

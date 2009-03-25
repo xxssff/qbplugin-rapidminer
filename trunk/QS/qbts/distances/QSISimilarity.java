@@ -24,28 +24,73 @@
  */
 package qbts.distances;
 
+import java.lang.reflect.Method;
+
+import srctest.HelperOperatorConstructor;
+
 import com.rapidminer.example.ExampleSet;
 import com.rapidminer.example.Tools;
 import com.rapidminer.operator.GroupedModel;
+import com.rapidminer.operator.IOContainer;
+import com.rapidminer.operator.MissingIOObjectException;
+import com.rapidminer.operator.Model;
+import com.rapidminer.operator.Operator;
+import com.rapidminer.operator.OperatorDescription;
 import com.rapidminer.operator.OperatorException;
+import com.rapidminer.operator.preprocessing.NoiseOperator;
+import com.rapidminer.parameter.ParameterHandler;
+import com.rapidminer.tools.math.similarity.SimilarityMeasure;;
 
 
 /**
  * A similarity measure based on "Longest Common String".  
  * 
  * @author F.J. Cuberos
- * @version $Id: QSISimilarity.java,v 1.1 2007/09/14 Exp $
+ * @version $Id: QSISimilarity.java,v 2.0 2009/02/14 Exp $
  */
 
-public class QSISimilarity extends AbstractExtendedRealValueBasedSimilarity {
+public class QSISimilarity extends SimilarityMeasure {
 	private static final long serialVersionUID = 3640959448681534457L;
-
+	
+	
+	
 	GroupedModel dm;
 	
+	/*
 	protected double pointDistance(int i, int j, double[] ts1, double[] ts2) {
 		return ( ts1[i] == ts2[j] ? 1 : 0);
 	}
+	*/
+	
+	public void init(ExampleSet exampleSet, ParameterHandler parameterHandler) {
+	    // case parameter handler to Operator
+	    Operator operator = (Operator)parameterHandler;
 
+	    
+	    String methodName="getInput";
+		
+		HelperOperatorConstructor hOp=new HelperOperatorConstructor();
+		Method metodo = hOp.findPrivateMethod(operator.getClass().toString(), methodName );
+		IOContainer ret= (IOContainer) hOp.invokePrivateMethodOperator(operator, metodo, new  Object[] {null});
+
+	    // do whatever you want...
+		try {
+//			 retrieve the model
+			dm = ret.get(GroupedModel.class);
+		} catch (MissingIOObjectException e) {
+			e.printStackTrace();
+		}
+	}
+	
+
+	public double calculateSimilarity(double[] pcVx, double[] pcVy){
+		return similarity(pcVx,pcVy);
+	}
+	
+	public double calculateDistance(double[] pcVx, double[] pcVy){
+		return similarity(pcVx,pcVy);
+	}
+	
 	public double similarity(double[] pcVx, double[] pcVy) {
 		if ((pcVx == null) || (pcVy == null))
 			 return Double.NaN;
@@ -84,11 +129,8 @@ public class QSISimilarity extends AbstractExtendedRealValueBasedSimilarity {
 	
 	public void init(ExampleSet es) throws OperatorException {
         Tools.onlyNominalAttributes(es, "QSI similarity");
-        super.init(es);
+        //super.init(es);
 	}	
 	
 
-	public boolean isDistance() {
-		return false;
-	}
 }

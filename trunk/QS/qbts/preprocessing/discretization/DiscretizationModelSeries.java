@@ -29,7 +29,7 @@ import srctest.HelperOperatorConstructor;
 
 import com.rapidminer.example.ExampleSet;
 import rm.utils.DiscretizationModel;
-import com.rapidminer.tools.Tupel;
+import com.rapidminer.tools.container.Tupel;
 
 /**
  * The generic discretization model.

@@ -3,6 +3,6 @@
 	<classpathentry excluding="KOKO/|lib|test/" kind="src" path=""/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/RM"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/RM44"/>
 	<classpathentry kind="output" path="build"/>
 </classpath>

@@ -10,11 +10,13 @@ import qbts.preprocessing.discretization.DiscretizationModelSeries;
 
 import com.rapidminer.example.Attribute;
 import com.rapidminer.example.ExampleSet;
+import com.rapidminer.operator.Model;
 import com.rapidminer.operator.OperatorException;
-import com.rapidminer.tools.Tupel;
+import com.rapidminer.tools.container.Tupel;
+import com.rapidminer.tools.math.similarity.SimilarityMeasure;;
 
-public class IntervalKernel extends AbstractDiscretizedRealValueBasedSimilarity {
-
+//public class IntervalKernel extends AbstractDiscretizedRealValueBasedSimilarity {
+public class IntervalKernel extends SimilarityMeasure{
 	
 	
 /*	PROBLEMA:
@@ -42,20 +44,28 @@ public class IntervalKernel extends AbstractDiscretizedRealValueBasedSimilarity 
 	SortedSet<Integer> in;
 	double[] discre; 
 	
+
+	public double calculateSimilarity(double[] e1, double[] e2) {
+		return Kernel_Intervalar(e1, e2, discre, 0.7);
+	}
+	public double calculateDistance(double[] e1, double[] e2) {
+		return Kernel_Intervalar(e1, e2, discre, 0.7);
+	}
+	
 	public double similarity(double[] e1, double[] e2) {
 		return Kernel_Intervalar(e1, e2, discre, 0.7);
 	}
 
-	public boolean isDistance() {
+/*	public boolean isDistance() {
 		return false;
-	}
+	}*/
 	
 	public void init(ExampleSet es, DiscretizationModelSeries dm)throws OperatorException {
 		
 		if (dm.getExtremLimits()==null)
 			throw new OperatorException("Error. The distance IntervalKernel needs extrem limits of discretization.");
 		
-		super.init(es);
+		//super.init(es);
 		
 		// Almacenar el esquema de discretización.
 		// Como sólo se aplica a series sólo hay uno y no uno por atributo.
@@ -112,6 +122,13 @@ public class IntervalKernel extends AbstractDiscretizedRealValueBasedSimilarity 
 			coste += Math.pow(lambda, dist[(int) dVx[i]][(int) dVy[i]]);
 	
 		return coste;
+	}
+
+	@Override
+	public void init(ExampleSet exampleSet) throws OperatorException {
+		// TODO Apéndice de método generado automáticamente
+		
+		init(exampleSet,(DiscretizationModelSeries)getInput(Model.class));
 	}
 
 
