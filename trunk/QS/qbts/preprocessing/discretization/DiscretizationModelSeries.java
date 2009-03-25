@@ -28,7 +28,8 @@ import java.util.SortedSet;
 import srctest.HelperOperatorConstructor;
 
 import com.rapidminer.example.ExampleSet;
-import rm.utils.DiscretizationModel;
+//import rm.utils.DiscretizationModel;
+import com.rapidminer.operator.preprocessing.discretization.DiscretizationModel;
 import com.rapidminer.tools.container.Tupel;
 
 /**

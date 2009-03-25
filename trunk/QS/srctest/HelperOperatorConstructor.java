@@ -108,6 +108,7 @@ public  class HelperOperatorConstructor {
 	}
 	
 	public Object invokePrivateMethodOperator(Operator op,Method metodoInvocar,Object[] args){
+		
 		try {
 			metodoInvocar.setAccessible(true);
 			Object ret=metodoInvocar.invoke(op,args);
@@ -130,7 +131,32 @@ public  class HelperOperatorConstructor {
 		return null;
 	}
 	
+	//
+	public Object invokePrivateMethodOperator(Operator op,String methodName,Object[] args){
+		Method metodoInvocar=this.findPrivateMethod(op.getClass().toString(), methodName);
+		try {
+			metodoInvocar.setAccessible(true);
+			Object ret=metodoInvocar.invoke(op,args);
+			return ret;
+		}  catch (SecurityException e) {
+			// TODO Bloque catch generado automáticamente
+			e.printStackTrace();
+		}catch (IllegalArgumentException e) {
+			// TODO Bloque catch generado automáticamente
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Bloque catch generado automáticamente
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			// TODO Bloque catch generado automáticamente
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
 
+	
+	
 	public Field findPrivateField(String className,String fieldName){
 		
 		Class toRun=null;
