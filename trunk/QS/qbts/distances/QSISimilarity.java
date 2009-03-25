@@ -61,27 +61,7 @@ public class QSISimilarity extends SimilarityMeasure {
 		return ( ts1[i] == ts2[j] ? 1 : 0);
 	}
 	*/
-	
-	public void init(ExampleSet exampleSet, ParameterHandler parameterHandler) {
-	    // case parameter handler to Operator
-	    Operator operator = (Operator)parameterHandler;
 
-	    
-	    String methodName="getInput";
-		
-		HelperOperatorConstructor hOp=new HelperOperatorConstructor();
-		Method metodo = hOp.findPrivateMethod(operator.getClass().toString(), methodName );
-		IOContainer ret= (IOContainer) hOp.invokePrivateMethodOperator(operator, metodo, new  Object[] {null});
-
-	    // do whatever you want...
-		try {
-//			 retrieve the model
-			dm = ret.get(GroupedModel.class);
-		} catch (MissingIOObjectException e) {
-			e.printStackTrace();
-		}
-	}
-	
 
 	public double calculateSimilarity(double[] pcVx, double[] pcVy){
 		return similarity(pcVx,pcVy);

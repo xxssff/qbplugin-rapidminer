@@ -1,5 +1,6 @@
 package qbts.distances;
 
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -7,11 +8,18 @@ import java.util.Set;
 import java.util.SortedSet;
 
 import qbts.preprocessing.discretization.DiscretizationModelSeries;
+import srctest.HelperOperatorConstructor;
 
 import com.rapidminer.example.Attribute;
 import com.rapidminer.example.ExampleSet;
+import com.rapidminer.operator.GroupedModel;
+import com.rapidminer.operator.IOContainer;
+import com.rapidminer.operator.MissingIOObjectException;
 import com.rapidminer.operator.Model;
+import com.rapidminer.operator.Operator;
 import com.rapidminer.operator.OperatorException;
+import com.rapidminer.operator.preprocessing.discretization.DiscretizationModel;
+import com.rapidminer.parameter.ParameterHandler;
 import com.rapidminer.tools.container.Tupel;
 import com.rapidminer.tools.math.similarity.SimilarityMeasure;;
 
@@ -43,7 +51,7 @@ public class IntervalKernel extends SimilarityMeasure{
 	
 	SortedSet<Integer> in;
 	double[] discre; 
-	
+	GroupedModel dm;
 
 	public double calculateSimilarity(double[] e1, double[] e2) {
 		return Kernel_Intervalar(e1, e2, discre, 0.7);
@@ -59,6 +67,8 @@ public class IntervalKernel extends SimilarityMeasure{
 /*	public boolean isDistance() {
 		return false;
 	}*/
+	
+	
 	
 	public void init(ExampleSet es, DiscretizationModelSeries dm)throws OperatorException {
 		
@@ -128,8 +138,30 @@ public class IntervalKernel extends SimilarityMeasure{
 	public void init(ExampleSet exampleSet) throws OperatorException {
 		// TODO Apéndice de método generado automáticamente
 		
-		init(exampleSet,(DiscretizationModelSeries)getInput(Model.class));
+		//init(exampleSet,(DiscretizationModelSeries)getInput(Model.class));
 	}
+	
+	
+	public void init(ExampleSet exampleSet, ParameterHandler parameterHandler) {
+	    // case parameter handler to Operator
+	    Operator operator = (Operator)parameterHandler;
+
+	    
+	    String methodName="getInput";
+		
+		HelperOperatorConstructor hOp=new HelperOperatorConstructor();
+		Method metodo = hOp.findPrivateMethod(operator.getClass().toString(), methodName );
+		IOContainer ret= (IOContainer) hOp.invokePrivateMethodOperator(operator, metodo, new  Object[] {null});
+
+	    // do whatever you want...
+		try {
+//			 retrieve the model
+			dm = ret.get(GroupedModel.class);
+		} catch (MissingIOObjectException e) {
+			e.printStackTrace();
+		}
+	}
+	
 
 
 }
