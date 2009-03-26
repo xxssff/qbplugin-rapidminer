@@ -1,7 +1,8 @@
   * [Indice Inicio]
 ----
   * [Distancias Distancias]
-  * [ArticlesDom DOM manipulation]
+  * [Discretizacion Discretizaciones]
+
   * [ArticlesStyle CSS and style]
   * [ArticlesTips Tips and tricks]
   * [DOMReference DOM reference]
