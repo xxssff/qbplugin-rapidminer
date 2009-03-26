@@ -70,23 +70,6 @@ La cuestión es ver como afecta cuando además del modelo de discretización exi
 ----
 
 = Detalles =
-Registro de distancias
-
-Para el registro de distancias definidas en un Plugin aparece en la versión 4.4 la invocación de un método InitPlugin en una clase especial del plugin que es llamada si existe y un método en DistancesMeasures que amplía las matrices con las similitudes disponibles.
-
-{{{
-package com.rapidminer;
-
-import com.rapidminer.tools.math.similarity.DistanceMeasures;
-import qbts.distances.*;
-
-public class PluginInit {
-  public static void initPlugin(){
-		DistanceMeasures.registerMeasure(DistanceMeasures.NOMINAL_MEASURES_TYPE, "QSISimilarity", QSISimilarity.class);	
-  }
-}
-}}}
-
 
 AmpliaciOn a series
 
