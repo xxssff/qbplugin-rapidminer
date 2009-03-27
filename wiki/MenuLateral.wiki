@@ -2,9 +2,6 @@
 ----
   * [Distancias Distancias]
   * [Discretizacion Discretizaciones]
-    * [DiscretizaSeries Ampliación a Series]
-  * [ArticlesStyle CSS and style]
-  * [ArticlesTips Tips and tricks]
-  * [DOMReference DOM reference]
-  * [HTMLElements HTML reference]
+     * [DiscretizaSeries Ampliación a Series]
+  * [Comentarios Comentarios]
   * [FAQ Preguntas Recurrentes]
