@@ -20,13 +20,12 @@
  *  You should have received a copy of the GNU Affero General Public License
  *  along with this program.  If not, see http://www.gnu.org/licenses/.
  */
-package qbts.preprocessing.discretization.rm;
+//package qbts.preprocessing.discretization.rm;
+package com.rapidminer.operator.preprocessing.discretization;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
-import qbts.preprocessing.discretization.DiscretizationModelSeries;
 
 import com.rapidminer.example.Attribute;
 import com.rapidminer.example.ExampleSet;
@@ -44,23 +43,44 @@ import com.rapidminer.tools.Ontology;
  * This operator discretizes all numeric attributes in the dataset into nominal attributes. 
  * This discretization is performed by simple binning, i.e. the specified number of equally sized bins is created and the numerical values are simply sorted into
  * those bins. Skips all special attributes including the label.
- * If the parameter Discretize_all_together  is true the values of all the input attributes are process together, resulting one discretization scheme.
+ * The values of all the series attributes are process together, resulting the same discretization scheme for every series attribute.
  * 
  * @author Sebastian Land, Ingo Mierswa, F.J. Cuberos
  * @version $Id: BinDiscretizationSeries.java,v 1.0 2008/06/28 10:52:02 fjcuberos Exp $
  */
 public class BinDiscretizationExtended extends BinDiscretization {
 	
-	// FJ Modification	
-	public static final String PARAMETER_ALL_ATTRIBUTES = "discretize_all_together";
-	public static final String PARAMETER_INCLUDE_LIMITS = "include_extrem_limits";
-	// FJ End	
-	
+
 	public BinDiscretizationExtended(OperatorDescription description) {
 		super(description);
 	}
 
 	public Model createPreprocessingModel(ExampleSet exampleSet) throws OperatorException {
+		DiscretizationModel model = new DiscretizationModel(exampleSet);
+
+		exampleSet.recalculateAllAttributeStatistics();
+		int numberOfBins = getParameterAsInt(PARAMETER_NUMBER_OF_BINS);
+		HashMap<Attribute, double[]> ranges = new HashMap<Attribute, double[]>();
+
+		for (Attribute attribute : exampleSet.getAttributes()) {
+			if (attribute.isNumerical()) { // skip nominal and date attributes
+				double[] binRange = new double[numberOfBins];
+				double min = exampleSet.getStatistics(attribute, Statistics.MINIMUM);
+				double max = exampleSet.getStatistics(attribute, Statistics.MAXIMUM);
+				for (int b = 0; b < numberOfBins - 1; b++) {
+					binRange[b] = min + (((double) (b + 1) / (double) numberOfBins) * (max - min));
+				}
+				binRange[numberOfBins - 1] = Double.POSITIVE_INFINITY;
+				ranges.put(attribute, binRange);
+			}
+		}
+		model.setRanges(ranges, "range", getParameterAsInt(PARAMETER_RANGE_NAME_TYPE));
+		return (model);
+	}
+	
+	
+	
+	public Model OLDcreatePreprocessingModel(ExampleSet exampleSet) throws OperatorException {
 		if (getParameterAsBoolean(PARAMETER_ALL_ATTRIBUTES)){
 			DiscretizationModelSeries model = new DiscretizationModelSeries(exampleSet);
 
@@ -111,15 +131,5 @@ public class BinDiscretizationExtended extends BinDiscretization {
 		}
 	}
 
-	
-	public List<ParameterType> getParameterTypes() {
-		List<ParameterType> types = super.getParameterTypes();
 
-		// FJ Modification
-		types.add(new ParameterTypeBoolean(PARAMETER_ALL_ATTRIBUTES , "Indicates if ALL the attributes are discretized together.", false));
-		types.add(new ParameterTypeBoolean(PARAMETER_INCLUDE_LIMITS, "Indicates if extrem limitsmust be included in the model.", false));
-//		FJ END
-		
-		return types;
-	}
 }
