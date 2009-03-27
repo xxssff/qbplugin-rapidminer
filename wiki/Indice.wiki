@@ -53,17 +53,9 @@ La cuestión es ver como afecta cuando además del modelo de discretización exi
 
 ----
 
-= Detalles =
-
-AmpliaciOn a series
-
-La idea de ampliar la discretización a series se enfoca por medio de hacer nuevos operadores de discretización olvidando la extensión de RM con las listas de bloques.
-Estos operadores se limitan (caso unidimensional) a generar el mismo rango para todos los atributos.
-Una vez implementados se puede ver la posibilidad de incluir el código en el operador original.
 
 
-
-[Comentarios] 
+= [Comentarios] =
 
 
 
