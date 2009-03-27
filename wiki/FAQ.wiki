@@ -13,4 +13,4 @@
   Si se quiere la versión windows se lanza sin indicar la clase y añadiendo el parámetro -show
 
 ==Modificar el fichero MANIFEST==
-El fichero MANIFEST.MF se crea en cada compresión de generación del qbts.jar no siendo copia del fichero que se encuentre en el proyecto. Para incluir alguna línea especifíca se debe modificar la sección *dist* del constructor de !Ant (build.xml).
+El fichero MANIFEST.MF se crea en cada compresión de generación del qbts.jar no siendo copia del fichero que se encuentre en el proyecto. Para incluir alguna línea especifíca se debe modificar la sección *dist* del constructor de Ant (build.xml).
