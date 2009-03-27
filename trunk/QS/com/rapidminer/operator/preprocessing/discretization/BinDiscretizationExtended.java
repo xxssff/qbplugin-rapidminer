@@ -81,8 +81,7 @@ public class BinDiscretizationExtended extends BinDiscretization {
 	
 	
 	public Model OLDcreatePreprocessingModel(ExampleSet exampleSet) throws OperatorException {
-		if (getParameterAsBoolean(PARAMETER_ALL_ATTRIBUTES)){
-			DiscretizationModelSeries model = new DiscretizationModelSeries(exampleSet);
+			DiscretizationModel model = new DiscretizationModel(exampleSet);
 
 			exampleSet.recalculateAllAttributeStatistics();
 			int numberOfBins = getParameterAsInt(PARAMETER_NUMBER_OF_BINS);
@@ -109,27 +108,11 @@ public class BinDiscretizationExtended extends BinDiscretization {
 			for (Attribute attribute : exampleSet.getAttributes()) {
 				ranges.put(attribute, binRange);
 			}
-			model.setRanges(ranges, "range", getParameterAsBoolean(PARAMETER_RANGE_NAME_TYPE));
-			if (getParameterAsBoolean(PARAMETER_INCLUDE_LIMITS)){
-				model.setLimitsIncluded(true);
-				double[][] values = new double[exampleSet.getAttributes().size()][2];
-				int index = 0;
-				for (Attribute attribute : exampleSet.getAttributes()){
-					values[index][0] = min;
-					values[index++][1] = max;
-				}
-				model.setExtremLimits(values);
-			}
+			model.setRanges(ranges, "range", getParameterAsInt(PARAMETER_RANGE_NAME_TYPE));
+	
 			
 			return (model);
 		}
-		else{
-			if (getParameterAsBoolean(PARAMETER_INCLUDE_LIMITS)){
-				throw new OperatorException("Extrem limits can´t be included if attributes aren´t discretize altogether.");
-			}
-			return ( super.createPreprocessingModel(exampleSet));
-		}
-	}
 
 
 }
