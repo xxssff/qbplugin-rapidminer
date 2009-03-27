@@ -1,5 +1,5 @@
 #summary Comentarios sobre implementación de Similitudes.
-
+#sidebar MenuLateral
 = Introduccion =
 
 La base del plugin es añadir a RM nuevas similitudes y distancias entre series.
