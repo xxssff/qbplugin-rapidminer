@@ -1,4 +1,5 @@
 #summary Ampliación a series
+#sidebar MenuLateral
 
 = Introduction =
 
