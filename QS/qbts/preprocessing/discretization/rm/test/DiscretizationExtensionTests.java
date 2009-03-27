@@ -3,28 +3,17 @@ package qbts.preprocessing.discretization.rm.test;
 import java.io.File;
 import java.util.HashMap;
 import java.util.SortedSet;
-import java.util.TreeSet;
 
-import srctest.HelperOperatorConstructor;
-
-import junit.extensions.TestSetup;
-import junit.framework.Test;
 import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import srctest.HelperOperatorConstructor;
 
 import com.rapidminer.Process;
 import com.rapidminer.RapidMiner;
-import com.rapidminer.example.ExampleSet;
 import com.rapidminer.operator.IOContainer;
-import com.rapidminer.operator.MissingIOObjectException;
 import com.rapidminer.operator.Model;
-import com.rapidminer.operator.performance.PerformanceVector;
 import com.rapidminer.operator.preprocessing.discretization.DiscretizationModel;
-import com.rapidminer.test.ExampleSetDataSampleTest;
-import com.rapidminer.test.OperatorDataSampleTest;
 import com.rapidminer.tools.LogService;
-import com.rapidminer.tools.ParameterService;
-import com.rapidminer.tools.Tupel;
+import com.rapidminer.tools.container.Tupel;
 
 public class DiscretizationExtensionTests extends TestCase {
 
