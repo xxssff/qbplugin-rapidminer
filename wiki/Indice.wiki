@@ -5,7 +5,7 @@
 = Estado actual = 
 Migración de la implementación a Rapidminer 4.4
 Se realiza el registro de las distancias/similitudes
-Migración de las implementaciones realizadas en YALE 3.4 a RapidMiner 4.2
+Migración de las implementaciones realizadas en YALE 3.4 a !RapidMiner 4.2
 
 
 = Problemas actuales =
