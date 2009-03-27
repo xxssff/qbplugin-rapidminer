@@ -34,7 +34,7 @@ Dependerá del mecanismo que se use para el Kernel Intervalar. Al definir las di
 Si hay varias series sólo tengo que hacer una entrada por cada grupo de atributos y ya está.
 ESTUDIAR:
 
-¿como hacer que el BinDiscretization (por ejemplo) actúe sobre todos? Realmente hay que crear un idéntico pero modificado, ¿que ventaja tiene entonces utilizar el AttributeSubsetPreprocessing? Pero lo que es peor,si tengo que tratar varias veces un conjunto de ejemplos entonces me va a quedar un conjunto de modelos uno para cada serie. Supongo que eso no es problema pero puede ser inconveniente en la selección de los modelos.
+¿como hacer que el !BinDiscretization (por ejemplo) actúe sobre todos? Realmente hay que crear un idéntico pero modificado, ¿que ventaja tiene entonces utilizar el !AttributeSubsetPreprocessing? Pero lo que es peor,si tengo que tratar varias veces un conjunto de ejemplos entonces me va a quedar un conjunto de modelos uno para cada serie. Supongo que eso no es problema pero puede ser inconveniente en la selección de los modelos.
 
 LECCIONES:
 Se comprueba que los atributos son realmente sustituidos. El orden en que quedan es: 
@@ -48,7 +48,7 @@ LECCIONES:
   # Se puede crear un operador que se encargue de crear una similitud en la que almacene el modelo de discretización.
   # Aunque en la lista del inputContainer (que es donde están los objetos que entran a un operador) sólo tenga un modelo éste vendrá  dentro de un ~~!ModelContainer~~ !GroupedModel. El apply() de un ~~!ModelContainer~~ !GroupedModel realiza la aplicación secuencial de todos los modelos que incluya.
 La cuestión es ver como afecta cuando además del modelo de discretización exista uno de aprendizaje en el ~~!ModelContainer~~ !GroupedModel.
-  # Hay que crear una clase base de la que dependan todas las similitudes por lo que se pueda requerir; en el caso del kernel hay que almacenar los límites del modelo de discretización. La clase debe definirse al nivel de AbstractRealValueBasedSimilarity para evitar la comprobación que se hace en el init de AbstractRealValueBasedSimilarity de que todos los atributos sean numéricos. En nuestro caso tienen que ser nominales.
+  # Hay que crear una clase base de la que dependan todas las similitudes por lo que se pueda requerir; en el caso del kernel hay que almacenar los límites del modelo de discretización. La clase debe definirse al nivel de !AbstractRealValueBasedSimilarity para evitar la comprobación que se hace en el init de !AbstractRealValueBasedSimilarity de que todos los atributos sean numéricos. En nuestro caso tienen que ser nominales.
 
 
 ----
