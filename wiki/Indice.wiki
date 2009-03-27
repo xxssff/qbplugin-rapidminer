@@ -11,7 +11,7 @@ Migración de las implementaciones realizadas en YALE 3.4 a !RapidMiner 4.2
 = Problemas actuales =
 Revisar la ampliación de los discretizadores para el soporte de las series. Puede ser mejor eliminar el sistema de parámetros y pasarlo a la discretización de todos los atributos que formen una serie de forma conjunta. 
 
-Dependerá del mecanismo que se use para el Kernel Intervalar. Al definir las distancias como clases dentro del paquete tools.math ya no son operadores y por tanto no tienen acceso al conjunto de objetos que se están procesando. Por tanto la información de los límites deberá llegar desde otro lugar. Además la instanciación de la distancia se realiza por parte del operador que la use (p.ej. NearestNeighbors) por lo que no se le puede completar información de forma previa.
+Dependerá del mecanismo que se use para el Kernel Intervalar. Al definir las distancias como clases dentro del paquete tools.math ya no son operadores y por tanto no tienen acceso al conjunto de objetos que se están procesando. Por tanto la información de los límites deberá llegar desde otro lugar. Además la instanciación de la distancia se realiza por parte del operador que la use (p.ej. !NearestNeighbors) por lo que no se le puede completar información de forma previa.NearestNeighbors
 
 ----
 
