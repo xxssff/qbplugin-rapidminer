@@ -1,6 +1,11 @@
 #summary Implementación de nuevos métodos de discretización
 #sidebar MenuLateral
+
+
 = Introducción =
 
-= Ameva = 
+[DiscretizaSeries]
 
+
+
+= Ameva = 
