@@ -111,7 +111,7 @@ public class BinDiscretizationSeries extends BinDiscretization {
 					}
 				}
 			}
-			model.setRanges(ranges, "range", getParameterAsBoolean(PARAMETER_USE_LONG_RANGE_NAMES));
+			model.setRanges(ranges, "range", getParameterAsBoolean(PARAMETER_RANGE_NAME_TYPE));
 			return (model);
 		}
 		else{

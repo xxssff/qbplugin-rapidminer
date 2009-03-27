@@ -47,7 +47,8 @@
       <!-- includes all ... -->
       <include name="**/*.java"/>
       <!-- ...but Tests -->
-      <exclude name="**/test/*"/>
+      <exclude name="**/test/"/>
+        <exclude name="**/zz/"/>    	
     </javac>
   </target>
 
@@ -62,6 +63,8 @@
       <fileset dir="${build}">
       	<include name="**/*.class" /> 
     	<include name="**/operators.xml" /> 
+        <exclude name="**/test/"/>
+        <exclude name="**/zz/"/>    	
 
       	 </fileset>
         <manifest>

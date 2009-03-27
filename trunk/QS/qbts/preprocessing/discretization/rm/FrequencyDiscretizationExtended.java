@@ -147,7 +147,7 @@ public class FrequencyDiscretizationExtended extends FrequencyDiscretization {
 			}
 			
 			DiscretizationModelSeries model = new DiscretizationModelSeries(exampleSet);
-			model.setRanges(ranges, "range", getParameterAsBoolean(PARAMETER_USE_LONG_RANGE_NAMES));
+			model.setRanges(ranges, "range", getParameterAsBoolean(PARAMETER_RANGE_NAME_TYPE));
 			if (getParameterAsBoolean(PARAMETER_INCLUDE_LIMITS)){
 				model.setLimitsIncluded(true);
 /*			CASO GENERAL
