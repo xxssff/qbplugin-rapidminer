@@ -2,7 +2,7 @@
 
 = Introduccion =
 
-La base del plugin es añadir a RM 
+La base del plugin es añadir a RM nuevas similitudes y distancias entre series.
 
 = QSI = 
 
