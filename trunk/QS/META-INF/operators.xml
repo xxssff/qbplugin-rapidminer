@@ -1,8 +1,8 @@
 <operators>
   <operator 
      name        = "BinDiscretizationExtended"
-     class       = "qbts.preprocessing.discretization.rm.BinDiscretizationExtended"
-     description = "Discretize the input ExampleSet  (optionally all together )."
+     class       = "com.rapidminer.operator.preprocessing.discretization.BinDiscretizationExtended"
+     description = "Discretize the input ExampleSet  (series all attributes together )."
      group       = "QBTS"/>
 
   <operator 

@@ -33,86 +33,94 @@ import com.rapidminer.example.Statistics;
 import com.rapidminer.operator.Model;
 import com.rapidminer.operator.OperatorDescription;
 import com.rapidminer.operator.OperatorException;
-import com.rapidminer.operator.preprocessing.discretization.BinDiscretization;
-import com.rapidminer.operator.preprocessing.discretization.DiscretizationModel;
-import com.rapidminer.parameter.ParameterType;
-import com.rapidminer.parameter.ParameterTypeBoolean;
 import com.rapidminer.tools.Ontology;
 
 /**
  * This operator discretizes all numeric attributes in the dataset into nominal attributes. 
  * This discretization is performed by simple binning, i.e. the specified number of equally sized bins is created and the numerical values are simply sorted into
  * those bins. Skips all special attributes including the label.
- * The values of all the series attributes are process together, resulting the same discretization scheme for every series attribute.
+ * The values of everi series are processed together, resulting the same discretization scheme for each series attribute.
  * 
  * @author Sebastian Land, Ingo Mierswa, F.J. Cuberos
  * @version $Id: BinDiscretizationSeries.java,v 1.0 2008/06/28 10:52:02 fjcuberos Exp $
  */
 public class BinDiscretizationExtended extends BinDiscretization {
 	
-
+//TODO: Cuando existan constructores públicos de DiscretizationModel hay que volverlo a preprocessing.discretization.rm
+	// otra posibilidad es crear un DiscretizatioModelSeries vacío que herede todo de DiscretizationModel
+	
 	public BinDiscretizationExtended(OperatorDescription description) {
 		super(description);
 	}
 
+
 	public Model createPreprocessingModel(ExampleSet exampleSet) throws OperatorException {
 		DiscretizationModel model = new DiscretizationModel(exampleSet);
+		List<Attribute> lAtt=new ArrayList<Attribute>();
 
 		exampleSet.recalculateAllAttributeStatistics();
-		int numberOfBins = getParameterAsInt(PARAMETER_NUMBER_OF_BINS);
 		HashMap<Attribute, double[]> ranges = new HashMap<Attribute, double[]>();
 
 		for (Attribute attribute : exampleSet.getAttributes()) {
 			if (attribute.isNumerical()) { // skip nominal and date attributes
-				double[] binRange = new double[numberOfBins];
-				double min = exampleSet.getStatistics(attribute, Statistics.MINIMUM);
-				double max = exampleSet.getStatistics(attribute, Statistics.MAXIMUM);
-				for (int b = 0; b < numberOfBins - 1; b++) {
-					binRange[b] = min + (((double) (b + 1) / (double) numberOfBins) * (max - min));
-				}
-				binRange[numberOfBins - 1] = Double.POSITIVE_INFINITY;
-				ranges.put(attribute, binRange);
+				switch(attribute.getBlockType()){
+				case Ontology.VALUE_SERIES_START:
+					if (lAtt.isEmpty())
+						lAtt.add(attribute);
+					else
+						throw new OperatorException("Bad series definition (expected END, START found). ExampleSet definition error.");
+					break;
+				case Ontology.VALUE_SERIES_END:
+					if (lAtt.isEmpty())
+						throw new OperatorException("Bad series definition (END without START). ExampleSet definition error.");
+					else{
+						lAtt.add(attribute);
+						computeValues(exampleSet,lAtt,ranges);
+						lAtt.clear();
+					}
+					break;
+				case Ontology.VALUE_SERIES:
+					if (lAtt.isEmpty())
+						throw new OperatorException("Bad series definition (element without START). ExampleSet definition error.");							
+					else
+						lAtt.add(attribute);
+					break;
+				case Ontology.SINGLE_VALUE:
+					if (lAtt.isEmpty()){
+						lAtt.add(attribute);
+						computeValues(exampleSet,lAtt,ranges);
+						lAtt.clear();
+					}
+					break;
+				default:	
+					throw new OperatorException("VALUE_MATRIX attributes not supported.");
+				}	
 			}
 		}
 		model.setRanges(ranges, "range", getParameterAsInt(PARAMETER_RANGE_NAME_TYPE));
 		return (model);
 	}
-	
-	
-	
-	public Model OLDcreatePreprocessingModel(ExampleSet exampleSet) throws OperatorException {
-			DiscretizationModel model = new DiscretizationModel(exampleSet);
 
-			exampleSet.recalculateAllAttributeStatistics();
-			int numberOfBins = getParameterAsInt(PARAMETER_NUMBER_OF_BINS);
-			HashMap<Attribute, double[]> ranges = new HashMap<Attribute, double[]>();
-
-			//Get the values of every attibute
-			double min = Double.POSITIVE_INFINITY;
-			double max = Double.NEGATIVE_INFINITY;
-			for (Attribute attribute : exampleSet.getAttributes()) {
-				if (attribute.isNumerical()) { // skip nominal and date attributes
-					double mi = exampleSet.getStatistics(attribute, Statistics.MINIMUM);
-					double ma = exampleSet.getStatistics(attribute, Statistics.MAXIMUM);
-					if (mi < min) min=mi;
-					if (ma > max) max=ma;
-				}
-			}
-			// Compute the limits
-			double[] binRange = new double[numberOfBins];
-			for (int b = 0; b < numberOfBins - 1; b++) {
-				binRange[b] = min + (((double) (b + 1) / (double) numberOfBins) * (max - min));
-			}
-			binRange[numberOfBins - 1] = Double.POSITIVE_INFINITY;
-			// Assign the same limits to every attribute  
-			for (Attribute attribute : exampleSet.getAttributes()) {
-				ranges.put(attribute, binRange);
-			}
-			model.setRanges(ranges, "range", getParameterAsInt(PARAMETER_RANGE_NAME_TYPE));
-	
-			
-			return (model);
+	private void computeValues(ExampleSet eSet, List<Attribute> lA, HashMap<Attribute, double[]> ranges ) throws OperatorException{
+		int numberOfBins = getParameterAsInt(PARAMETER_NUMBER_OF_BINS);
+		double[] binRange = new double[numberOfBins];
+		double min=Double.POSITIVE_INFINITY;
+		double max=Double.NEGATIVE_INFINITY;
+		for (Attribute attribute : lA) {
+			double mi = eSet.getStatistics(attribute, Statistics.MINIMUM);
+			double ma = eSet.getStatistics(attribute, Statistics.MAXIMUM);
+			if (mi<min) min=mi;
+			if (ma>max) max=ma;
 		}
+		for (int b = 0; b < numberOfBins - 1; b++) {
+			binRange[b] = min + (((double) (b + 1) / (double) numberOfBins) * (max - min));
+		}
+		binRange[numberOfBins - 1] = Double.POSITIVE_INFINITY;
+		for (Attribute attribute : lA) {
+			ranges.put(attribute, binRange);
+		}
+	}	
+	
 
 
 }

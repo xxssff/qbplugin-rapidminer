@@ -15,10 +15,9 @@
           <parameter key="io_object"	value="ExampleSet"/>
       </operator>
       <operator name="ExampleSource (2)" class="ExampleSource">
-          <parameter key="attributes"	value="..\Samples\5at20s.aml"/>
+          <parameter key="attributes"	value="..\Samples\5at20s-serie.aml"/>
       </operator>
       <operator name="BinDiscretizationExtended" class="BinDiscretizationExtended">
-          <parameter key="discretize_all_together"	value="true"/>
           <parameter key="number_of_bins"	value="3"/>
           <parameter key="return_preprocessing_model"	value="true"/>
           <parameter key="use_long_range_names"	value="false"/>
