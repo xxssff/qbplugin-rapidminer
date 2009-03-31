@@ -12,6 +12,7 @@ import com.rapidminer.operator.Model;
 import com.rapidminer.operator.OperatorDescription;
 import com.rapidminer.operator.OperatorException;
 import com.rapidminer.operator.preprocessing.PreprocessingOperator;
+import com.rapidminer.operator.preprocessing.discretization.DiscretizationModel;
 import com.rapidminer.parameter.ParameterType;
 import com.rapidminer.parameter.ParameterTypeBoolean;
 
@@ -97,25 +98,25 @@ public abstract class AbstractCAIMAmevaDiscretizer extends PreprocessingOperator
 		}
 
 		
-		DiscretizationModelSeries model = new DiscretizationModelSeries(exampleSet);
-		model.setRanges(ranges, "range", getParameterAsBoolean(PARAMETER_USE_LONG_RANGE_NAMES));
+		DiscretizationModel model = new DiscretizationModel(exampleSet);
+		model.setRanges(ranges, "range", getParameterAsInt(PARAMETER_USE_LONG_RANGE_NAMES));
 		
-		if (getParameterAsBoolean(PARAMETER_INCLUDE_LIMITS)){
+/*		if (getParameterAsBoolean(PARAMETER_INCLUDE_LIMITS)){
 			model.setLimitsIncluded(true);
-			/*			CASO GENERAL
+						CASO GENERAL
 			 * 				double[][] values = new double[exampleSet.getAttributes().size()][2];
 							int index = 0;
 							for (Attribute attribute : exampleSet.getAttributes()){
 								values[index][0] = valores.get(0);
 								values[index++][1] = valores.get(valores.size()-1);
-							}*/
+							}
 
 			double[][] values = new double[1][2];
 			values[0][0] = lVal.get(0).getValue();
 			values[0][1] = lVal.get(lVal.size()-1).getValue();
 			model.setExtremLimits(values);
 		}
-
+*/
 		
 		return model;
 	} 

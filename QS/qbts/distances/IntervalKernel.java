@@ -51,7 +51,7 @@ public class IntervalKernel extends SimilarityMeasure{
 	
 	SortedSet<Integer> in;
 	double[] discre; 
-	Model dm;
+	DiscretizationModel dm;
 
 	public double calculateSimilarity(double[] e1, double[] e2) {
 		return Kernel_Intervalar(e1, e2, discre, 0.7);
@@ -69,8 +69,10 @@ public class IntervalKernel extends SimilarityMeasure{
 	}*/
 	
 	
-	
-	public void init(ExampleSet es, DiscretizationModelSeries dm)throws OperatorException {
+
+	public void init(ExampleSet exampleSet, ParameterHandler parameterHandler, IOContainer ioContainer) throws OperatorException {
+		//public void init(ExampleSet es, DiscretizationModelSeries dm)
+		
 		
 		if (dm.getExtremLimits()==null)
 			throw new OperatorException("Error. The distance IntervalKernel needs extrem limits of discretization.");
