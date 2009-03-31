@@ -48,9 +48,7 @@ import com.rapidminer.tools.Ontology;
  */
 public class BinDiscretizationExtended extends BinDiscretization {
 	
-//TODO: Cuando existan constructores públicos de DiscretizationModel hay que volverlo a preprocessing.discretization.rm
-	// otra posibilidad es crear un DiscretizatioModelSeries vacío que herede todo de DiscretizationModel
-	
+
 	public BinDiscretizationExtended(OperatorDescription description) {
 		super(description);
 	}
