@@ -55,7 +55,7 @@ public class BinDiscretizationExtended extends BinDiscretization {
 
 
 	public Model createPreprocessingModel(ExampleSet exampleSet) throws OperatorException {
-		DiscretizationModel model = new DiscretizationModel(exampleSet);
+		DiscretizationModel  model = new DiscretizationModel(exampleSet);
 		List<Attribute> lAtt=new ArrayList<Attribute>();
 
 		exampleSet.recalculateAllAttributeStatistics();
