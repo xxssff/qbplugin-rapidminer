@@ -21,7 +21,7 @@
  *  along with this program.  If not, see http://www.gnu.org/licenses/.
  */
 //package qbts.preprocessing.discretization.rm;
-package com.rapidminer.operator.preprocessing.discretization;
+package qbts.preprocessing.discretization.rm;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,6 +33,8 @@ import com.rapidminer.example.Statistics;
 import com.rapidminer.operator.Model;
 import com.rapidminer.operator.OperatorDescription;
 import com.rapidminer.operator.OperatorException;
+import com.rapidminer.operator.preprocessing.discretization.BinDiscretization;
+import com.rapidminer.operator.preprocessing.discretization.DiscretizationModel;
 import com.rapidminer.tools.Ontology;
 
 /**
