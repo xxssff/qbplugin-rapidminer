@@ -53,10 +53,6 @@ public class BinDiscretizationExtended extends BinDiscretization {
 		super(description);
 	}
 
-
-	int dd(){
-		return 2;
-	}
 	
 	
 	public Model createPreprocessingModel(ExampleSet exampleSet) throws OperatorException {
