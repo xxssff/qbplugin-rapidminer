@@ -67,7 +67,7 @@ public class BinDiscretizationExtended extends BinDiscretization {
 				case Ontology.VALUE_SERIES_START:
 					if (lAtt.isEmpty())
 						lAtt.add(attribute);
-					else
+					else 
 						throw new OperatorException("Bad series definition (expected END, START found). ExampleSet definition error.");
 					break;
 				case Ontology.VALUE_SERIES_END:
