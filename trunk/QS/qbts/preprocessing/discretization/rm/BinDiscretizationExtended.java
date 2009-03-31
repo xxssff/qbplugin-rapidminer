@@ -54,6 +54,11 @@ public class BinDiscretizationExtended extends BinDiscretization {
 	}
 
 
+	int dd(){
+		return 2;
+	}
+	
+	
 	public Model createPreprocessingModel(ExampleSet exampleSet) throws OperatorException {
 		DiscretizationModel  model = new DiscretizationModel(exampleSet);
 		List<Attribute> lAtt=new ArrayList<Attribute>();
@@ -101,7 +106,7 @@ public class BinDiscretizationExtended extends BinDiscretization {
 		return (model);
 	}
 
-	private void computeValues(ExampleSet eSet, List<Attribute> lA, HashMap<Attribute, double[]> ranges ) throws OperatorException{
+	private void computeValues (ExampleSet eSet, List<Attribute> lA, HashMap<Attribute, double[]> ranges ) throws OperatorException{
 		int numberOfBins = getParameterAsInt(PARAMETER_NUMBER_OF_BINS);
 		double[] binRange = new double[numberOfBins];
 		double min=Double.POSITIVE_INFINITY;
