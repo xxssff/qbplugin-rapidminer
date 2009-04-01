@@ -75,7 +75,7 @@ abstract public class Discretizer extends PreprocessingOperator {
 		return (model);
 	}
 
-	abstract protected void computeValues(ExampleSet eSet, List<Attribute> lA, HashMap<Attribute, double[]> ranges ) throws OperatorException;
+	abstract public void computeValues(ExampleSet eSet, List<Attribute> lA, HashMap<Attribute, double[]> ranges ) throws OperatorException;
 	
 
 	public List<ParameterType> getParameterTypes() {
