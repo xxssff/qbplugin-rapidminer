@@ -1,16 +1,11 @@
 #summary Implementación de nuevos métodos de discretización
+#labels Discretizar,Pendiente
 #sidebar MenuLateral
 
 = Introducción =
 Los discretizadores, como todas las demás implementaciones, deben utilizar al máximo los elementos de RM y modificarlos en lo menos posible.
 
-Ni la primera versión de un único bloque de discretización para cada serie, ni la inclusión de un atributo para discretizar de forma conjunta parecen naturales a la arquitectura de RM. La nueva idea es *procesar conjuntamente cada dimensión de una serie generando un bloque por atributo*.
 
-¿Habría alguna forma de reutilizar los discretizadores de RM sin tener que hacer ninguno nuevo?
-
-OPCION:
-  # Procesar cada serie creando un nuevo conjunto de un único atributo y *llamar al discretizador estándar*. Con el modelo devuelto hacer una replicación de los esquemas de discretización para cada elemento de la serie. Pros: Igual para cada discretizador. Mayor independencia de los cambios que se realicen. Cons: Espacio de memoria duplicado. Recurrir a la reflexion para acceder a los rangos del discretizador original ().
-  # *Crear nuevos operadores* copiados y modificarlos para realizar la ampliación. Pros: Al tener una clase nueva se pueden modificar las visibilidades. Cons: Cualquier actualización que se realice en RM obliga a actualizar.
 
 [DiscretizaSeries]
 
