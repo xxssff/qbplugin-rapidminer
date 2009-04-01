@@ -7,7 +7,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
 
-import qbts.preprocessing.discretization.DiscretizationModelSeries;
 import srctest.HelperOperatorConstructor;
 
 import com.rapidminer.example.Attribute;
@@ -28,25 +27,24 @@ public class IntervalKernel extends SimilarityMeasure{
 	
 	
 /*	PROBLEMA:
+ * 
  * El Kernel intervalar depende de los valores límite de los intervalos de discretización
  * (tanto el menor como el mayor) pero en el caso de las discretizaciones los valores
  * mínimos y máximo de los rangos menor y mayor respectivamente son almacenados como 
  * -infinito y +infinito (o ni siquiera son almacenados).
 
  * Para obtener esos valores requeriría accceder al ExampleSet original y obtenerlos de
- * las estadísticas de los propios atributos. Pero se supone que el conjunto que llega aquí 
- * ya está discretizado por lo que eso se ha perdido.
+ * las estadísticas de los propios atributos. 
+ *
+ * En el Init se debe comprobar
+ *     1) que el conjunto de ejemplos es una sóla serie nominal
+ *     2) que en la entrada del operador hay 
+ *     		Un modelo de discretización
+ *     		Un conjunto de ejemplos que suponemos que es el que llega como principal pero no discretizado
+ *     
+ * Se obtienen los cortes desde el modelo y los límites desde el conjunto no discretizado.
  * 
- * Si me llegan los vectores de valores 
- * 
-	¿Como relaciono elemento con atributo?
-		La única forma es por posición. 
-		Pero el almacenaje de ranges en el DM es por un tupla Atributo,cortes 
-		por tanto habrá que almacenar una nueva tupla posición_atributo, cortes
-		HashMap<Integer, SortedSet<Tupel<Double, String>>>
-		Aunque como voy a perder toda referencia a los atributos puedo hacer una array
-		con tamtas filas como atributos y cada una tantas columnas como cortes.
-		*/
+ */
 			
 	
 	SortedSet<Integer> in;
@@ -71,21 +69,22 @@ public class IntervalKernel extends SimilarityMeasure{
 	
 
 	public void init(ExampleSet exampleSet, ParameterHandler parameterHandler, IOContainer ioContainer) throws OperatorException {
-		//public void init(ExampleSet es, DiscretizationModelSeries dm)
+
+		//check if the exampleSet has only a series
+		/*
+		 * Para todos los atributos 
+		 *   El primero es un Series_start
+		 *   Los demás serán Series
+		 *   El último es un Series_end
+		 *   
+		 * Sino se cumple generar un warning - se aplicará el mismo esquema de discretización (el primero que se encuentre)
+		 * 
+		 * 
+		 */
 		
-		
-		if (dm.getExtremLimits()==null)
-			throw new OperatorException("Error. The distance IntervalKernel needs extrem limits of discretization.");
-		
-		//super.init(es);
-		
-		// Almacenar el esquema de discretización.
-		// Como sólo se aplica a series sólo hay uno y no uno por atributo.
-		
-		//Attribute firstAtt = (Attribute) (es.getAttributes().iterator().next());
-		//SortedSet<Tupel<Double, String>> cortes = dm.getRanges().get( firstAtt.getName());
-		
-		SortedSet<Tupel<Double, String>> cortes = (SortedSet<Tupel<Double, String>>)((Map.Entry)dm.getRanges().entrySet().iterator().next()).getValue();
+		DiscretizationModel dm=(DiscretizationModel) ioContainer.get(Model.class);
+		SortedSet<Tupel<Double, String>> cortes = (SortedSet<Tupel<Double, String>>)((Map.Entry) dm.getRanges().entrySet().iterator().next().getValue() );
+		ExampleSet eS = (ExampleSet) ioContainer.get(ExampleSet.class);
 		
 		discre= new double[cortes.size()+1];
 		int p=0;

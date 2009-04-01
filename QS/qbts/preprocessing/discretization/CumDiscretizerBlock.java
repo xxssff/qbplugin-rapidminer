@@ -72,7 +72,7 @@ public class CumDiscretizerBlock implements Comparable<CumDiscretizerBlock> {
 	 * @param clase				número de clase a que pertenece el ejemplo anterior
 	 * @param numClases			total de clases que existen
 	 * 
-	 * Cada bloque contie además de estos parámetros un par de vectores, del tamaño del número de clases,
+	 * Cada bloque contiene además de estos parámetros un par de vectores, del tamaño del número de clases,
 	 * que presentan 
 	 * occu   el número de apariciones para este valor que hay de cada clase
 	 * acum   el número de apariciones de cada clase de valores iguales o menores a éste
