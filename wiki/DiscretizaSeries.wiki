@@ -1,5 +1,5 @@
 #summary Ampliación a series
-#labels Pendiente,Discretizador
+#labels Pendiente,Discretizar
 #sidebar MenuLateral
 
 = Introduccion =
@@ -21,8 +21,6 @@ Ya puestos a crear un nuevo operador se prefiere la solución elegida.
 
 
 PENDIENTE: Ampliar al caso multidimensional. En ese caso si que será necesario un atributo que diga si se tiene que discretizar todas las dimensiones juntas o cada una por su lado.
-
-
 
 
 
