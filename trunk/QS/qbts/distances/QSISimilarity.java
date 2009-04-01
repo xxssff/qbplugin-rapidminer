@@ -53,13 +53,6 @@ public class QSISimilarity extends SimilarityMeasure {
 	private static final long serialVersionUID = 3640959448681534457L;
 	
 
-	/*
-	protected double pointDistance(int i, int j, double[] ts1, double[] ts2) {
-		return ( ts1[i] == ts2[j] ? 1 : 0);
-	}
-	*/
-
-
 	public double calculateSimilarity(double[] pcVx, double[] pcVy){
 		return similarity(pcVx,pcVy);
 	}
