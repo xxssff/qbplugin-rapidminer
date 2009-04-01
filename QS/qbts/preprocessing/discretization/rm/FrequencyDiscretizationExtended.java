@@ -27,12 +27,11 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
-import qbts.preprocessing.discretization.DiscretizationModelSeries;
-
 import com.rapidminer.example.Attribute;
 import com.rapidminer.example.Example;
 import com.rapidminer.example.ExampleSet;
 import com.rapidminer.example.Statistics;
+import com.rapidminer.example.set.SortedExampleSet;
 import com.rapidminer.operator.Model;
 import com.rapidminer.operator.OperatorDescription;
 import com.rapidminer.operator.OperatorException;
@@ -41,6 +40,9 @@ import com.rapidminer.operator.preprocessing.discretization.DiscretizationModel;
 import com.rapidminer.operator.preprocessing.discretization.FrequencyDiscretization;
 import com.rapidminer.parameter.ParameterType;
 import com.rapidminer.parameter.ParameterTypeBoolean;
+import com.rapidminer.parameter.ParameterTypeCategory;
+import com.rapidminer.parameter.ParameterTypeInt;
+import com.rapidminer.parameter.conditions.BooleanParameterCondition;
 
 /**
  * This operator discretizes all numeric attributes in the dataset into nominal attributes. This discretization is performed by equal frequency binning, i.e. the thresholds of all bins is selected in a way that all bins contain the same number of
@@ -51,12 +53,12 @@ import com.rapidminer.parameter.ParameterTypeBoolean;
  * @version $Id: FrequencyDiscretization.java,v 1.5 2008/05/09 19:23:25 ingomierswa Exp $
  */
 public class FrequencyDiscretizationExtended extends FrequencyDiscretization {
+	/** The parameter name for &quot;If true, the number of bins is instead determined by the square root of the number of non-missing values.&quot; */
+	public static final String PARAMETER_USE_SQRT_OF_EXAMPLES = "use_sqrt_of_examples";
 
-	
-	// FJ Modification	
-	public static final String PARAMETER_ALL_ATTRIBUTES = "discretize_all_together";
-	public static final String PARAMETER_INCLUDE_LIMITS = "include_extrem_limits";
-	// FJ End
+	/** The parameter for the number of bins. */
+	public static final String PARAMETER_NUMBER_OF_BINS = "number_of_bins";
+
 	
 	public FrequencyDiscretizationExtended(OperatorDescription description) {
 		super(description);
@@ -146,23 +148,23 @@ public class FrequencyDiscretizationExtended extends FrequencyDiscretization {
 				ranges.put(currentAttribute, attributeRanges);
 			}
 			
-			DiscretizationModelSeries model = new DiscretizationModelSeries(exampleSet);
-			model.setRanges(ranges, "range", getParameterAsBoolean(PARAMETER_RANGE_NAME_TYPE));
-			if (getParameterAsBoolean(PARAMETER_INCLUDE_LIMITS)){
+			DiscretizationModel model = new DiscretizationModel(exampleSet);
+			model.setRanges(ranges, "range", getParameterAsInt(PARAMETER_RANGE_NAME_TYPE));
+/*			if (getParameterAsBoolean(PARAMETER_INCLUDE_LIMITS)){
 				model.setLimitsIncluded(true);
-/*			CASO GENERAL
- * 				double[][] values = new double[exampleSet.getAttributes().size()][2];
+			CASO GENERAL
+ 				double[][] values = new double[exampleSet.getAttributes().size()][2];
 				int index = 0;
 				for (Attribute attribute : exampleSet.getAttributes()){
 					values[index][0] = valores.get(0);
 					values[index++][1] = valores.get(valores.size()-1);
-				}*/
+				}
 				double[][] values = new double[1][2];
 				values[0][0] = valores.get(0);
 				values[0][1] = valores.get(valores.size()-1);
 				model.setExtremLimits(values);
 			}
-				
+*/				
 			return model;
 		}
 		else{
@@ -191,13 +193,51 @@ public class FrequencyDiscretizationExtended extends FrequencyDiscretization {
 			return model;
 		}
 	}
+	
+	public void computeValues (ExampleSet eSet, List<Attribute> lA, HashMap<Attribute, double[]> ranges ) throws OperatorException{
+		if (useSqrt) {
+			numberOfBins = (int)Math.round(Math.sqrt(exampleSet.size() - (int) exampleSet.getStatistics(currentAttribute, Statistics.UNKNOWN)));
+		}
+		double[] attributeRanges = new double[numberOfBins];
+		ExampleSet sortedSet = new SortedExampleSet(exampleSet, currentAttribute, SortedExampleSet.INCREASING);
+
+		// finding ranges
+		double examplesPerBin = exampleSet.size() / (double) numberOfBins;
+		double currentBinSpace = examplesPerBin;
+		double lastValue = Double.NaN;
+		int currentBin = 0;
+
+		for (Example example : sortedSet) {
+			double value = example.getValue(currentAttribute);
+			if (!Double.isNaN(value)) {
+				// change bin if full and not last
+				if (currentBinSpace < 1 && currentBin < numberOfBins && value != lastValue) {
+					if (!Double.isNaN(lastValue)) {
+						attributeRanges[currentBin] = (lastValue + value) / 2;
+						currentBin++;
+						currentBinSpace += examplesPerBin; //adding because same values might cause binspace to be negative
+						if (currentBinSpace < 1)
+							throw new UserError(this, 944, currentAttribute.getName());
+					}
+				}
+				currentBinSpace--;
+				lastValue = value;
+			}
+		}
+		attributeRanges[numberOfBins - 1] = Double.POSITIVE_INFINITY;
+		ranges.put(currentAttribute, attributeRanges);
+	}	
+	
 
 	public List<ParameterType> getParameterTypes() {
 		List<ParameterType> types = super.getParameterTypes();
-
-		// FJ Modification
-		types.add(new ParameterTypeBoolean(PARAMETER_ALL_ATTRIBUTES , "Indicates if ALL the attributes are discretized together.", false));
-		types.add(new ParameterTypeBoolean(PARAMETER_INCLUDE_LIMITS, "Indicates if extrem limitsmust be included in the model.", false));
+		
+		types.add(new ParameterTypeBoolean(PARAMETER_USE_SQRT_OF_EXAMPLES, "If true, the number of bins is instead determined by the square root of the number of non-missing values.", false));
+		
+		ParameterType type = new ParameterTypeInt(PARAMETER_NUMBER_OF_BINS, "Defines the number of bins which should be used for each attribute.", 2, Integer.MAX_VALUE, 2);
+		type.registerDependencyCondition(new BooleanParameterCondition(this, PARAMETER_USE_SQRT_OF_EXAMPLES, false, false));
+		type.setExpert(false);
+		types.add(type);
 		
 		return types;
 	}
