@@ -54,7 +54,8 @@ public class IntervalKernel extends SimilarityMeasure{
 	SortedSet<Integer> in;
 	double[] discre; 
 	DiscretizationModel dm;
-	Map<String, SortedSet<Tupel<Double, String>>> ranges;
+	//Map<String, double[]> limits;
+	double [][] limits;
 
 	public double calculateSimilarity(double[] e1, double[] e2) {
 		return Kernel_Intervalar(e1, e2, discre, 0.7);
@@ -75,27 +76,35 @@ public class IntervalKernel extends SimilarityMeasure{
 
 	public void init(ExampleSet exampleSet, ParameterHandler parameterHandler, IOContainer ioContainer) throws OperatorException {
 
+		// TODO Hay que comprobar varias cosas
+		/* 
+		 * 1) que lo que se lee de la entrada se borra o sigue existiendo después del KNN
+		 * 2) si hay dos discretizadores en la entrada ¿están agrupados?  
+		 * 
+		 */
+
 		//NO es necesario porque como cada atributo tiene su conjunto de cortes se toma del Modelo que hay en la entrada
-		
+
 		DiscretizationModel dm=(DiscretizationModel) ioContainer.get(Model.class);
-		ranges = (Map<String, SortedSet<Tupel<Double, String>>> ) dm.getRanges();
-		
+		Map<String, SortedSet<Tupel<Double, String>>> ranges = (Map<String, SortedSet<Tupel<Double, String>>> ) dm.getRanges();
+
 		// Se debería comprobar que eSet y exampleSet tienen los mismos atributos y con idéntico nombre
 		// pero uno será numérico y el otro nominal.
-		
+
 		ExampleSet eSet = (ExampleSet) ioContainer.get(ExampleSet.class);
-		
+
 		/*
 		 * Pero en algún sitio hay que almacenar los extremos del conjunto de ejemplos 
 		 * Repitiendo parte del código de BinDiscrerization donde se calculan los máximos y 
 		 *   almacenándolos para cada atributo teniendo en cuenta los que son una serie   
 		 *
+		 * El valor mínimno hay que añadirlo al SortedSet
 		 * Ya está cargado el valor +infinito en el objeto ranges y se puede sustituir 
-		 *   por el límite máximo que se calcule. El problema está en el valor mínimno
-		 *   que hay que añadirlo al SortedSet
-		 *   
+		 *   por el límite máximo que se calcule, no tengo que hacer nada más porque 
+		 *   los valores van a venir ya discretizados.
 		 */
 		List<Attribute> lAtt=new ArrayList<Attribute>();
+		List<double[]> lLim=new ArrayList<double[]>();
 
 		eSet.recalculateAllAttributeStatistics();
 
@@ -113,7 +122,7 @@ public class IntervalKernel extends SimilarityMeasure{
 						throw new OperatorException("Bad series definition (END without START). ExampleSet definition error.");
 					else{
 						lAtt.add(attribute);
-						computeExtremLimits(eSet,lAtt,ranges);
+						computeExtremLimits(eSet,lAtt,ranges,lLim);
 						lAtt.clear();
 					}
 					break;
@@ -126,7 +135,7 @@ public class IntervalKernel extends SimilarityMeasure{
 				case Ontology.SINGLE_VALUE:
 					if (lAtt.isEmpty()){
 						lAtt.add(attribute);
-						computeExtremLimits(eSet,lAtt,ranges);
+						computeExtremLimits(eSet,lAtt,ranges,lLim);
 						lAtt.clear();
 					}
 					break;
@@ -135,12 +144,17 @@ public class IntervalKernel extends SimilarityMeasure{
 				}	
 			}
 		}
-		
+
+		limits= new double[lLim.size()][];
+		for (int i =0; i<lLim.size();i++) {
+			limits[i] = lLim.get(i); 
+		}
 		
 	}
 
 
-	private void computeExtremLimits(ExampleSet eSet, List<Attribute> lA, Map<String, SortedSet<Tupel<Double, String>>> rangesMap ) {
+	private void computeExtremLimits(ExampleSet eSet, List<Attribute> lA, Map<String, SortedSet<Tupel<Double, String>>> rangesMap, 
+			List<double[]> lLimits) {
 		double min=Double.POSITIVE_INFINITY;
 		double max=Double.NEGATIVE_INFINITY;
 
@@ -149,13 +163,26 @@ public class IntervalKernel extends SimilarityMeasure{
 			double ma = eSet.getStatistics(attri, Statistics.MAXIMUM);
 			if (mi<min) min=mi;
 			if (ma>max) max=ma;
-			
-			SortedSet<Tupel<Double, String>> ranges = rangesMap.get(attri.getName());
-			ranges.add(new Tupel<Double, String>(min, "-infinite"));
-			ranges.last()=new Tupel<Double, String>(min, ranges.last().getSecond());
 		}
 		
+				
+		SortedSet<Tupel<Double, String>> ranges = rangesMap.get(lA.get(1).getName()); //?¿0 o 1
 		
+		int elems=ranges.size();
+		double[] limits=new double[elems+1];
+		int pos=0;
+		limits[pos++]=min;
+		for (Tupel<Double, String> et : ranges){
+			limits[pos++] = et.getFirst(); 
+		}
+		limits[limits.length-1]=max;
+
+
+		for (int i =0; i<lA.size();i++) {
+			lLimits.add(limits);
+		}
+
+
 	}
 
 
