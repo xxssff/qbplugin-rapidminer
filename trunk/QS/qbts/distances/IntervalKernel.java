@@ -73,12 +73,16 @@ public class IntervalKernel extends SimilarityMeasure{
 	
 	
 
-	public void init(ExampleSet KKexampleSet, ParameterHandler parameterHandler, IOContainer ioContainer) throws OperatorException {
+	public void init(ExampleSet exampleSet, ParameterHandler parameterHandler, IOContainer ioContainer) throws OperatorException {
 
 		//NO es necesario porque como cada atributo tiene su conjunto de cortes se toma del Modelo que hay en la entrada
 		
 		DiscretizationModel dm=(DiscretizationModel) ioContainer.get(Model.class);
 		ranges = (Map<String, SortedSet<Tupel<Double, String>>> ) dm.getRanges();
+		
+		// Se debería comprobar que eSet y exampleSet tienen los mismos atributos y con idéntico nombre
+		// pero uno será numérico y el otro nominal.
+		
 		ExampleSet eSet = (ExampleSet) ioContainer.get(ExampleSet.class);
 		
 		/*
@@ -136,15 +140,19 @@ public class IntervalKernel extends SimilarityMeasure{
 	}
 
 
-	private void computeExtremLimits(ExampleSet eSet, List<Attribute> lA, Map<String, SortedSet<Tupel<Double, String>>> ranges ) {
+	private void computeExtremLimits(ExampleSet eSet, List<Attribute> lA, Map<String, SortedSet<Tupel<Double, String>>> rangesMap ) {
 		double min=Double.POSITIVE_INFINITY;
 		double max=Double.NEGATIVE_INFINITY;
 
-		for (Attribute attribute : lA) {
-			double mi = eSet.getStatistics(attribute, Statistics.MINIMUM);
-			double ma = eSet.getStatistics(attribute, Statistics.MAXIMUM);
+		for (Attribute attri : lA) {
+			double mi = eSet.getStatistics(attri, Statistics.MINIMUM);
+			double ma = eSet.getStatistics(attri, Statistics.MAXIMUM);
 			if (mi<min) min=mi;
 			if (ma>max) max=ma;
+			
+			SortedSet<Tupel<Double, String>> ranges = rangesMap.get(attri.getName());
+			ranges.add(new Tupel<Double, String>(min, "-infinite"));
+			ranges.last()=new Tupel<Double, String>(min, ranges.last().getSecond());
 		}
 		
 		
