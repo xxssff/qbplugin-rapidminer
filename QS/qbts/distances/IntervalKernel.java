@@ -1,8 +1,10 @@
 package qbts.distances;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
@@ -11,6 +13,7 @@ import srctest.HelperOperatorConstructor;
 
 import com.rapidminer.example.Attribute;
 import com.rapidminer.example.ExampleSet;
+import com.rapidminer.example.Statistics;
 import com.rapidminer.operator.GroupedModel;
 import com.rapidminer.operator.IOContainer;
 import com.rapidminer.operator.MissingIOObjectException;
@@ -19,6 +22,7 @@ import com.rapidminer.operator.Operator;
 import com.rapidminer.operator.OperatorException;
 import com.rapidminer.operator.preprocessing.discretization.DiscretizationModel;
 import com.rapidminer.parameter.ParameterHandler;
+import com.rapidminer.tools.Ontology;
 import com.rapidminer.tools.container.Tupel;
 import com.rapidminer.tools.math.similarity.SimilarityMeasure;;
 
@@ -50,6 +54,7 @@ public class IntervalKernel extends SimilarityMeasure{
 	SortedSet<Integer> in;
 	double[] discre; 
 	DiscretizationModel dm;
+	Map<String, SortedSet<Tupel<Double, String>>> ranges;
 
 	public double calculateSimilarity(double[] e1, double[] e2) {
 		return Kernel_Intervalar(e1, e2, discre, 0.7);
@@ -68,34 +73,81 @@ public class IntervalKernel extends SimilarityMeasure{
 	
 	
 
-	public void init(ExampleSet exampleSet, ParameterHandler parameterHandler, IOContainer ioContainer) throws OperatorException {
+	public void init(ExampleSet KKexampleSet, ParameterHandler parameterHandler, IOContainer ioContainer) throws OperatorException {
 
-		//check if the exampleSet has only a series
-		/*
-		 * Para todos los atributos 
-		 *   El primero es un Series_start
-		 *   Los demás serán Series
-		 *   El último es un Series_end
-		 *   
-		 * Sino se cumple generar un warning - se aplicará el mismo esquema de discretización (el primero que se encuentre)
-		 * 
-		 * 
-		 */
+		//NO es necesario porque como cada atributo tiene su conjunto de cortes se toma del Modelo que hay en la entrada
 		
 		DiscretizationModel dm=(DiscretizationModel) ioContainer.get(Model.class);
-		SortedSet<Tupel<Double, String>> cortes = (SortedSet<Tupel<Double, String>>)((Map.Entry) dm.getRanges().entrySet().iterator().next().getValue() );
-		ExampleSet eS = (ExampleSet) ioContainer.get(ExampleSet.class);
+		ranges = (Map<String, SortedSet<Tupel<Double, String>>> ) dm.getRanges();
+		ExampleSet eSet = (ExampleSet) ioContainer.get(ExampleSet.class);
 		
-		discre= new double[cortes.size()+1];
-		int p=0;
-		discre[p++] = dm.getExtremLimits()[0][0];
-		
-		Iterator itc = cortes.iterator();
-		while ( itc.hasNext()){
-			Tupel<Double, String> tu = (Tupel<Double, String>) itc.next();
-			discre[p++]=tu.getFirst();
+		/*
+		 * Pero en algún sitio hay que almacenar los extremos del conjunto de ejemplos 
+		 * Repitiendo parte del código de BinDiscrerization donde se calculan los máximos y 
+		 *   almacenándolos para cada atributo teniendo en cuenta los que son una serie   
+		 *
+		 * Ya está cargado el valor +infinito en el objeto ranges y se puede sustituir 
+		 *   por el límite máximo que se calcule. El problema está en el valor mínimno
+		 *   que hay que añadirlo al SortedSet
+		 *   
+		 */
+		List<Attribute> lAtt=new ArrayList<Attribute>();
+
+		eSet.recalculateAllAttributeStatistics();
+
+		for (Attribute attribute : eSet.getAttributes()) {
+			if (attribute.isNumerical()) { // skip nominal and date attributes
+				switch(attribute.getBlockType()){
+				case Ontology.VALUE_SERIES_START:
+					if (lAtt.isEmpty())
+						lAtt.add(attribute);
+					else
+						throw new OperatorException("Bad series definition (expected END, START found). ExampleSet definition error.");
+					break;
+				case Ontology.VALUE_SERIES_END:
+					if (lAtt.isEmpty())
+						throw new OperatorException("Bad series definition (END without START). ExampleSet definition error.");
+					else{
+						lAtt.add(attribute);
+						computeExtremLimits(eSet,lAtt,ranges);
+						lAtt.clear();
+					}
+					break;
+				case Ontology.VALUE_SERIES:
+					if (lAtt.isEmpty())
+						throw new OperatorException("Bad series definition (element without START). ExampleSet definition error.");							
+					else
+						lAtt.add(attribute);
+					break;
+				case Ontology.SINGLE_VALUE:
+					if (lAtt.isEmpty()){
+						lAtt.add(attribute);
+						computeExtremLimits(eSet,lAtt,ranges);
+						lAtt.clear();
+					}
+					break;
+				default:	
+					throw new OperatorException("VALUE_MATRIX attributes not supported.");
+				}	
+			}
 		}
-		discre[--p] = dm.getExtremLimits()[0][1];
+		
+		
+	}
+
+
+	private void computeExtremLimits(ExampleSet eSet, List<Attribute> lA, Map<String, SortedSet<Tupel<Double, String>>> ranges ) {
+		double min=Double.POSITIVE_INFINITY;
+		double max=Double.NEGATIVE_INFINITY;
+
+		for (Attribute attribute : lA) {
+			double mi = eSet.getStatistics(attribute, Statistics.MINIMUM);
+			double ma = eSet.getStatistics(attribute, Statistics.MAXIMUM);
+			if (mi<min) min=mi;
+			if (ma>max) max=ma;
+		}
+		
+		
 	}
 
 
@@ -141,23 +193,7 @@ public class IntervalKernel extends SimilarityMeasure{
 		//init(exampleSet,(DiscretizationModelSeries)getInput(Model.class));
 	}
 	
-	
-	public void init(ExampleSet exampleSet, ParameterHandler parameterHandler) {
-	    // case parameter handler to Operator
-	    Operator operator = (Operator)parameterHandler;
-	    
-	    String methodName="getInput";
-		HelperOperatorConstructor hOp=new HelperOperatorConstructor();
-		IOContainer ret= (IOContainer) hOp.invokePrivateMethodOperator(operator, methodName, new  Object[] {null});
 
-	    // do whatever you want...
-		try {
-//			 retrieve the model
-			dm = ret.get(Model.class);
-		} catch (MissingIOObjectException e) {
-			e.printStackTrace();
-		}
-	}
 	
 
 
