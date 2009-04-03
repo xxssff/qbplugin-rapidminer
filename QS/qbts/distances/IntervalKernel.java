@@ -58,21 +58,24 @@ public class IntervalKernel extends SimilarityMeasure{
 	double [][] limits;
 
 	public double calculateSimilarity(double[] e1, double[] e2) {
-		return Kernel_Intervalar(e1, e2, discre, 0.7);
+		return Kernel_Intervalar(e1, e2,  0.7);
 	}
 	public double calculateDistance(double[] e1, double[] e2) {
-		return Kernel_Intervalar(e1, e2, discre, 0.7);
+		return Kernel_Intervalar(e1, e2,  0.7);
 	}
 	
 	public double similarity(double[] e1, double[] e2) {
-		return Kernel_Intervalar(e1, e2, discre, 0.7);
+		return Kernel_Intervalar(e1, e2,  0.7);
 	}
 
 /*	public boolean isDistance() {
 		return false;
 	}*/
 	
-	
+	@Override
+	public void init(ExampleSet exampleSet) throws OperatorException {
+		// TODO Apéndice de método generado automáticamente
+	}
 
 	public void init(ExampleSet exampleSet, ParameterHandler parameterHandler, IOContainer ioContainer) throws OperatorException {
 
@@ -144,12 +147,7 @@ public class IntervalKernel extends SimilarityMeasure{
 				}	
 			}
 		}
-
-		limits= new double[lLim.size()][];
-		for (int i =0; i<lLim.size();i++) {
-			limits[i] = lLim.get(i); 
-		}
-		
+		limits = (double[][]) lLim.toArray();
 	}
 
 
@@ -165,11 +163,9 @@ public class IntervalKernel extends SimilarityMeasure{
 			if (ma>max) max=ma;
 		}
 		
-				
-		SortedSet<Tupel<Double, String>> ranges = rangesMap.get(lA.get(1).getName()); //?¿0 o 1
+		SortedSet<Tupel<Double, String>> ranges = rangesMap.get(lA.get(0).getName()); 
 		
-		int elems=ranges.size();
-		double[] limits=new double[elems+1];
+		double[] limits=new double[ranges.size()+1];
 		int pos=0;
 		limits[pos++]=min;
 		for (Tupel<Double, String> et : ranges){
@@ -177,21 +173,50 @@ public class IntervalKernel extends SimilarityMeasure{
 		}
 		limits[limits.length-1]=max;
 
-
 		for (int i =0; i<lA.size();i++) {
 			lLimits.add(limits);
 		}
-
-
 	}
 
 
+	
 	//********************************************************************************
 	//********************************************************************************
 	/*
 	 * Computes the Intervalar Distance presented in ...(cite).
 	 */
-	private double Kernel_Intervalar(double[] dVx, double[] dVy, double[] discre,double paraSimil) {
+	private double Kernel_Intervalar(double[] dVx, double[] dVy,double paraSimil) {
+		double lambda = paraSimil;
+
+		double coste = 0.0;
+		int sizex = dVx.length;
+		for (int i = 0; i < sizex; i++){
+			int x=(int) dVx[i];
+			int y=(int) dVy[i];
+
+			double dist;
+			if (x==y) {
+				dist=0;
+			}
+			else{
+				dist = Math.pow((limits[i][x] + limits[i][x+1]) / 2
+						- (limits[i][y] + limits[i][y + 1]) / 2, 2)
+						+ Math.pow((limits[i][y + 1] - limits[i][y]) / 2 - (limits[i][x + 1] - limits[i][x]) / 2, 2);
+				coste += Math.pow(lambda, dist);
+			}
+		}
+
+		return coste;
+	}
+
+	
+	
+	//********************************************************************************
+	//********************************************************************************
+	/*
+	 * Computes the Intervalar Distance presented in ...(cite).
+	 */
+	private double oldKernel_Intervalar(double[] dVx, double[] dVy, double[] discre,double paraSimil) {
 		// La distancia intervalar está definida para sólo una serie.
 	
 		double lambda = paraSimil;
@@ -220,16 +245,6 @@ public class IntervalKernel extends SimilarityMeasure{
 	
 		return coste;
 	}
-
-	@Override
-	public void init(ExampleSet exampleSet) throws OperatorException {
-		// TODO Apéndice de método generado automáticamente
-		
-		//init(exampleSet,(DiscretizationModelSeries)getInput(Model.class));
-	}
-	
-
-	
 
 
 }
