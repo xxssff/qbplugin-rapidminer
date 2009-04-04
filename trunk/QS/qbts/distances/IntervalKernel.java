@@ -51,11 +51,10 @@ public class IntervalKernel extends SimilarityMeasure{
  */
 			
 	
-	SortedSet<Integer> in;
-	double[] discre; 
-	DiscretizationModel dm;
+	private SortedSet<Integer> in;
+	private DiscretizationModel dm;
 	//Map<String, double[]> limits;
-	double [][] limits;
+	private double [][] limits;
 
 	public double calculateSimilarity(double[] e1, double[] e2) {
 		return Kernel_Intervalar(e1, e2,  0.7);
@@ -186,6 +185,9 @@ public class IntervalKernel extends SimilarityMeasure{
 	 * Computes the Intervalar Distance presented in ...(cite).
 	 */
 	private double Kernel_Intervalar(double[] dVx, double[] dVy,double paraSimil) {
+		if ((dVx == null) || (dVy == null))
+			 return Double.NaN;
+		
 		double lambda = paraSimil;
 
 		double coste = 0.0;
@@ -195,17 +197,12 @@ public class IntervalKernel extends SimilarityMeasure{
 			int y=(int) dVy[i];
 
 			double dist;
-			if (x==y) {
-				dist=0;
-			}
-			else{
 				dist = Math.pow((limits[i][x] + limits[i][x+1]) / 2
 						- (limits[i][y] + limits[i][y + 1]) / 2, 2)
 						+ Math.pow((limits[i][y + 1] - limits[i][y]) / 2 - (limits[i][x + 1] - limits[i][x]) / 2, 2);
 				coste += Math.pow(lambda, dist);
 			}
-		}
-
+	
 		return coste;
 	}
 

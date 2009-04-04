@@ -185,7 +185,42 @@ public  class HelperOperatorConstructor {
 		return campo;
 	}
 	
-	public Object getPrivateFieldOperator(String fieldName,String className,Object obj){
+	public Field getPrivateField(String fieldName,String className,Object obj){
+		Field campo=this.findPrivateField(className, fieldName);
+		try{
+			campo.setAccessible(true);
+			return campo;
+		}  catch (SecurityException e) {
+			// TODO Bloque catch generado automáticamente
+			e.printStackTrace();
+		}catch (IllegalArgumentException e) {
+			// TODO Bloque catch generado automáticamente
+			e.printStackTrace();
+		} 
+		return null;
+	}
+	
+
+	public Object setPrivateArrayObject(String fieldName,String className,Object obj, Object newVal){
+		Field campo=this.findPrivateField(className, fieldName);
+		try{
+			campo.setAccessible(true);
+			campo.set(obj,newVal);
+		}  catch (SecurityException e) {
+			// TODO Bloque catch generado automáticamente
+			e.printStackTrace();
+		}catch (IllegalArgumentException e) {
+			// TODO Bloque catch generado automáticamente
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Bloque catch generado automáticamente
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	
+	public Object getPrivateFieldObject(String fieldName,String className,Object obj){
 		Field campo=this.findPrivateField(className, fieldName);
 		try{
 			campo.setAccessible(true);
