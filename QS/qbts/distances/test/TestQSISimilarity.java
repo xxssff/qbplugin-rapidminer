@@ -27,6 +27,7 @@ public class TestQSISimilarity extends TestCase{
 	public void testCasosBase() {
 		QSISimilarity sim= new QSISimilarity();
 		
+				
 		// Identidad 
 		double[] p1={ 1 ,  2 , 3};
 		double[] p2={ 1 ,  2 , 3};

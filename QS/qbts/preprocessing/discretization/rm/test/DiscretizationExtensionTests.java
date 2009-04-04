@@ -55,10 +55,10 @@ public class DiscretizationExtensionTests extends TestCase {
 		  HelperOperatorConstructor hOp=new HelperOperatorConstructor();
 		  HashMap<String, SortedSet<Tupel<Double, String>>> rango1 = 
 			  (HashMap<String, SortedSet<Tupel<Double, String>>>) 
-			  hOp.getPrivateFieldOperator("rangesMap","com.rapidminer.operator.preprocessing.discretization.DiscretizationModel",model1);
+			  hOp.getPrivateFieldObject("rangesMap","com.rapidminer.operator.preprocessing.discretization.DiscretizationModel",model1);
 		  HashMap<String, SortedSet<Tupel<Double, String>>> rango2 = 
 			  (HashMap<String, SortedSet<Tupel<Double, String>>>) 
-			  hOp.getPrivateFieldOperator("rangesMap","com.rapidminer.operator.preprocessing.discretization.DiscretizationModel",model2);
+			  hOp.getPrivateFieldObject("rangesMap","com.rapidminer.operator.preprocessing.discretization.DiscretizationModel",model2);
 		  
 		  String[] k1 = (String[])rango1.keySet().toArray(new String[rango1.size()]);
 		  String[] k2 = (String[])rango2.keySet().toArray(new String[rango2.size()]);
@@ -102,10 +102,10 @@ public class DiscretizationExtensionTests extends TestCase {
 		  HelperOperatorConstructor hOp=new HelperOperatorConstructor();
 		  HashMap<String, SortedSet<Tupel<Double, String>>> rango1 = 
 			  (HashMap<String, SortedSet<Tupel<Double, String>>>) 
-			  hOp.getPrivateFieldOperator("rangesMap","com.rapidminer.operator.preprocessing.discretization.DiscretizationModel",model1);
+			  hOp.getPrivateFieldObject("rangesMap","com.rapidminer.operator.preprocessing.discretization.DiscretizationModel",model1);
 		  HashMap<String, SortedSet<Tupel<Double, String>>> rango2 = 
 			  (HashMap<String, SortedSet<Tupel<Double, String>>>) 
-			  hOp.getPrivateFieldOperator("rangesMap","com.rapidminer.operator.preprocessing.discretization.DiscretizationModel",model2);
+			  hOp.getPrivateFieldObject("rangesMap","com.rapidminer.operator.preprocessing.discretization.DiscretizationModel",model2);
 		  
 		  String[] k1 = (String[])rango1.keySet().toArray(new String[rango1.size()]);
 		  String[] k2 = (String[])rango2.keySet().toArray(new String[rango2.size()]);
@@ -147,10 +147,10 @@ public class DiscretizationExtensionTests extends TestCase {
 		  HelperOperatorConstructor hOp=new HelperOperatorConstructor();
 		  HashMap<String, SortedSet<Tupel<Double, String>>> rango1 = 
 			  (HashMap<String, SortedSet<Tupel<Double, String>>>) 
-			  hOp.getPrivateFieldOperator("rangesMap","com.rapidminer.operator.preprocessing.discretization.DiscretizationModel",model1);
+			  hOp.getPrivateFieldObject("rangesMap","com.rapidminer.operator.preprocessing.discretization.DiscretizationModel",model1);
 		  HashMap<String, SortedSet<Tupel<Double, String>>> rango2 = 
 			  (HashMap<String, SortedSet<Tupel<Double, String>>>) 
-			  hOp.getPrivateFieldOperator("rangesMap","com.rapidminer.operator.preprocessing.discretization.DiscretizationModel",model2);
+			  hOp.getPrivateFieldObject("rangesMap","com.rapidminer.operator.preprocessing.discretization.DiscretizationModel",model2);
 		  
 		  String[] k1 = (String[])rango1.keySet().toArray(new String[rango1.size()]);
 		  String[] k2 = (String[])rango2.keySet().toArray(new String[rango2.size()]);
