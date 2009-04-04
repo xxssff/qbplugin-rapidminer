@@ -1,30 +1,21 @@
 package qbts.distances;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.SortedSet;
-
-import srctest.HelperOperatorConstructor;
 
 import com.rapidminer.example.Attribute;
 import com.rapidminer.example.ExampleSet;
 import com.rapidminer.example.Statistics;
-import com.rapidminer.operator.GroupedModel;
 import com.rapidminer.operator.IOContainer;
-import com.rapidminer.operator.MissingIOObjectException;
 import com.rapidminer.operator.Model;
-import com.rapidminer.operator.Operator;
 import com.rapidminer.operator.OperatorException;
 import com.rapidminer.operator.preprocessing.discretization.DiscretizationModel;
 import com.rapidminer.parameter.ParameterHandler;
 import com.rapidminer.tools.Ontology;
 import com.rapidminer.tools.container.Tupel;
-import com.rapidminer.tools.math.similarity.SimilarityMeasure;;
+import com.rapidminer.tools.math.similarity.SimilarityMeasure;
 
 //public class IntervalKernel extends AbstractDiscretizedRealValueBasedSimilarity {
 public class IntervalKernel extends SimilarityMeasure{
@@ -87,13 +78,14 @@ public class IntervalKernel extends SimilarityMeasure{
 
 		//NO es necesario porque como cada atributo tiene su conjunto de cortes se toma del Modelo que hay en la entrada
 
-		DiscretizationModel dm=(DiscretizationModel) ioContainer.get(Model.class);
+		DiscretizationModel dm=(DiscretizationModel) ioContainer.remove(Model.class);
+	    
 		Map<String, SortedSet<Tupel<Double, String>>> ranges = (Map<String, SortedSet<Tupel<Double, String>>> ) dm.getRanges();
 
 		// Se debería comprobar que eSet y exampleSet tienen los mismos atributos y con idéntico nombre
 		// pero uno será numérico y el otro nominal.
 
-		ExampleSet eSet = (ExampleSet) ioContainer.get(ExampleSet.class);
+		ExampleSet eSet = (ExampleSet) ioContainer.remove(ExampleSet.class);
 
 		/*
 		 * Pero en algún sitio hay que almacenar los extremos del conjunto de ejemplos 
@@ -146,7 +138,16 @@ public class IntervalKernel extends SimilarityMeasure{
 				}	
 			}
 		}
-		limits = (double[][]) lLim.toArray();
+
+		try {
+			limits = new double[lLim.size()][];
+			limits = lLim.toArray(limits);
+		} catch (Exception e) {
+			// TODO Bloque catch generado automáticamente
+			e.printStackTrace();
+		}
+		
+		
 	}
 
 
