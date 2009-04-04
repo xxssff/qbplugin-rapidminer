@@ -1,112 +1,276 @@
 <?xml version="1.0" encoding="windows-1252"?>
-<process version="4.2">
+<process version="4.4">
 
   <operator name="Root" class="Process" expanded="yes">
+      <parameter key="logverbosity"	value="all"/>
       <parameter key="logfile"	value="D:\ws\QS\test\Distances\Logs\IntKernel1.log"/>
-      <parameter key="logverbosity"	value="io"/>
+      <parameter key="random_seed"	value="2001"/>
+      <parameter key="encoding"	value="SYSTEM"/>
       <operator name="ExampleSource" class="ExampleSource">
-          <parameter key="attributes"	value="%{experiment_path}\..\Samples\5at20s.aml"/>
+          <parameter key="attributes"	value="..\Samples\5at20s.aml"/>
+          <parameter key="sample_ratio"	value="1.0"/>
+          <parameter key="sample_size"	value="-1"/>
+          <parameter key="permutate"	value="false"/>
+          <parameter key="decimal_point_character"	value="."/>
+          <parameter key="column_separators"	value=",\s*|;\s*|\s+"/>
+          <parameter key="use_comment_characters"	value="true"/>
+          <parameter key="comment_chars"	value="#"/>
+          <parameter key="use_quotes"	value="true"/>
+          <parameter key="quote_character"	value="&quot;"/>
+          <parameter key="quoting_escape_character"	value="\"/>
+          <parameter key="trim_lines"	value="false"/>
+          <parameter key="datamanagement"	value="double_array"/>
+          <parameter key="local_random_seed"	value="-1"/>
       </operator>
       <operator name="SimpleValidation" class="SimpleValidation" expanded="yes">
-          <parameter key="sampling_type"	value="linear sampling"/>
+          <parameter key="keep_example_set"	value="false"/>
+          <parameter key="create_complete_model"	value="false"/>
           <parameter key="split_ratio"	value="0.5"/>
+          <parameter key="sampling_type"	value="linear sampling"/>
+          <parameter key="local_random_seed"	value="-1"/>
           <operator name="Cadena1Learning" class="OperatorChain" expanded="yes">
               <operator name="GrabaLearning" class="ExampleSetWriter">
-                  <parameter key="attribute_description_file"	value="%{experiment_path}\temp\5at20_1_%{a}.aml"/>
-                  <parameter key="example_set_file"	value="%{experiment_path}\temp\5at20_1_%{a}.data"/>
+                  <parameter key="example_set_file"	value=".\temp\5at20_1_%{a}.data"/>
+                  <parameter key="attribute_description_file"	value=".\temp\5at20_1_%{a}.aml"/>
+                  <parameter key="format"	value="dense"/>
+                  <parameter key="fraction_digits"	value="-1"/>
+                  <parameter key="quote_nominal_values"	value="true"/>
+                  <parameter key="zipped"	value="false"/>
+                  <parameter key="overwrite_mode"	value="overwrite first, append then"/>
               </operator>
               <operator name="IOConsumer" class="IOConsumer">
                   <parameter key="io_object"	value="ExampleSet"/>
+                  <parameter key="deletion_type"	value="delete_all"/>
+                  <parameter key="delete_which"	value="1"/>
+                  <parameter key="except"	value="1"/>
               </operator>
           </operator>
           <operator name="Cadena2 Test" class="OperatorChain" expanded="yes">
               <operator name="Graba Test" class="ExampleSetWriter">
-                  <parameter key="attribute_description_file"	value="%{experiment_path}\temp\5at20_2_%{a}.aml"/>
-                  <parameter key="example_set_file"	value="%{experiment_path}\temp\5at20_2_%{a}.data"/>
+                  <parameter key="example_set_file"	value=".\temp\5at20_2_%{a}.data"/>
+                  <parameter key="attribute_description_file"	value=".\temp\5at20_2_%{a}.aml"/>
+                  <parameter key="format"	value="dense"/>
+                  <parameter key="fraction_digits"	value="-1"/>
+                  <parameter key="quote_nominal_values"	value="true"/>
+                  <parameter key="zipped"	value="false"/>
+                  <parameter key="overwrite_mode"	value="overwrite first, append then"/>
               </operator>
               <operator name="IOConsumer (2)" class="IOConsumer">
                   <parameter key="io_object"	value="ExampleSet"/>
+                  <parameter key="deletion_type"	value="delete_all"/>
+                  <parameter key="delete_which"	value="1"/>
+                  <parameter key="except"	value="1"/>
               </operator>
-              <operator name="DiscretizaLearning" class="OperatorChain" expanded="no">
+              <operator name="DiscretizaLearning" class="OperatorChain" expanded="yes">
                   <operator name="LeeLearning (2)" class="ExampleSource">
-                      <parameter key="attributes"	value="%{experiment_path}\temp\5at20_1_%{a}.aml"/>
+                      <parameter key="attributes"	value=".\temp\5at20_1_%{a}.aml"/>
+                      <parameter key="sample_ratio"	value="1.0"/>
+                      <parameter key="sample_size"	value="-1"/>
+                      <parameter key="permutate"	value="false"/>
+                      <parameter key="decimal_point_character"	value="."/>
+                      <parameter key="column_separators"	value=",\s*|;\s*|\s+"/>
+                      <parameter key="use_comment_characters"	value="true"/>
+                      <parameter key="comment_chars"	value="#"/>
+                      <parameter key="use_quotes"	value="true"/>
+                      <parameter key="quote_character"	value="&quot;"/>
+                      <parameter key="quoting_escape_character"	value="\"/>
+                      <parameter key="trim_lines"	value="false"/>
+                      <parameter key="datamanagement"	value="double_array"/>
+                      <parameter key="local_random_seed"	value="-1"/>
                   </operator>
                   <operator name="FrequencyDiscretizationExtended" class="FrequencyDiscretizationExtended">
-                      <parameter key="discretize_all_together"	value="true"/>
-                      <parameter key="include_extrem_limits"	value="true"/>
-                      <parameter key="number_of_bins"	value="4"/>
                       <parameter key="return_preprocessing_model"	value="true"/>
-                      <parameter key="use_long_range_names"	value="false"/>
+                      <parameter key="create_view"	value="false"/>
+                      <parameter key="use_sqrt_of_examples"	value="false"/>
+                      <parameter key="number_of_bins"	value="4"/>
+                      <parameter key="range_name_type"	value="long"/>
+                      <parameter key="use_sqrt_of_examples"	value="false"/>
+                      <parameter key="number_of_bins"	value="4"/>
+                      <parameter key="range_name_type"	value="long"/>
                   </operator>
                   <operator name="ModelApplier" class="ModelApplier" activated="no">
+                      <parameter key="keep_model"	value="true"/>
                       <list key="application_parameters">
                       </list>
-                      <parameter key="keep_model"	value="true"/>
+                      <parameter key="create_view"	value="false"/>
                   </operator>
                   <operator name="Graba LearnDiscretizado" class="ExampleSetWriter">
-                      <parameter key="attribute_description_file"	value="%{experiment_path}\temp\5at20_1_discre_%{a}.aml"/>
-                      <parameter key="example_set_file"	value="%{experiment_path}\temp\5at20_1_discre_%{a}.data"/>
+                      <parameter key="example_set_file"	value=".\temp\5at20_1_discre_%{a}.data"/>
+                      <parameter key="attribute_description_file"	value=".\temp\5at20_1_discre_%{a}.aml"/>
+                      <parameter key="format"	value="dense"/>
+                      <parameter key="fraction_digits"	value="-1"/>
+                      <parameter key="quote_nominal_values"	value="true"/>
+                      <parameter key="zipped"	value="false"/>
+                      <parameter key="overwrite_mode"	value="overwrite first, append then"/>
                   </operator>
                   <operator name="IOConsumer (3)" class="IOConsumer">
                       <parameter key="io_object"	value="ExampleSet"/>
+                      <parameter key="deletion_type"	value="delete_all"/>
+                      <parameter key="delete_which"	value="1"/>
+                      <parameter key="except"	value="1"/>
                   </operator>
               </operator>
-              <operator name="DiscretizaTest" class="OperatorChain" expanded="no">
+              <operator name="DiscretizaTest" class="OperatorChain" expanded="yes">
                   <operator name="LeeTest" class="ExampleSource">
-                      <parameter key="attributes"	value="%{experiment_path}\temp\5at20_2_%{a}.aml"/>
+                      <parameter key="attributes"	value=".\temp\5at20_2_%{a}.aml"/>
+                      <parameter key="sample_ratio"	value="1.0"/>
+                      <parameter key="sample_size"	value="-1"/>
+                      <parameter key="permutate"	value="false"/>
+                      <parameter key="decimal_point_character"	value="."/>
+                      <parameter key="column_separators"	value=",\s*|;\s*|\s+"/>
+                      <parameter key="use_comment_characters"	value="true"/>
+                      <parameter key="comment_chars"	value="#"/>
+                      <parameter key="use_quotes"	value="true"/>
+                      <parameter key="quote_character"	value="&quot;"/>
+                      <parameter key="quoting_escape_character"	value="\"/>
+                      <parameter key="trim_lines"	value="false"/>
+                      <parameter key="datamanagement"	value="double_array"/>
+                      <parameter key="local_random_seed"	value="-1"/>
                   </operator>
                   <operator name="ModelApplier (3)" class="ModelApplier">
+                      <parameter key="keep_model"	value="true"/>
                       <list key="application_parameters">
                       </list>
-                      <parameter key="keep_model"	value="true"/>
+                      <parameter key="create_view"	value="false"/>
                   </operator>
                   <operator name="Graba TestDiscre" class="ExampleSetWriter">
-                      <parameter key="attribute_description_file"	value="%{experiment_path}\temp\5at20_2_discre_%{a}.aml"/>
-                      <parameter key="example_set_file"	value="%{experiment_path}\temp\5at20_2_discre_%{a}.data"/>
+                      <parameter key="example_set_file"	value=".\temp\5at20_2_discre_%{a}.data"/>
+                      <parameter key="attribute_description_file"	value=".\temp\5at20_2_discre_%{a}.aml"/>
+                      <parameter key="format"	value="dense"/>
+                      <parameter key="fraction_digits"	value="-1"/>
+                      <parameter key="quote_nominal_values"	value="true"/>
+                      <parameter key="zipped"	value="false"/>
+                      <parameter key="overwrite_mode"	value="overwrite first, append then"/>
                   </operator>
                   <operator name="IOConsumer (4)" class="IOConsumer">
                       <parameter key="io_object"	value="ExampleSet"/>
+                      <parameter key="deletion_type"	value="delete_all"/>
+                      <parameter key="delete_which"	value="1"/>
+                      <parameter key="except"	value="1"/>
                   </operator>
-              </operator>
-              <operator name="LeeLearning" class="ExampleSource">
-                  <parameter key="attributes"	value="%{experiment_path}\temp\5at20_1_%{a}.aml"/>
-              </operator>
-              <operator name="SimilaritySetup" class="SimilaritySetup">
-                  <parameter key="keep_example_set"	value="false"/>
-                  <parameter key="keep_model"	value="false"/>
-                  <parameter key="measure"	value="IntervalKernel"/>
               </operator>
               <operator name="OperatorChain (2)" class="OperatorChain" expanded="yes">
-                  <operator name="LeeLearningDiscre" class="ExampleSource">
-                      <parameter key="attributes"	value="%{experiment_path}\temp\5at20_1_discre_%{a}.aml"/>
+                  <operator name="LeeLearning" class="ExampleSource">
+                      <parameter key="attributes"	value=".\temp\5at20_1_%{a}.aml"/>
+                      <parameter key="sample_ratio"	value="1.0"/>
+                      <parameter key="sample_size"	value="-1"/>
+                      <parameter key="permutate"	value="false"/>
+                      <parameter key="decimal_point_character"	value="."/>
+                      <parameter key="column_separators"	value=",\s*|;\s*|\s+"/>
+                      <parameter key="use_comment_characters"	value="true"/>
+                      <parameter key="comment_chars"	value="#"/>
+                      <parameter key="use_quotes"	value="true"/>
+                      <parameter key="quote_character"	value="&quot;"/>
+                      <parameter key="quoting_escape_character"	value="\"/>
+                      <parameter key="trim_lines"	value="false"/>
+                      <parameter key="datamanagement"	value="double_array"/>
+                      <parameter key="local_random_seed"	value="-1"/>
                   </operator>
-                  <operator name="4.1NearestNeighbor" class="4.1NearestNeighbor">
-                      <parameter key="measure"	value="NominalDistance"/>
+                  <operator name="LeeLearningDiscre" class="ExampleSource">
+                      <parameter key="attributes"	value=".\temp\5at20_1_discre_%{a}.aml"/>
+                      <parameter key="sample_ratio"	value="1.0"/>
+                      <parameter key="sample_size"	value="-1"/>
+                      <parameter key="permutate"	value="false"/>
+                      <parameter key="decimal_point_character"	value="."/>
+                      <parameter key="column_separators"	value=",\s*|;\s*|\s+"/>
+                      <parameter key="use_comment_characters"	value="true"/>
+                      <parameter key="comment_chars"	value="#"/>
+                      <parameter key="use_quotes"	value="true"/>
+                      <parameter key="quote_character"	value="&quot;"/>
+                      <parameter key="quoting_escape_character"	value="\"/>
+                      <parameter key="trim_lines"	value="false"/>
+                      <parameter key="datamanagement"	value="double_array"/>
+                      <parameter key="local_random_seed"	value="-1"/>
+                  </operator>
+                  <operator name="NearestNeighbors" class="NearestNeighbors">
+                      <parameter key="keep_example_set"	value="false"/>
+                      <parameter key="k"	value="1"/>
+                      <parameter key="weighted_vote"	value="false"/>
+                      <parameter key="measure_types"	value="NominalMeasures"/>
+                      <parameter key="mixed_measure"	value="MixedEuclideanDistance"/>
+                      <parameter key="nominal_measure"	value="IntervalKernel"/>
+                      <parameter key="numerical_measure"	value="EuclideanDistance"/>
+                      <parameter key="divergence"	value="GeneralizedIDivergence"/>
+                      <parameter key="kernel_type"	value="radial"/>
+                      <parameter key="kernel_gamma"	value="1.0"/>
+                      <parameter key="kernel_sigma1"	value="1.0"/>
+                      <parameter key="kernel_sigma2"	value="0.0"/>
+                      <parameter key="kernel_sigma3"	value="2.0"/>
+                      <parameter key="kernel_degree"	value="3.0"/>
+                      <parameter key="kernel_shift"	value="1.0"/>
+                      <parameter key="kernel_a"	value="1.0"/>
+                      <parameter key="kernel_b"	value="0.0"/>
                   </operator>
                   <operator name="LeeTestDiscre" class="ExampleSource">
-                      <parameter key="attributes"	value="%{experiment_path}\temp\5at20_2_discre_%{a}.aml"/>
+                      <parameter key="attributes"	value=".\temp\5at20_2_discre_%{a}.aml"/>
+                      <parameter key="sample_ratio"	value="1.0"/>
+                      <parameter key="sample_size"	value="-1"/>
+                      <parameter key="permutate"	value="false"/>
+                      <parameter key="decimal_point_character"	value="."/>
+                      <parameter key="column_separators"	value=",\s*|;\s*|\s+"/>
+                      <parameter key="use_comment_characters"	value="true"/>
+                      <parameter key="comment_chars"	value="#"/>
+                      <parameter key="use_quotes"	value="true"/>
+                      <parameter key="quote_character"	value="&quot;"/>
+                      <parameter key="quoting_escape_character"	value="\"/>
+                      <parameter key="trim_lines"	value="false"/>
+                      <parameter key="datamanagement"	value="double_array"/>
+                      <parameter key="local_random_seed"	value="-1"/>
                   </operator>
                   <operator name="ModelApplier (2)" class="ModelApplier">
+                      <parameter key="keep_model"	value="false"/>
                       <list key="application_parameters">
                       </list>
+                      <parameter key="create_view"	value="false"/>
                   </operator>
                   <operator name="ExampleSetWriter" class="ExampleSetWriter">
-                      <parameter key="attribute_description_file"	value="%{experiment_path}\temp\5at20_1_predict_%{a}.aml"/>
-                      <parameter key="example_set_file"	value="%{experiment_path}\temp\5at20_1_predict_%{a}.data"/>
+                      <parameter key="example_set_file"	value=".\temp\5at20_1_predict_%{a}.data"/>
+                      <parameter key="attribute_description_file"	value=".\temp\5at20_1_predict_%{a}.aml"/>
+                      <parameter key="format"	value="dense"/>
+                      <parameter key="fraction_digits"	value="-1"/>
+                      <parameter key="quote_nominal_values"	value="true"/>
+                      <parameter key="zipped"	value="false"/>
+                      <parameter key="overwrite_mode"	value="overwrite first, append then"/>
                   </operator>
                   <operator name="ClassificationPerformance" class="ClassificationPerformance">
+                      <parameter key="keep_example_set"	value="false"/>
+                      <parameter key="main_criterion"	value="accuracy"/>
                       <parameter key="accuracy"	value="true"/>
+                      <parameter key="classification_error"	value="false"/>
+                      <parameter key="kappa"	value="false"/>
+                      <parameter key="weighted_mean_recall"	value="false"/>
+                      <parameter key="weighted_mean_precision"	value="false"/>
+                      <parameter key="spearman_rho"	value="false"/>
+                      <parameter key="kendall_tau"	value="false"/>
+                      <parameter key="absolute_error"	value="false"/>
+                      <parameter key="relative_error"	value="false"/>
+                      <parameter key="relative_error_lenient"	value="false"/>
+                      <parameter key="relative_error_strict"	value="false"/>
+                      <parameter key="normalized_absolute_error"	value="false"/>
+                      <parameter key="root_mean_squared_error"	value="false"/>
+                      <parameter key="root_relative_squared_error"	value="false"/>
+                      <parameter key="squared_error"	value="false"/>
+                      <parameter key="correlation"	value="false"/>
+                      <parameter key="squared_correlation"	value="false"/>
+                      <parameter key="cross-entropy"	value="false"/>
+                      <parameter key="margin"	value="false"/>
+                      <parameter key="soft_margin_loss"	value="false"/>
+                      <parameter key="logistic_loss"	value="false"/>
+                      <parameter key="skip_undefined_labels"	value="true"/>
+                      <parameter key="use_example_weights"	value="true"/>
                       <list key="class_weights">
                       </list>
-                      <parameter key="main_criterion"	value="accuracy"/>
                   </operator>
                   <operator name="ProcessLog" class="ProcessLog">
-                      <parameter key="filename"	value="D:\ws\QS\test\Distances\Logs\IntKernel1_RESULTADOS.log"/>
+                      <parameter key="filename"	value=".\Logs\IntKernel1_RESULTADOS.log"/>
                       <list key="log">
                         <parameter key="Batch"	value="operator.ClassificationPerformance.value.applycount"/>
                         <parameter key="accuracy"	value="operator.ClassificationPerformance.value.accuracy"/>
                         <parameter key="time"	value="operator.ClassificationPerformance.value.time"/>
                       </list>
+                      <parameter key="sorting_type"	value="none"/>
+                      <parameter key="sorting_k"	value="100"/>
+                      <parameter key="persistent"	value="false"/>
                   </operator>
               </operator>
           </operator>

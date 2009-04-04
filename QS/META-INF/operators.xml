@@ -17,12 +17,7 @@
      description = "Normalize every example from the input ExampleSet."
      group       = "QBTS"/>
 
-  <operator 
-     name        = "SimilaritySetup"
-     class       = "qbts.distances.QBSimilaritySetup"
-     description = "Setup a Similarity."
-     group       = "QBTS"/>
-  
+ 
      
  <operator 
      name        = "CopyExampleSet"
