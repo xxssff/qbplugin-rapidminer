@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="windows-1252"?>
+<process version="4.2">
+
+  <operator name="Root" class="Process" expanded="yes">
+      <operator name="ExampleSource" class="ExampleSource">
+          <parameter key="attributes"	value="D:\RMws\sample\data\iris.aml"/>
+      </operator>
+      <operator name="NormalizationExtended" class="NormalizationExtended">
+          <parameter key="disable_exampleset_output"	value="false"/>
+      </operator>
+      <operator name="ExampleSource (2)" class="ExampleSource">
+          <parameter key="attributes"	value="D:\RMws\sample\data\iris.aml"/>
+      </operator>
+  </operator>
+
+</process>
