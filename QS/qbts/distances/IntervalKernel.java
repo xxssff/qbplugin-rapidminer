@@ -8,16 +8,45 @@ import java.util.SortedSet;
 import com.rapidminer.example.Attribute;
 import com.rapidminer.example.ExampleSet;
 import com.rapidminer.example.Statistics;
+import com.rapidminer.example.Tools;
 import com.rapidminer.operator.IOContainer;
+import com.rapidminer.operator.MissingIOObjectException;
 import com.rapidminer.operator.Model;
+import com.rapidminer.operator.Operator;
 import com.rapidminer.operator.OperatorException;
 import com.rapidminer.operator.preprocessing.discretization.DiscretizationModel;
 import com.rapidminer.parameter.ParameterHandler;
+import com.rapidminer.tools.LogService;
 import com.rapidminer.tools.Ontology;
 import com.rapidminer.tools.container.Tupel;
 import com.rapidminer.tools.math.similarity.SimilarityMeasure;
 
-//public class IntervalKernel extends AbstractDiscretizedRealValueBasedSimilarity {
+/**
+ * <p>This class implements the IntervalKernel similarity measure defined in </p>
+ * <p>A New Kernel to Use With Discretized Temporal Series. Computación y Sistemas. 
+ * Vol. 11. Núm. 1. 2007. Pag. 5-13 
+ * Luis González Abril, Francisco Velasco Morente, 
+ * Juan Antonio Ortega Ramirez, Francisco Javier Cuberos García Baquero. </p>
+ * <p>and</p>
+ * <p>A New Approach to Qualitative Learning in Time Series. Expert Systems With Applications. Vol. 42. 2009
+ * Luis González Abril, Francisco Velasco Morente, 
+ * Francisco Javier Cuberos García Baquero, Juan Antonio Ortega Ramirez.</p>
+ *
+ * <p>The kernel is applied to discretized example sets, and the similarity is computed
+ *  based on the limits from each discretized values.</p>
+ * 
+ *  <p>A discretization model and a example set (numerical attributes) are removed from input.
+ *  The ranges included in the discretization model are expanded with the min and max 
+ *  values from the example set.</p>
+ *  
+ *  <p>The values of attributes part of a series are processed together.</p>
+ * 
+ * @author Francisco J. Cuberos
+ * @version v 1.0  2009/04/09 11:02:00 fjcuberos 
+ *
+ */
+
+
 public class IntervalKernel extends SimilarityMeasure{
 	
 	
@@ -40,12 +69,14 @@ public class IntervalKernel extends SimilarityMeasure{
  * Se obtienen los cortes desde el modelo y los límites desde el conjunto no discretizado.
  * 
  */
-			
+	
+	//Luis González Abril, Francisco Velasco Morente, Francisco Javier Cuberos García Baquero, Juan Antonio Ortega Ramirez:
+	//	A New Approach to Qualitative Learning in Time Series. Expert Systems With Applications. Vol. 42. 2009 
 	
 	private SortedSet<Integer> in;
 	private DiscretizationModel dm;
-	//Map<String, double[]> limits;
 	private double [][] limits;
+	private LogService log;
 
 	public double calculateSimilarity(double[] e1, double[] e2) {
 		return Kernel_Intervalar(e1, e2,  0.7);
@@ -58,45 +89,29 @@ public class IntervalKernel extends SimilarityMeasure{
 		return Kernel_Intervalar(e1, e2,  0.7);
 	}
 
-/*	public boolean isDistance() {
-		return false;
-	}*/
-	
+
 	@Override
 	public void init(ExampleSet exampleSet) throws OperatorException {
-		// TODO Apéndice de método generado automáticamente
 	}
 
 	public void init(ExampleSet exampleSet, ParameterHandler parameterHandler, IOContainer ioContainer) throws OperatorException {
 
-		// TODO Hay que comprobar varias cosas
-		/* 
-		 * 1) que lo que se lee de la entrada se borra o sigue existiendo después del KNN
-		 * 2) si hay dos discretizadores en la entrada ¿están agrupados?  
-		 * 
-		 */
-
-		//NO es necesario porque como cada atributo tiene su conjunto de cortes se toma del Modelo que hay en la entrada
-
-		DiscretizationModel dm=(DiscretizationModel) ioContainer.remove(Model.class);
-	    
+		log = ((Operator) parameterHandler).getLog(); //Local log of calling operator
+		
+		DiscretizationModel dm=null;
+		ExampleSet eSet=null;
+		try {
+			dm = (DiscretizationModel) ioContainer.remove(Model.class);
+			eSet = (ExampleSet) ioContainer.remove(ExampleSet.class);
+		} catch (MissingIOObjectException e1) {
+			 
+			throw new OperatorException("IntervalKernel Similarity needs an additional exampleSet and a DiscretizationModel as inputs.");
+		}
+		
+		Tools.onlyNumericalAttributes(exampleSet, "IntervalKernel Similarity init.");
+		
 		Map<String, SortedSet<Tupel<Double, String>>> ranges = (Map<String, SortedSet<Tupel<Double, String>>> ) dm.getRanges();
 
-		// Se debería comprobar que eSet y exampleSet tienen los mismos atributos y con idéntico nombre
-		// pero uno será numérico y el otro nominal.
-
-		ExampleSet eSet = (ExampleSet) ioContainer.remove(ExampleSet.class);
-
-		/*
-		 * Pero en algún sitio hay que almacenar los extremos del conjunto de ejemplos 
-		 * Repitiendo parte del código de BinDiscrerization donde se calculan los máximos y 
-		 *   almacenándolos para cada atributo teniendo en cuenta los que son una serie   
-		 *
-		 * El valor mínimno hay que añadirlo al SortedSet
-		 * Ya está cargado el valor +infinito en el objeto ranges y se puede sustituir 
-		 *   por el límite máximo que se calcule, no tengo que hacer nada más porque 
-		 *   los valores van a venir ya discretizados.
-		 */
 		List<Attribute> lAtt=new ArrayList<Attribute>();
 		List<double[]> lLim=new ArrayList<double[]>();
 
@@ -139,20 +154,29 @@ public class IntervalKernel extends SimilarityMeasure{
 			}
 		}
 
+
+		
 		try {
 			limits = new double[lLim.size()][];
 			limits = lLim.toArray(limits);
 		} catch (Exception e) {
-			// TODO Bloque catch generado automáticamente
 			e.printStackTrace();
 		}
 		
+		log.log("Extrem Limits: ", LogService.MINIMUM);
+		
+		for (double[] l: limits){
+			String cad="";
+			for (double d: l)
+				cad = cad + " , " + (new Double(d)).toString();
+			log.log(cad, LogService.MINIMUM);
+		}		
 		
 	}
 
 
 	private void computeExtremLimits(ExampleSet eSet, List<Attribute> lA, Map<String, SortedSet<Tupel<Double, String>>> rangesMap, 
-			List<double[]> lLimits) {
+			List<double[]> lLimits) throws OperatorException {
 		double min=Double.POSITIVE_INFINITY;
 		double max=Double.NEGATIVE_INFINITY;
 
@@ -171,8 +195,21 @@ public class IntervalKernel extends SimilarityMeasure{
 		for (Tupel<Double, String> et : ranges){
 			limits[pos++] = et.getFirst(); 
 		}
-		limits[limits.length-1]=max;
+		int last = limits.length-1;
+		limits[last]=max;
 
+		//check errors in extrem limits. Must be less than / greater than actual limits
+		if ((limits[0]>=limits[1]) || (limits[last]<=limits[last-1])){
+			String cad = "";
+			for (Attribute att: lA){
+				cad = cad + " " + att.getName();
+			}
+			log.logError("Errors in limits for Attribute/s: " +cad );
+			log.logError("Limits in discretizationModel / ExampleSet are (" + limits[1]+" / " + limits[last-1] +
+						") and  (" + limits[0]+" / " + limits[last]+")");
+			throw new OperatorException("Error in input ExampleSet. Max & Min values included in Model ranges.");		
+		}
+	
 		for (int i =0; i<lA.size();i++) {
 			lLimits.add(limits);
 		}

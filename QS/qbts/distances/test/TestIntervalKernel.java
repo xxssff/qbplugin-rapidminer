@@ -70,7 +70,6 @@ public class TestIntervalKernel extends TestCase{
 		
 		DecimalFormat DForm = new DecimalFormat("#.######");
 		assertEquals("Proporcionalidad incorrectamente tratada",DForm.format(9.890442274),DForm.format(sim.similarity(p1, p2)));
-		
-		
 	}
+	
 }

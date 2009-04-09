@@ -275,6 +275,22 @@
               </operator>
           </operator>
       </operator>
+      <operator name="LeeLearning (3)" class="ExampleSource">
+          <parameter key="attributes"	value=".\temp\5at20_1_%{a}.aml"/>
+          <parameter key="sample_ratio"	value="1.0"/>
+          <parameter key="sample_size"	value="-1"/>
+          <parameter key="permutate"	value="false"/>
+          <parameter key="decimal_point_character"	value="."/>
+          <parameter key="column_separators"	value=",\s*|;\s*|\s+"/>
+          <parameter key="use_comment_characters"	value="true"/>
+          <parameter key="comment_chars"	value="#"/>
+          <parameter key="use_quotes"	value="true"/>
+          <parameter key="quote_character"	value="&quot;"/>
+          <parameter key="quoting_escape_character"	value="\"/>
+          <parameter key="trim_lines"	value="false"/>
+          <parameter key="datamanagement"	value="double_array"/>
+          <parameter key="local_random_seed"	value="-1"/>
+      </operator>
   </operator>
 
 </process>
