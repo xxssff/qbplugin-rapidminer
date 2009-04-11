@@ -99,8 +99,8 @@ public abstract class AbstractCAIMAmevaDiscretizer extends PreprocessingOperator
 
 		
 		DiscretizationModel model = new DiscretizationModel(exampleSet);
-		model.setRanges(ranges, "range", getParameterAsInt(PARAMETER_USE_LONG_RANGE_NAMES));
-		
+		model.setRanges(ranges, "range", 1);
+		//model.setRanges(ranges, "range", getParameterAsInt(PARAMETER_USE_LONG_RANGE_NAMES));
 
 		return model;
 	} 

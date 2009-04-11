@@ -2,66 +2,20 @@ package qbts.preprocessing.discretization;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
 
-import com.rapidminer.example.Attribute;
-import com.rapidminer.example.Example;
-import com.rapidminer.example.ExampleSet;
 import com.rapidminer.operator.OperatorDescription;
-import com.rapidminer.operator.OperatorException;
 
+public class OLDAmevaDiscretizer extends AbstractCAIMAmevaDiscretizer {
 
-public class AmevaDiscretizer extends Discretizer {
-
-	public AmevaDiscretizer(OperatorDescription description) {
+	public OLDAmevaDiscretizer(OperatorDescription description) {
 		super(description);
+		method = "Ameva";
 	}
 	
-	public void computeValues (ExampleSet eSet, List<Attribute> lA, HashMap<Attribute, double[]> ranges ) throws OperatorException{
-
-		Attribute labelAtt=eSet.getAttributes().getLabel();
-		if (!labelAtt.isNominal()){
-			throw new UnsupportedOperationException("The Ameva discretization method needs a nominal label attribute!");			
-		}
-		int numClasses = labelAtt.getMapping().getValues().size();
-
-
-		List<CumDiscretizerBlock> lVal = new ArrayList<CumDiscretizerBlock>();
-		for (Attribute attribute : lA) {
-			if (attribute.isNumerical()) { // skip nominal and date attributes
-				for (Example example : eSet) {
-					double value = example.getValue(attribute);
-					if (!Double.isNaN(value)) {
-						lVal.add(new CumDiscretizerBlock(example.getValue(attribute),
-								(int) example.getLabel(),numClasses));
-					}
-				}
-			}
-		}
-
-		Collections.sort(lVal);  //sort the values
-		//compute the acumulators
-		CumDiscretizerBlock.computeAcums(lVal);
-		//delete duplicated values updating the occurences and acumulators
-		CumDiscretizerBlock.joinValues(lVal);
-
-		//Apply method
-		List<Integer> cortes=compute_Values( lVal);
-
-		double[] attributeRanges = new double[cortes.size()-1];
-		for (int i=1;i<cortes.size()-1;i++){
-			attributeRanges[i-1]=lVal.get(cortes.get(i)).getValue();
-		}
-		attributeRanges[cortes.size() - 2] = Double.POSITIVE_INFINITY;
-
-		for (Attribute currentAttribute : lA) {
-			ranges.put(currentAttribute, attributeRanges);
-		}
-	}
-
+	@Override
 	protected List<Integer> compute_Values(List<CumDiscretizerBlock> lCumB) {
 		 List<Integer> cortes=new ArrayList<Integer>();
 		 cortes.add(Integer.valueOf(0));
@@ -155,3 +109,4 @@ public class AmevaDiscretizer extends Discretizer {
 	
 
 }
+
