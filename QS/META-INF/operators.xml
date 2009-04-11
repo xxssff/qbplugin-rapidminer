@@ -25,23 +25,12 @@
      group       = "QBTS"/>
 
   <operator 
-     name        = "OLDAmevaDiscretizer"
-     class       = "qbts.preprocessing.discretization.OLDAmevaDiscretizer"
-     description = "Discretize the input ExampleSet."
-     group       = "QBTS"/>
-
-  <operator 
      name        = "CAIMDiscretizer"
      class       = "qbts.preprocessing.discretization.CAIMDiscretizer"
      description = "Discretize the input ExampleSet."
      group       = "QBTS"/>
 
-  <operator 
-     name        = "OLDCAIMDiscretizer"
-     class       = "qbts.preprocessing.discretization.OLDCAIMDiscretizer"
-     description = "Discretize the input ExampleSet."
-     group       = "QBTS"/>
-
+ 
 
 
 
