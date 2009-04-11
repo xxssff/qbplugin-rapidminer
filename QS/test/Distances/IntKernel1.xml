@@ -7,7 +7,7 @@
       <parameter key="random_seed"	value="2001"/>
       <parameter key="encoding"	value="SYSTEM"/>
       <operator name="ExampleSource" class="ExampleSource">
-          <parameter key="attributes"	value="..\Samples\5at20s.aml"/>
+          <parameter key="attributes"	value="D:\ws\QS\test\Samples\5at20s-serie.aml"/>
           <parameter key="sample_ratio"	value="1.0"/>
           <parameter key="sample_size"	value="-1"/>
           <parameter key="permutate"	value="false"/>
@@ -44,25 +44,8 @@
                   <parameter key="delete_which"	value="1"/>
                   <parameter key="except"	value="1"/>
               </operator>
-          </operator>
-          <operator name="Cadena2 Test" class="OperatorChain" expanded="yes">
-              <operator name="Graba Test" class="ExampleSetWriter">
-                  <parameter key="example_set_file"	value=".\temp\5at20_2_%{a}.data"/>
-                  <parameter key="attribute_description_file"	value=".\temp\5at20_2_%{a}.aml"/>
-                  <parameter key="format"	value="dense"/>
-                  <parameter key="fraction_digits"	value="-1"/>
-                  <parameter key="quote_nominal_values"	value="true"/>
-                  <parameter key="zipped"	value="false"/>
-                  <parameter key="overwrite_mode"	value="overwrite first, append then"/>
-              </operator>
-              <operator name="IOConsumer (2)" class="IOConsumer">
-                  <parameter key="io_object"	value="ExampleSet"/>
-                  <parameter key="deletion_type"	value="delete_all"/>
-                  <parameter key="delete_which"	value="1"/>
-                  <parameter key="except"	value="1"/>
-              </operator>
               <operator name="DiscretizaLearning" class="OperatorChain" expanded="yes">
-                  <operator name="LeeLearning (2)" class="ExampleSource">
+                  <operator name="LeeLearning1" class="ExampleSource">
                       <parameter key="attributes"	value=".\temp\5at20_1_%{a}.aml"/>
                       <parameter key="sample_ratio"	value="1.0"/>
                       <parameter key="sample_size"	value="-1"/>
@@ -83,10 +66,10 @@
                       <parameter key="create_view"	value="false"/>
                       <parameter key="use_sqrt_of_examples"	value="false"/>
                       <parameter key="number_of_bins"	value="4"/>
-                      <parameter key="range_name_type"	value="long"/>
+                      <parameter key="range_name_type"	value="short"/>
                       <parameter key="use_sqrt_of_examples"	value="false"/>
                       <parameter key="number_of_bins"	value="4"/>
-                      <parameter key="range_name_type"	value="long"/>
+                      <parameter key="range_name_type"	value="short"/>
                   </operator>
                   <operator name="ModelApplier" class="ModelApplier" activated="no">
                       <parameter key="keep_model"	value="true"/>
@@ -109,6 +92,23 @@
                       <parameter key="delete_which"	value="1"/>
                       <parameter key="except"	value="1"/>
                   </operator>
+              </operator>
+          </operator>
+          <operator name="Cadena2 Test" class="OperatorChain" expanded="yes">
+              <operator name="Graba Test" class="ExampleSetWriter">
+                  <parameter key="example_set_file"	value=".\temp\5at20_2_%{a}.data"/>
+                  <parameter key="attribute_description_file"	value=".\temp\5at20_2_%{a}.aml"/>
+                  <parameter key="format"	value="dense"/>
+                  <parameter key="fraction_digits"	value="-1"/>
+                  <parameter key="quote_nominal_values"	value="true"/>
+                  <parameter key="zipped"	value="false"/>
+                  <parameter key="overwrite_mode"	value="overwrite first, append then"/>
+              </operator>
+              <operator name="IOConsumer (2)" class="IOConsumer">
+                  <parameter key="io_object"	value="ExampleSet"/>
+                  <parameter key="deletion_type"	value="delete_all"/>
+                  <parameter key="delete_which"	value="1"/>
+                  <parameter key="except"	value="1"/>
               </operator>
               <operator name="DiscretizaTest" class="OperatorChain" expanded="yes">
                   <operator name="LeeTest" class="ExampleSource">
@@ -150,6 +150,12 @@
                   </operator>
               </operator>
               <operator name="OperatorChain (2)" class="OperatorChain" expanded="yes">
+                  <operator name="Cons_DiscretMod" class="IOConsumer" activated="no">
+                      <parameter key="io_object"	value="ANOVAMatrix"/>
+                      <parameter key="deletion_type"	value="delete_all"/>
+                      <parameter key="delete_which"	value="1"/>
+                      <parameter key="except"	value="1"/>
+                  </operator>
                   <operator name="LeeLearning" class="ExampleSource">
                       <parameter key="attributes"	value=".\temp\5at20_1_%{a}.aml"/>
                       <parameter key="sample_ratio"	value="1.0"/>
@@ -224,8 +230,8 @@
                       <parameter key="create_view"	value="false"/>
                   </operator>
                   <operator name="ExampleSetWriter" class="ExampleSetWriter">
-                      <parameter key="example_set_file"	value=".\temp\5at20_1_predict_%{a}.data"/>
-                      <parameter key="attribute_description_file"	value=".\temp\5at20_1_predict_%{a}.aml"/>
+                      <parameter key="example_set_file"	value=".\temp\5at20_2_predict_%{a}.data"/>
+                      <parameter key="attribute_description_file"	value=".\temp\5at20_2_predict_%{a}.aml"/>
                       <parameter key="format"	value="dense"/>
                       <parameter key="fraction_digits"	value="-1"/>
                       <parameter key="quote_nominal_values"	value="true"/>

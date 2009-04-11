@@ -1,11 +1,13 @@
 package qbts.distances;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.SortedSet;
 
 import com.rapidminer.example.Attribute;
+import com.rapidminer.example.AttributeRole;
 import com.rapidminer.example.ExampleSet;
 import com.rapidminer.example.Statistics;
 import com.rapidminer.example.Tools;
@@ -39,6 +41,14 @@ import com.rapidminer.tools.math.similarity.SimilarityMeasure;
  *  The ranges included in the discretization model are expanded with the min and max 
  *  values from the example set.</p>
  *  
+ *  Example:
+ *  Attribute1 discretization ranges  [ -5 , -2.3 , 0.5 , +infinite]
+ *  Attribute1 example set values  in [-9.3 , 5.1]
+ *  Limits to compute IntervalKernel  Attribute1 range1 [ -9.3 , -5 ]
+ *                                               range2 [  -5  , -2.3 ]
+ *                                               range3 [ -2.3 ,  0.5 ]
+ *                                               range4 [  0.5 ,  5.1 ]
+ *                                               
  *  <p>The values of attributes part of a series are processed together.</p>
  * 
  * @author Francisco J. Cuberos
@@ -49,32 +59,6 @@ import com.rapidminer.tools.math.similarity.SimilarityMeasure;
 
 public class IntervalKernel extends SimilarityMeasure{
 	
-	
-/*	PROBLEMA:
- * 
- * El Kernel intervalar depende de los valores límite de los intervalos de discretización
- * (tanto el menor como el mayor) pero en el caso de las discretizaciones los valores
- * mínimos y máximo de los rangos menor y mayor respectivamente son almacenados como 
- * -infinito y +infinito (o ni siquiera son almacenados).
-
- * Para obtener esos valores requeriría accceder al ExampleSet original y obtenerlos de
- * las estadísticas de los propios atributos. 
- *
- * En el Init se debe comprobar
- *     1) que el conjunto de ejemplos es una sóla serie nominal
- *     2) que en la entrada del operador hay 
- *     		Un modelo de discretización
- *     		Un conjunto de ejemplos que suponemos que es el que llega como principal pero no discretizado
- *     
- * Se obtienen los cortes desde el modelo y los límites desde el conjunto no discretizado.
- * 
- */
-	
-	//Luis González Abril, Francisco Velasco Morente, Francisco Javier Cuberos García Baquero, Juan Antonio Ortega Ramirez:
-	//	A New Approach to Qualitative Learning in Time Series. Expert Systems With Applications. Vol. 42. 2009 
-	
-	private SortedSet<Integer> in;
-	private DiscretizationModel dm;
 	private double [][] limits;
 	private LogService log;
 
@@ -82,7 +66,7 @@ public class IntervalKernel extends SimilarityMeasure{
 		return Kernel_Intervalar(e1, e2,  0.7);
 	}
 	public double calculateDistance(double[] e1, double[] e2) {
-		return Kernel_Intervalar(e1, e2,  0.7);
+		return (1/Kernel_Intervalar(e1, e2,  0.7));
 	}
 	
 	public double similarity(double[] e1, double[] e2) {
@@ -108,7 +92,7 @@ public class IntervalKernel extends SimilarityMeasure{
 			throw new OperatorException("IntervalKernel Similarity needs an additional exampleSet and a DiscretizationModel as inputs.");
 		}
 		
-		Tools.onlyNumericalAttributes(exampleSet, "IntervalKernel Similarity init.");
+		//Tools.onlyNumericalAttributes(exampleSet, "IntervalKernel Similarity init.");
 		
 		Map<String, SortedSet<Tupel<Double, String>>> ranges = (Map<String, SortedSet<Tupel<Double, String>>> ) dm.getRanges();
 
@@ -117,7 +101,11 @@ public class IntervalKernel extends SimilarityMeasure{
 
 		eSet.recalculateAllAttributeStatistics();
 
-		for (Attribute attribute : eSet.getAttributes()) {
+		Iterator<AttributeRole> r = eSet.getAttributes().regularAttributes();
+		while (r.hasNext()) {
+			AttributeRole role = r.next();
+			Attribute attribute = role.getAttribute();
+
 			if (attribute.isNumerical()) { // skip nominal and date attributes
 				switch(attribute.getBlockType()){
 				case Ontology.VALUE_SERIES_START:
@@ -155,7 +143,6 @@ public class IntervalKernel extends SimilarityMeasure{
 		}
 
 
-		
 		try {
 			limits = new double[lLim.size()][];
 			limits = lLim.toArray(limits);
@@ -216,12 +203,6 @@ public class IntervalKernel extends SimilarityMeasure{
 	}
 
 
-	
-	//********************************************************************************
-	//********************************************************************************
-	/*
-	 * Computes the Intervalar Distance presented in ...(cite).
-	 */
 	private double Kernel_Intervalar(double[] dVx, double[] dVy,double paraSimil) {
 		if ((dVx == null) || (dVy == null))
 			 return Double.NaN;
@@ -243,43 +224,5 @@ public class IntervalKernel extends SimilarityMeasure{
 	
 		return coste;
 	}
-
-	
-	
-	//********************************************************************************
-	//********************************************************************************
-	/*
-	 * Computes the Intervalar Distance presented in ...(cite).
-	 */
-	private double oldKernel_Intervalar(double[] dVx, double[] dVy, double[] discre,double paraSimil) {
-		// La distancia intervalar está definida para sólo una serie.
-	
-		double lambda = paraSimil;
-	
-		int rangos = discre.length - 1;
-		// CREO LA MATRIZ DE DISTANCIAS ENTRE INTERVALOS
-		double[][] dist = new double[rangos][rangos]; //mantiene la distancia
-	
-		for (int i = 0; i < rangos; i++)
-			for (int j = i; j < rangos; j++)
-				if (i == j)
-					dist[i][j] = 0;
-				else {
-					// diferencia de centros al cuadrado + diferencia de radios
-					// al cuadrado
-					dist[i][j] = Math.pow((discre[j] + discre[j + 1]) / 2
-							- (discre[i] + discre[i + 1]) / 2, 2)
-							+ Math.pow((discre[j + 1] - discre[j]) / 2 - (discre[i + 1] - discre[i]) / 2, 2);
-					dist[j][i] = dist[i][j];
-				}
-	
-		double coste = 0.0;
-		int sizex = dVx.length;
-		for (int i = 0; i < sizex; i++)
-			coste += Math.pow(lambda, dist[(int) dVx[i]][(int) dVy[i]]);
-	
-		return coste;
-	}
-
 
 }

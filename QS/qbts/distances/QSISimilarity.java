@@ -58,7 +58,7 @@ public class QSISimilarity extends SimilarityMeasure {
 	}
 	
 	public double calculateDistance(double[] pcVx, double[] pcVy){
-		return similarity(pcVx,pcVy);
+		return (1-similarity(pcVx,pcVy));
 	}
 	
 	public double similarity(double[] pcVx, double[] pcVy) {
