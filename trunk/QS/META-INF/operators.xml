@@ -47,41 +47,5 @@
      description = "Create a new fresh copy of the input ExampleSet"
      group       = "QBTS"/>
 
- <operator 
-     name        = "4.1NearestNeighbor"
-     class       = "rm.utils.KNNLearner"
-     description = "KNNLearner versión 4.1"
-     group       = "QBTS"/>
-
-
-
-
-
-
-     
-  <operator 
-     name        = "ByExampleLearner"
-     class       = "qbts.ByExampleLearner"
-     description = "Learn a...."
-     group       = "QBTS.ZOLD"/>
  
-  <operator 
-     name        = "SimpleBinDiscretizationSeries"
-     class       = "qbts.preprocessing.discretization.BinDiscretizationSeries"
-     description = "Discretize the input ExampleSet  (including Series)."
-     group       = "QBTS.ZOLD"/>
-     
-  <operator 
-     name        = "FrequencyDiscretizationSeries"
-     class       = "yale.operator.preprocessing.discretization.FrequencyDiscretizer"
-     description = "Discretize the input ExampleSet  (including Series)."
-     group       = "QBTS.ZOLD"/>
-
-
-  <operator 
-     name        = "AmevaDiscretizer"
-     class       = "qbts.discretization.AmevaDiscretizer"
-     description = "Discretize the input ExampleSet  (including Series)."
-     group       = "QBTS.ZOLD"/>
-
 </operators>
