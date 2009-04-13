@@ -27,6 +27,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
+import qbts.preprocessing.discretization.Discretizer;
+
 import com.rapidminer.example.Attribute;
 import com.rapidminer.example.Example;
 import com.rapidminer.example.ExampleSet;
@@ -52,7 +54,7 @@ import com.rapidminer.parameter.conditions.BooleanParameterCondition;
  * @author Sebastian Land, Ingo Mierswa
  * @version $Id: FrequencyDiscretization.java,v 1.5 2008/05/09 19:23:25 ingomierswa Exp $
  */
-public class FrequencyDiscretizationExtended extends FrequencyDiscretization {
+public class FrequencyDiscretizationExtended extends Discretizer {
 	/** The parameter name for &quot;If true, the number of bins is instead determined by the square root of the number of non-missing values.&quot; */
 	public static final String PARAMETER_USE_SQRT_OF_EXAMPLES = "use_sqrt_of_examples";
 
@@ -90,7 +92,7 @@ public class FrequencyDiscretizationExtended extends FrequencyDiscretization {
 
 		List<Double> valores = new ArrayList<Double>();
 		for (Example example : eSet) {
-			for (Attribute currentAttribute : eSet.getAttributes()) {
+			for (Attribute currentAttribute : lA) {
 				double value = example.getValue(currentAttribute);
 				if (!Double.isNaN(value)) {
 					valores.add(value);
@@ -125,7 +127,7 @@ public class FrequencyDiscretizationExtended extends FrequencyDiscretization {
 		attributeRanges[numberOfBins - 1] = Double.POSITIVE_INFINITY;
 
 		// Se asignan los cortes a los atributos 
-		for (Attribute currentAttribute : eSet.getAttributes()) {
+		for (Attribute currentAttribute : lA) {
 			ranges.put(currentAttribute, attributeRanges);
 		}
 
@@ -140,9 +142,7 @@ public class FrequencyDiscretizationExtended extends FrequencyDiscretization {
 		type.registerDependencyCondition(new BooleanParameterCondition(this, PARAMETER_USE_SQRT_OF_EXAMPLES, false, false));
 		type.setExpert(false);
 		types.add(type);
-		
-		types.add(new ParameterTypeCategory(PARAMETER_RANGE_NAME_TYPE, "Indicates if long range names including the limits should be used.", DiscretizationModel.RANGE_NAME_TYPES, DiscretizationModel.RANGE_NAME_LONG));
-		
+	
 		return types;
 	}
 }

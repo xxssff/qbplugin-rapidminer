@@ -35,7 +35,7 @@ public class AmevaDiscretizer extends Discretizer {
 				for (Example example : eSet) {
 					double value = example.getValue(attribute);
 					if (!Double.isNaN(value)) {
-						lVal.add(new CumDiscretizerBlock(example.getValue(attribute),
+						lVal.add(new CumDiscretizerBlock(value,
 								(int) example.getLabel(),numClasses));
 					}
 				}
