@@ -1,9 +1,11 @@
 package qbts.preprocessing.discretization.rm;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import com.rapidminer.example.Attribute;
+import com.rapidminer.example.AttributeRole;
 import com.rapidminer.example.Example;
 import com.rapidminer.example.ExampleSet;
 import com.rapidminer.operator.IOObject;
@@ -36,7 +38,10 @@ public class NormalizationExtended extends Operator {
 		ExampleSet exampleSet = getInput(ExampleSet.class);
 
 		List<Attribute> lAtt=new ArrayList<Attribute>();
-		for (Attribute att: exampleSet.getAttributes()){
+		Iterator<AttributeRole> r = exampleSet.getAttributes().regularAttributes();
+		while (r.hasNext()) {
+			AttributeRole role = r.next();
+			Attribute att = role.getAttribute();
 			lAtt.add(att);
 		}
 		
@@ -45,9 +50,9 @@ public class NormalizationExtended extends Operator {
 				getParameterAsBoolean(PARAMETER_DIFFERENCE_SERIES)){
 			for (Example ex : exampleSet ){
 
-				double[] valores = new double[ex.getAttributes().size()];
+				double[] valores = new double[lAtt.size()];
 				int i=0;
-				for (Attribute att: ex.getAttributes()){
+				for (Attribute att: lAtt){
 					valores[i++]=ex.getValue(att);
 				}
 				double[] val2 = Preprocess_Series(valores,true,
@@ -56,15 +61,12 @@ public class NormalizationExtended extends Operator {
 						getParameterAsBoolean(PARAMETER_DIFFERENCE_SERIES));
 				i=0;
 				for (Attribute att: lAtt){
-					if (i<(val2.length))
+					if (i<val2.length)
 						ex.setValue(att, val2[i++]);
 				}
 			}
 			if (getParameterAsBoolean(PARAMETER_DIFFERENCE_SERIES)){
-				Attribute lastAtt=null;
-				for (Attribute attribute : exampleSet.getAttributes())
-					lastAtt = attribute;
-				exampleSet.getAttributes().remove(lastAtt);	
+				exampleSet.getAttributes().remove(lAtt.get(lAtt.size()-1));
 			}
 		}
 
