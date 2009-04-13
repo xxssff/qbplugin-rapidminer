@@ -14,6 +14,7 @@ import com.rapidminer.operator.OperatorDescription;
 import com.rapidminer.operator.OperatorException;
 import com.rapidminer.parameter.ParameterType;
 import com.rapidminer.parameter.ParameterTypeBoolean;
+import com.rapidminer.tools.Ontology;
 
 public class NormalizationExtended extends Operator {
 
@@ -66,7 +67,10 @@ public class NormalizationExtended extends Operator {
 				}
 			}
 			if (getParameterAsBoolean(PARAMETER_DIFFERENCE_SERIES)){
-				exampleSet.getAttributes().remove(lAtt.get(lAtt.size()-1));
+				if (lAtt.get(lAtt.size()-1).getBlockType()==Ontology.VALUE_SERIES_END){
+					lAtt.get(lAtt.size()-2).setBlockType(Ontology.VALUE_SERIES_END);
+					exampleSet.getAttributes().remove(lAtt.get(lAtt.size()-1));
+				}
 			}
 		}
 
