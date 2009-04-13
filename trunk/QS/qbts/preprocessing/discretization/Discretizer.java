@@ -71,6 +71,8 @@ abstract public class Discretizer extends PreprocessingOperator {
 				}	
 			}
 		}
+		if (!lAtt.isEmpty())
+			throw new OperatorException("Values Series without value_series_end attribute.");
 		model.setRanges(ranges, "range", getParameterAsInt(PARAMETER_RANGE_NAME_TYPE));
 		return (model);
 	}
