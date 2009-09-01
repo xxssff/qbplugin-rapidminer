@@ -38,6 +38,8 @@ public abstract  class AbstractIS extends SimilarityMeasure {
 	@Override
 	public void init(ExampleSet exampleSet) throws OperatorException {
 	}
+	
+	
 
 	public abstract double IS(double c1, double r1, double c2, double r2);
 }

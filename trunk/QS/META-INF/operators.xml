@@ -30,6 +30,11 @@
      description = "Discretize the input ExampleSet."
      group       = "QBTS"/>
 
+  <operator 
+     name        = "dUMBoPERATOR"
+     class       = "qbts.distances.DumbOp"
+     description = "DumbOperator."
+     group       = "QBTS"/>
  
 
 
