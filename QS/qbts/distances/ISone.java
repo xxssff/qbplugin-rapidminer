@@ -29,7 +29,7 @@ public class ISone extends AbstractIS {  // SimilarityMeasure {
 	
 	private double MaxValueV1 = 1;
 	private double MinValueV1 = 0;
-	private double fx=0.0; 
+	private double fx=0.5; 
 	
 	
 	public void init(ExampleSet exampleSet, ParameterHandler parameterHandler, IOContainer ioContainer) throws OperatorException {
@@ -39,14 +39,17 @@ public class ISone extends AbstractIS {  // SimilarityMeasure {
 		DumbResult dr=null;
 		try {
 			dr = (DumbResult) ioContainer.remove(DumbResult.class);
+			fx = dr.getP1();
+			MinValueV1 = dr.getP2();
+			MaxValueV1 = dr.getP3();
+			log.log("ISOne has found DumbResult parameters.", LogService.MAXIMUM);
+			log.log("Using values factor=" + (new Double(fx)).toString() + " minV1=" + (new Double(MinValueV1)).toString()+ 
+					" MaxV1=" + (new Double(MaxValueV1)).toString(), LogService.MAXIMUM);
 		} catch (MissingIOObjectException e1) {
 			log.log("ISOne has not found DumbResult parameters. Using default values factor=0.5", LogService.MAXIMUM);
-			fx = 0.5;
 			return;
 		}
 		
-		fx = dr.getP1();
-		log.log("ISOne has found DumbResult parameters. Using values factor=" + (new Double(fx)).toString(), LogService.MAXIMUM);
 	}
 	
 	public double IS(double c1, double r1, double c2, double r2){
