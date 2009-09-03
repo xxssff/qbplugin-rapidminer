@@ -6,14 +6,18 @@ public class DumbResult extends ResultObjectAdapter {
 
 	private static final long serialVersionUID = 1L;
 
-	private double p1,p2, p3;
+	private double p1,p2, p3,p4;
 	
 	
-    public DumbResult(double p1, double p2, double p3) {
+
+
+
+	public DumbResult(double p1, double p2, double p3, double p4) {
 		super();
 		this.p1 = p1;
 		this.p2 = p2;
 		this.p3 = p3;
+		this.p4 = p4;
 	}
     
     
@@ -52,6 +56,15 @@ public class DumbResult extends ResultObjectAdapter {
 		this.p3 = p3;
 	}
 
+    public double getP4() {
+		return p4;
+	}
+
+
+
+	public void setP4(double p4) {
+		this.p4 = p4;
+	}
 
 
 	public String getExtension() { return "srs"; }

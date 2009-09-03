@@ -19,6 +19,7 @@ public class DumbOp extends Operator {
 	public static final String PARAMETER_P1= "PARAMETER_1";
 	public static final String PARAMETER_P2= "PARAMETER_2";
 	public static final String PARAMETER_P3= "PARAMETER_3";
+	public static final String PARAMETER_P4= "PARAMETER_4";
 	
 	public DumbOp(OperatorDescription description) {
 		super(description);
@@ -26,7 +27,8 @@ public class DumbOp extends Operator {
 
 	@Override
 	public IOObject[] apply() throws OperatorException {
-		DumbResult db=new DumbResult(getParameterAsDouble(PARAMETER_P1),getParameterAsDouble(PARAMETER_P2),getParameterAsDouble(PARAMETER_P3));
+		DumbResult db=new DumbResult(getParameterAsDouble(PARAMETER_P1),getParameterAsDouble(PARAMETER_P2),
+				getParameterAsDouble(PARAMETER_P3),getParameterAsDouble(PARAMETER_P4));
 		
 		return new IOObject[] { db };
 	}
@@ -49,6 +51,7 @@ public class DumbOp extends Operator {
 		types.add(new ParameterTypeDouble(PARAMETER_P1,"Value of parameter1", Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY,0.0));
 		types.add(new ParameterTypeDouble(PARAMETER_P2,"Value of parameter2", Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY,0.0));
 		types.add(new ParameterTypeDouble(PARAMETER_P3,"Value of parameter3", Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY,0.0));
+		types.add(new ParameterTypeDouble(PARAMETER_P4,"Value of parameter4", Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY,0.0));
 		return types;
 	}
 	
