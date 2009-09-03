@@ -42,11 +42,13 @@ public class ISone extends AbstractIS {  // SimilarityMeasure {
 			fx = dr.getP1();
 			MinValueV1 = dr.getP2();
 			MaxValueV1 = dr.getP3();
-			log.log("ISOne has found DumbResult parameters.", LogService.MAXIMUM);
+			cp = dr.getP4();
+			log.log("ISOne has found DumbResult parameters.", LogService.STATUS);
 			log.log("Using values factor=" + (new Double(fx)).toString() + " minV1=" + (new Double(MinValueV1)).toString()+ 
-					" MaxV1=" + (new Double(MaxValueV1)).toString(), LogService.MAXIMUM);
+					" MaxV1=" + (new Double(MaxValueV1)).toString() +
+					" cp=" + (new Double(cp)).toString(), LogService.INIT);
 		} catch (MissingIOObjectException e1) {
-			log.log("ISOne has not found DumbResult parameters. Using default values factor=0.5", LogService.MAXIMUM);
+			log.log("ISOne has not found DumbResult parameters. Using default values factor=0.5", LogService.STATUS);
 			return;
 		}
 		

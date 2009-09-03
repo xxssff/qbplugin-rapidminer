@@ -1,5 +1,7 @@
 package qbts.distances;
 
+import java.lang.reflect.Field;
+
 import com.rapidminer.example.ExampleSet;
 import com.rapidminer.operator.IOContainer;
 import com.rapidminer.operator.MissingIOObjectException;
@@ -28,14 +30,42 @@ public class IS2 extends AbstractIS {
 			fx = dr.getP1();
 			MinValueV1 = dr.getP2();
 			MaxValueV1 = dr.getP3();
-			log.log("ISOne has found DumbResult parameters.", LogService.MAXIMUM);
+			cp=dr.getP4();
+			log.log("ISOne has found DumbResult parameters.", LogService.STATUS);
 			log.log("Using values factor=" + (new Double(fx)).toString() + " minV1=" + (new Double(MinValueV1)).toString()+ 
-					" MaxV1=" + (new Double(MaxValueV1)).toString(), LogService.MAXIMUM);
+					" MaxV1=" + (new Double(MaxValueV1)).toString() +
+					" cp=" + (new Double(cp)).toString(), LogService.INIT);
+			
 		} catch (MissingIOObjectException e1) {
-			log.log("ISOne has not found DumbResult parameters. Using default values factor=0.5", LogService.MAXIMUM);
+			log.log("ISOne has not found DumbResult parameters. Using default values factor=0.5", LogService.STATUS);
 			return;
 		}
 		
+		// CAMBIO PARA HACER QUE LOS PARAMETROS PUDIESEN VENIR COMO nombre;valor
+		// de esta forma se podría asignar por reflexión los valores a las variables.
+/*		String fieldName="fx"; 
+		Object newVal = null;
+		
+		Field campo=null;
+		try {
+			Field[] campos=this.getClass().getDeclaredFields();
+			for (int i=0;i<campos.length;i++){
+				if (fieldName.equals(campos[i].getName())){
+					campo=campos[i];
+				}
+			}
+			campo.setAccessible(true);
+			campo.set(this,newVal);
+		}  catch (SecurityException e) {
+			// TODO Bloque catch generado automáticamente
+			e.printStackTrace();
+		}catch (IllegalArgumentException e) {
+			// TODO Bloque catch generado automáticamente
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Bloque catch generado automáticamente
+			e.printStackTrace();
+		}*/
 	}
 	
 	public double IS(double c1, double r1, double c2, double r2){
