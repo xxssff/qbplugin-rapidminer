@@ -10,5 +10,6 @@ public class PluginInit {
 		DistanceMeasures.registerMeasure(DistanceMeasures.NOMINAL_MEASURES_TYPE, "IntervalKernel", IntervalKernel.class);
 		DistanceMeasures.registerMeasure(DistanceMeasures.NOMINAL_MEASURES_TYPE, "ISone", ISone.class);
 		DistanceMeasures.registerMeasure(DistanceMeasures.NOMINAL_MEASURES_TYPE, "IS-2", IS2.class);
+		DistanceMeasures.registerMeasure(DistanceMeasures.NUMERICAL_MEASURES_TYPE, "IK", IK.class);
   }
 }
