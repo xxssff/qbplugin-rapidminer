@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+RapidMiner-Type: RapidMiner_Plugin
+Created-By: Apache Ant 1.5.1
+Implementation-Vendor: FJCUBEROS
+Implementation-Title: OPERador1  Plugin
+Implementation-URL: http://www.cubers.com
+Implementation-Version: 1.0
+
