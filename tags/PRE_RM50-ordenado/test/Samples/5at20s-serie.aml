@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="windows-1252"?>
+<attributeset default_source="5at20s.dat">
+  <id
+    name       = "ID"
+    sourcecol  = "1"
+    valuetype  = "nominal"/>
+
+  <attribute
+    name       = "att1"
+    sourcecol  = "2"
+    valuetype  = "real"
+    blocktype  = "value_series_start"/>
+
+  <attribute
+    name       = "att2"
+    sourcecol  = "3"
+    valuetype  = "real"
+    blocktype  = "value_series"/>
+
+  <attribute
+    name       = "att3"
+    sourcecol  = "4"
+    valuetype  = "real"
+    blocktype  = "value_series"/>
+
+  <attribute
+    name       = "att4"
+    sourcecol  = "5"
+    valuetype  = "real"
+    blocktype  = "value_series"/>
+
+  <attribute
+    name       = "att5"
+    sourcecol  = "6"
+    valuetype  = "real"
+    blocktype  = "value_series_end"/>
+
+  <label
+    name       = "label"
+    sourcecol  = "7"
+    valuetype  = "nominal">
+    <value>A</value>
+    <value>B</value>
+    <value>C</value>
+  </label>
+
+</attributeset>

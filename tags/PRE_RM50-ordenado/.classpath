@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry excluding="lib|test/|src/|old/deprecated/discretization/|old/deprecated/qbts/|old/deprecated/yale/|old/discretization/|old/discretization/AmevaDiscretizer.java|old/discretization/BinDiscretizationSeries.java|old/discretization/DiscretizationModelSeries.java|old/distances/|old/distances/AbstractDiscretizedRealValueBasedSimilarity.java|old/distances/AbstractExtendedRealValueBasedSimilarity.java|old/distances/QBSimilaritySetup.java|old/yale/|old/" kind="src" path=""/>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="old"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/RM44"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="output" path="build"/>
+</classpath>
