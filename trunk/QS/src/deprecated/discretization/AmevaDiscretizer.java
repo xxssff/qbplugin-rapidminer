@@ -1,4 +1,4 @@
-package zz.deprecated.discretization;
+package deprecated.discretization;
 
 /*
  *  YALE - Yet Another Learning Environment
@@ -40,8 +40,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import qbts.preprocessing.discretization.CumDiscretizerBlock;
-import zz.deprecated.yale.AttributeBlock;
-import zz.deprecated.yale.DiscretizationModel;
 
 import com.rapidminer.example.Example;
 import com.rapidminer.example.ExampleSet;
@@ -53,6 +51,9 @@ import com.rapidminer.parameter.ParameterType;
 import com.rapidminer.parameter.ParameterTypeBoolean;
 import com.rapidminer.parameter.ParameterTypeInt;
 import com.rapidminer.parameter.UndefinedParameterError;
+
+import deprecated.yale.AttributeBlock;
+import deprecated.yale.DiscretizationModel;
 
 
 
