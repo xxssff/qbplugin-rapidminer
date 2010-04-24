@@ -1,8 +1,7 @@
-package zz.deprecated;
+package deprecated;
 
 import java.util.ArrayList;
 
-import zz.deprecated.yale.DiscretizationModel;
 
 
 import com.rapidminer.example.Attribute;
@@ -12,6 +11,8 @@ import com.rapidminer.example.table.ExampleTable;
 import com.rapidminer.example.table.MemoryExampleTable;
 import com.rapidminer.operator.learner.SimplePredictionModel;
 import com.rapidminer.tools.att.AttributeSet;
+
+import deprecated.yale.DiscretizationModel;
 
 public class ByExampleModel extends SimplePredictionModel {
 

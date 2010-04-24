@@ -1,8 +1,7 @@
-package zz.deprecated;
+package deprecated;
 
 import java.util.List;
 
-import zz.deprecated.yale.DiscretizationModel;
 
 
 import com.rapidminer.example.ExampleSet;
@@ -16,6 +15,8 @@ import com.rapidminer.parameter.ParameterType;
 import com.rapidminer.parameter.ParameterTypeBoolean;
 import com.rapidminer.parameter.ParameterTypeDouble;
 import com.rapidminer.parameter.ParameterTypeString;
+
+import deprecated.yale.DiscretizationModel;
 
 public class ByExampleLearner extends AbstractLearner {
 	
