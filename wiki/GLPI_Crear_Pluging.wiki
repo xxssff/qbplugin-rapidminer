@@ -1,3 +1,6 @@
+NOTA:  Esta página es una traducción automática (ligeramente revisada) de la correspondiente información en francés en la documentación de GLPI.
+Esta traducción se hizo en Septiembre de 2008 por lo que puede estar desactualizada.
+
 A plugin is an add code, which allows features to enrich GLPI without having to add patches to the main code of the application.
 All plugins are stored in the subversion of GLPI, at[[https://dev.indepnet.net/plugins/browser/]].
 
