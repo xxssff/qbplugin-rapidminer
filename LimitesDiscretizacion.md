@@ -1,0 +1,5 @@
+Otra posibilidad sería que las similitudes que requieren información de la discretización  se enfoquen desde el lado de la transformación. Así una discretización podría implicar el convertir cada serie unidimensional en otra tridimensional donde además del valor discretizado se incluyesen los valores límite del segmento en que se ha incluido el valor original en el proceso de discretización.
+
+Este sistema es mucho menos compacto, en realidad multiplica por 3 el espacio ocupado, que en el caso de utilizar un modelo de discretización para almacenar la información, pero está claro que permitiría mantener el sistema establecido del KKNLearner y sólo modificar las similitudes.
+
+Una posibilidad es hacer un operador que se encargue de coger la salida del discretizador (que es un Modelo) y se encargue de crear un nuevo ExampleSet que incluya toda la información. Pero esta solución **no vale** porque el modelo de discretización se necesita en la aplicación del modelo para discretizar el nuevo conjunto de datos.
